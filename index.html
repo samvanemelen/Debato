@@ -1,0 +1,45 @@
+<html> 
+    <head> 
+        <title>DEBATO</title>         
+        <link rel="stylesheet" ty'pe="text/css" href="layout.css"> 
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aleo">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Antic">
+    </head>     
+    <body style="font-family: Aleo;"> 
+        <center> 
+            <header style="width: 90%;">
+                <h1 class="homelink" onclick="window.location.href = 'index.html';">DEBATO</h1>
+                <div id="accountBox" onmouseover="toggleMenu(true);" onmouseleave="toggleMenu(false);">
+                    <div id = "accountLogin"><a href="https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=http://localhost/debato/&scope=vote,comment,delete_comment">
+                        <div id="SteemConnect">Log in</div>
+                    </a></div>
+                    <div id="accountMenu">
+                    	<div><input id = "voteSlider" type = "range" min = "1" max = "100" value = "100" style = "margin: 10px auto;"><p id = "voteIndicator">100% upvotes</p></div>
+                    	<a href="create.html">Start discussion</a>
+                    	<a href="" onclick = "logout()">Log out</a>
+                    </div>
+                </div>
+            </header>
+            <div class="frontImage"></div>
+            <div id="body"> 
+                <div class="tab"> 
+                    <button class="tablinks" id="defaultOpen" onclick="openTab(event, 'New')">New</button>                     
+                    <button class="tablinks" onclick="openTab(event, 'Trending')">Trending</button>                     
+                </div>                 
+                <!-- Tab content -->                 
+                <div id="New" class="tabcontent"> 
+                    <h2>New Discussions</h2> 
+                    <div class="discussionList">loading.</div>                     
+                </div>                 
+                <div id="Trending" class="tabcontent"> 
+                    <h2>Trending Discussions</h2> 
+                    <div class="discussionList">loading.</div>                     
+                </div>                 
+            </div>             
+        </center>         
+    </body>     
+</html> 
+<script src="https://cdn.jsdelivr.net/npm/steemconnect@latest"></script> 
+<script src="https://cdn.steemjs.com/lib/latest/steem.min.js"></script> 
+<script src="commons.js"></script>
+<script src="index.js"></script>

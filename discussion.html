@@ -1,0 +1,35 @@
+<html> 
+    <head> 
+        <title>
+            DEBATO
+</title>         
+        <link rel="stylesheet" type="text/css" href="layout.css"> 
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aleo"> 
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Antic"> 
+    </head>     
+    <body style="font-family: Aleo;"> 
+        <center style="width: 100%; max-width: 100%;">
+            <header style="width: 90%;">
+                <h1 class="homelink" onclick="window.location.href = 'index.html';">DEBATO</h1>
+                <div id="accountBox" onmouseover="toggleMenu(true);" onmouseleave="toggleMenu(false);">
+                    <div id = "accountLogin"><a href="https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=http://localhost/debato/&scope=vote,comment,delete_comment">
+                        <div id="SteemConnect">Log in</div>
+                    </a></div>
+                    <div id="accountMenu">
+                        <div><input id = "voteSlider" type = "range" min = "1" max = "100" value = "100" style = "margin: 10px auto;"><p id = "voteIndicator">100% upvotes</p></div>
+                        <a href="create.html">Start discussion</a>
+                        <a href="" onclick = "logout()">Log out</a>
+                    </div>
+                </div>
+            </header>
+            <div id = "discussion">
+                <div class="thumbnail"></div>
+                <div class="discussionBody"></div>
+            </div>
+        </center>         
+    </body>     
+</html> 
+<script src="https://cdn.jsdelivr.net/npm/steemconnect@latest"></script> 
+<script src="https://cdn.steemjs.com/lib/latest/steem.min.js"></script> 
+<script src="commons.js"></script>
+<script src="discussion.js"></script>
