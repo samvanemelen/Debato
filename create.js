@@ -4,7 +4,7 @@ var api
 updateLoginStatus();
 
 function publish(){
-	if (user != "" && user != undefined){
+	if (user == "" || user == undefined){
 		alert("Please log in before publishing a discussion");
 		window.location.href = "index";
 	}
