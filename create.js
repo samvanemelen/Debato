@@ -2,12 +2,11 @@ var accessToken = "", expiresIn = "", user = "", cookie = "";
 var api
 
 updateLoginStatus();
-
+if (user != "" && user != undefined){
+	alert("Please log in before publishing a discussion");
+	window.location.href = "index";
+}
 function publish(){
-	if (user != "" && user != undefined){
-		alert("Please log in before publishing a discussion");
-		window.location.href = "index";
-	}
 	//Publish a new discussion
 	var title = document.getElementById("discussionTitle").value;
 	var titleLow = title.toLowerCase();
