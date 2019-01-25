@@ -1,4 +1,4 @@
-var activeTab = "", accessToken = "", expiresIn = "", user = "", activeAuthor = "", activePerm = "", readingAuthor = "", readingPerm = "", cookie = "";
+var accessToken = "", expiresIn = "", user = "", activeAuthor = "", activePerm = "", readingAuthor = "", readingPerm = "", cookie = "";
 var parentAuthor = "none", parentPerm = "none";
 var weightSlider = document.getElementById("voteSlider")
 var weight = 10000
@@ -9,15 +9,15 @@ try{
 	user = cookieresult[0].split("=")[1];
 	accessToken = cookieresult[1].split("=")[1];
 	weight = parseInt(cookieresult[2].split("=")[1]);
-	weightSlider.value = weight/100;
-	document.getElementById("voteIndicator").innerHTML = weightSlider.value + "% upvotes"
+	weightSlider.value = weight;
+	document.getElementById("voteIndicator").innerHTML = weightSlider.value/100 + "% upvotes"
 }
 catch(err){console.log(err)}
 
 weightSlider.oninput = function(){
 	//When the weight slider changes, change the cookie and change the indicator
-	weight = this.value*100
-	document.getElementById("voteIndicator").innerHTML = this.value + "% upvotes"
+	weight = this.value
+	document.getElementById("voteIndicator").innerHTML = this.value/100 + "% upvotes"
 	document.cookie = "weight=" + weight + ";"
 }
 function toggleMenu(show){
@@ -50,13 +50,13 @@ function updateLoginStatus(){
 				document.getElementById("accountBox").style.backgroundColor = "none";
 				api = sc2.Initialize({
 					app: 'debato-app',
-					callbackURL: 'http://localhost/debato/',
+					callbackURL: 'http://www.debato.org',
 					accessToken: accessToken,
 					scope: ['vote', 'comment', 'delete_comment']
 				});
 			})
 		} else {
-			var link = "<a href = \"https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=http://localhost/debato/&scope=vote,comment,delete_comment\"><div id = \"SteemConnect\">Log in</div></a>"
+			var link = "<a href = \"https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=http://www.debato.org&scope=vote,comment,delete_comment\"><div id = \"SteemConnect\">Log in</div></a>"
 			document.getElementById("accountLogin").innerHTML = link
 		}
 	} catch(error){accessToken = ""}
@@ -71,14 +71,17 @@ function getUrlVars() {
 }
 function logout(){
 	//Revoke the active token and return to the home page
+	console.log("logging out")
+	document.cookie = "username="+user+";expires=expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+	document.cookie = "accessToken="+accessToken+";expires=expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+	document.cookie = "weight="+weight+";expires=expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+	user = ""
+	accessToken	= ""
+	expiresIn = ""
 	api.revokeToken(function (err, res) {
+		console.log("revoked")
 		console.log(err, res)
-		document.cookie = "username="+user+";expires=expires=Thu, 01 Jan 1970 00:00:01 GMT;"
-		document.cookie = "accessToken="+accessToken+";expires=expires=Thu, 01 Jan 1970 00:00:01 GMT;"
-		user = ""
-		accessToken	= ""
-		expiresIn = ""
-		//window.location.href = 'index.html';
+		window.location.href = 'index.html';
 	});
 }
 function upvote(obj, author, perm){
