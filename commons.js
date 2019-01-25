@@ -9,15 +9,15 @@ try{
 	user = cookieresult[0].split("=")[1];
 	accessToken = cookieresult[1].split("=")[1];
 	weight = parseInt(cookieresult[2].split("=")[1]);
-	weightSlider.value = weight/100;
-	document.getElementById("voteIndicator").innerHTML = weightSlider.value + "% upvotes"
+	weightSlider.value = weight;
+	document.getElementById("voteIndicator").innerHTML = weightSlider.value/100 + "% upvotes"
 }
 catch(err){console.log(err)}
 
 weightSlider.oninput = function(){
 	//When the weight slider changes, change the cookie and change the indicator
-	weight = this.value*100
-	document.getElementById("voteIndicator").innerHTML = this.value + "% upvotes"
+	weight = this.value
+	document.getElementById("voteIndicator").innerHTML = this.value/100 + "% upvotes"
 	document.cookie = "weight=" + weight + ";"
 }
 function toggleMenu(show){
@@ -97,10 +97,10 @@ function upvote(obj, author, perm){
 		} else {
 			alert("Could not broadcast vote. Please refresh the page and try again")
 		}
-	if (obj.children.length > 0){
-		obj.children[0].style.backgroundColor = "inherit";
-		obj.previousElementSibling.innerHTML = parseInt(obj.previousElementSibling.innerHTML) + 1
-	}
+		if (obj.children.length > 0){
+			obj.children[0].style.backgroundColor = "inherit";
+			obj.previousElementSibling.innerHTML = parseInt(obj.previousElementSibling.innerHTML) + 1
+		}
 	})
 }
 function removeVote(obj, author, perm){
@@ -119,12 +119,12 @@ function removeVote(obj, author, perm){
 		} else {
 			alert("Could not remove vote. Please refresh the page and try again")
 		}
-	if (obj.children.length > 0){
-		obj.children[0].style.backgroundColor = "inherit";
-		if (parseInt(obj.previousElementSibling.innerHTML)>0){
-			obj.previousElementSibling.innerHTML = parseInt(obj.previousElementSibling.innerHTML) - 1
+		if (obj.children.length > 0){
+			obj.children[0].style.backgroundColor = "inherit";
+			if (parseInt(obj.previousElementSibling.innerHTML)>0){
+				obj.previousElementSibling.innerHTML = parseInt(obj.previousElementSibling.innerHTML) - 1
+			}
 		}
-	}
 	})
 }
 function comment(textbox, commenttype){
@@ -176,26 +176,23 @@ function showCommentBox(buttonObj){
 		textbox.style.display = "block"
 		if (commentobj.style.overflow != ("scroll")){commentobj.style.maxHeight = "none"}
 	} else {textbox.style.display = "none"}
-	openDropDown(activePerm, textbox.scrollHeight)
-	if (commentobj.style.maxHeight != "500px" && buttonObj.parentElement.className != "statementBox"){
-		commentsDropDown(buttonObj)
-	}
+openDropDown(activePerm, textbox.scrollHeight)
+if (commentobj.style.maxHeight != "500px" && buttonObj.parentElement.className != "statementBox"){
+	commentsDropDown(buttonObj)
+}
 }
 function commentsDropDown(obj){
 	//Display the comment section of a certain discussion
-	if (obj.className.indexOf("comments") != -1){
-		var content = obj.nextElementSibling
-	} else {
-		var content = obj.parentElement.parentElement.firstElementChild.nextElementSibling;
-	}
+	if (obj.className.indexOf("comments") != -1){var content = obj.nextElementSibling} 
+		else {var content = obj.parentElement.parentElement.firstElementChild.nextElementSibling;}
+
 	if (content.style.maxHeight && (content.style.maxHeight == (content.scrollHeight+'px') || content.style.maxHeight == "500px")){
 		content.style.maxHeight = null;
 		content.style.borderStyle = "none";
+
 	} else {
 		if (content.scrollHeight > 500){content.style.maxHeight = "500px"; content.style.overflow = "scroll"}
-		else {
-			content.style.maxHeight = content.scrollHeight + "px";
-		}
+		else {content.style.maxHeight = content.scrollHeight + "px";}
 	}
 	openDropDown(activePerm, content.scrollHeight)
 }
@@ -223,9 +220,10 @@ function getPostData(postobj){
 	catch(error) {var thumbnail = false;}
 	var author = postobj.author;
 	var title = postobj.title;
-	var description = "" //postobj.body;
+	var description = ""
+	try{var description = JSON.parse(postobj.json_metadata).context;}
 	if (title == ""){
-		title = postobj.body.replace("PRO:", "").replace("CON:", "");
+		title = postobj.body
 		description = "";
 	}
 	var reward = postobj.pending_payout_value;
@@ -263,8 +261,8 @@ function checkForParent(author, perm){
 	return new Promise(function(resolve, reject){
 		steem.api.getContent(author, perm, function(err, post) {
 			if(post.parent_author == ""){resolve([false])}
-				else {resolve([true, post.parent_author, post.parent_permlink])}
-			})
+			else {resolve([true, post.parent_author, post.parent_permlink])}
+		})
 	})
 }
 function getVoteStatus(comment){
