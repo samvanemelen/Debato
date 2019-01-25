@@ -224,7 +224,8 @@ function getPostData(postobj){
 	var author = postobj.author;
 	var title = postobj.title;
 	var description = ""
-	try{var description = JSON.parse(postobj.json_metadata).context;}
+	try{description = JSON.parse(postobj.json_metadata).context;}
+	catch(error) {console.log(error)}
 	if (title == ""){
 		title = postobj.body
 		description = "";
