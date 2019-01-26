@@ -1,0 +1,24 @@
+{
+  "name": "debato",
+  "version": "1.0.0",
+  "description": "Hi! thank you for checking out the debato Github page. Debato is an online platform that accommodates online debates on topics big an small. It is built on the decentralized Steem blockchain because no one should dictate what can be discussed. As an added benefit users can get rewarded for creating interesting discussions or leaving thoughtful arguments!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samvanemelen/debato.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/samvanemelen/debato/issues"
+  },
+  "homepage": "https://github.com/samvanemelen/debato#readme",
+  "devDependencies": {
+    "eslint": "^5.12.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.15.0"
+  }
+}

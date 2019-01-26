@@ -1,0 +1,43 @@
+<html> 
+    <head> 
+        <title>
+            DEBATO
+</title>         
+        <link rel="stylesheet" type="text/css" href="/css/layout.css"> 
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aleo"> 
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Antic"> 
+    </head>     
+    <body style="font-family: Aleo;"> 
+        <center style="width: 100%; max-width: 100%;">
+            <header style="width: 90%;">
+                <h1 class="homelink" onclick="window.location.href = '/index';">DEBATO</h1>
+                <div id="accountBox" onmouseover="toggleMenu(true);" onmouseleave="toggleMenu(false);">
+                    <div id = "accountLogin"><a href="https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=http://www.debato.org&scope=vote,comment,delete_comment">
+                        <div id="SteemConnect">Log in</div>
+                    </a></div>
+                    <div id="accountMenu">
+                    	<div><input id = "voteSlider" type = "range" min = "1" max = "10000" value = "10000" style = "margin: 10px auto;"><p id = "voteIndicator">100% upvotes</p></div>
+                    	<a href="/html/create">Start discussion</a>
+                    	<a href="" onclick = "logout()">Log out</a>
+                    </div>
+                </div>
+            </header>
+            <h2 style="padding-bottom: 20;">Discussion details</h2>
+            <div class="discussionForm">
+                <p>Brief discussion statement (title)</p>
+                <input id="discussionTitle" style="width: 100%; padding-top: 5; padding-bottom: 5;">
+                <p>Optionally further ellaborate on the statement with context, background information, relevance etc.</p>
+                <textarea id="discussionBody" style="margin: 10px; height: 100px; width: 599px;"></textarea>
+                <p>Cover image URL</p>
+                <input id="coverImage" style="width: 100%; padding-top: 5; padding-bottom: 5; vertical-align: middle;">
+                <p>Tags to find the discussion</p>
+                <input id="discussionTags" style="width: 100%; padding-top: 5; padding-bottom: 5; vertical-align: middle;">
+                <button id="publishBtn" onclick="publish()">Publish</button>
+            </div>
+        </center>         
+    </body>     
+</html> 
+<script src="https://cdn.jsdelivr.net/npm/steemconnect@latest"></script> 
+<script src="https://cdn.steemjs.com/lib/latest/steem.min.js"></script> 
+<script src="/js/commons.js"></script>
+<script src="/js/create.js"></script>
