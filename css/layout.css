@@ -1,12 +1,11 @@
 body {
-  font-family: "Arial", Helvetica, sans-serif;
+  background-color: #edeeef;
 }
-
 a {
   color: #000000;
 }
-
 header {
+  background-color: white;
   display: flex;
   justify-content: space-between;
   overflow: hidden;
@@ -14,7 +13,6 @@ header {
 #body {
   width: 90%;
 }
-
 textarea {
   margin: 10px;
   width: 60%;
@@ -27,7 +25,7 @@ textarea {
 }
 
 .tab {
-  background-color: #f1f1f1;
+  background-color: white;
   height: auto;
 }
 
@@ -109,18 +107,44 @@ textarea {
 .tab button.active {
   background-color: #ccc;
 }
-
+.moreButton {
+  margin: 10px;
+  flex: 0 0 100%;
+  background-color: #ccc;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+.moreButton:hover {
+  background-color: #ddd;
+}
 .tabcontent {
   display: none;
   padding: 6px 12px;
 }
-
+.discussionList{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.discussionObj {
+  min-width: 200px;
+  flex-basis: 220px;
+  max-width: 300px;
+  flex-grow: 1;
+  background-color: white;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 5px;
+  margin: 5px;
+}
 .thumbnail {
   margin: auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  height: 200px;
-  width: 500px;
+  height: 150px;
+  min-width: 200px;
+  width: 100%;
   background-image: none;
   background-position: center;
   background-size: cover;
@@ -129,19 +153,22 @@ textarea {
 .inputZone {
   display: none;
 }
-
 .commentList {
   max-height: 0;
   overflow: hidden;
-  border-style: none;
-  border-color: #ccc;
-  width: 60% ;
   transition: max-height 0.2s ease-out;
 }
 .commentList p {
   text-align: left;
 }
-
+.comment-card {
+  width: 60%;
+  background-color: white;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.comment {
+  margin: 10px;
+}
 .discussionBody {
   max-height: 0;
   overflow: hidden;
@@ -173,15 +200,21 @@ textarea {
   flex-direction: column;
   justify-content: flex-start;
   box-sizing: border-box;
-
+  background-color: white;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-style: solid;
+  border-width: thin;
   float: left;
   margin: 1%;
   padding: 5px;
-  border-style: solid;
-  overflow: hidden;
   width: 48%;
 }
-
+.argumentColumn.pro {
+  border-color: rgba(0,133,0,0.5);
+}
+.argumentColumn.con {
+ border-color: rgba(158,0,0,0.5);
+}
 .argumentColumn h3 {
   text-align: left;
   margin-left: 10px;
@@ -228,10 +261,22 @@ textarea {
   transform: translate(0, -4px);
 }
 .ratio {
+  margin-top: 0;
+  margin-bottom: 0;
   display: inline-block;
   font-size: 16px;
   margin-left: 4px;
   margin-right: 4px;
+}
+.ratio.box {
+  position: relative;
+  bottom: -126px;
+  width: 100%;
+  margin: 0;
+  padding: 3px;
+  background-color: white;
+  box-shadow: 0 0 2px 2px white;
+  opacity: 0.7;
 }
 #SteemConnect {
   box-sizing: border-box;
@@ -343,11 +388,30 @@ textarea {
   }
   .thumbnail {
     margin: auto;
+    min-width: 0;
     height: 150px;
-    width: 90%;
+    width: 100%;
     background-image: none;
     background-position: center;
     background-size: cover;
+  }
+  .discussionList{
+    display: inline;
+  }
+  .ObjLink {
+    width: 90%;
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .discussionObj {
+    max-width: 90%;
+    background-color: white;
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 5px;
+    margin: 5px;
   }
 }
 ::-webkit-scrollbar {

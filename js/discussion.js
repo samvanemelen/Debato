@@ -8,7 +8,12 @@ try {
 // eslint-disable-next-line no-console
 } catch (err) { console.log(err); }
 updateLoginStatus();
-// Loads the discussion mentioned in the URL vars
+/*
+First permlink and author are retrieved from the URL
+Then the code is similar to the writeDropDown function
+but modified to fit the new page since there is no
+button to drop down from
+*/
 const perm = getUrlVars().p;
 const author = getUrlVars().a;
 const discussionBody = document.getElementsByClassName('discussionBody')[0];
@@ -28,8 +33,8 @@ steem.api.getContent(author, perm, (err, post) => {
     body += `<p><strong>By: ${info.author}</strong> - ${info.reward}</p>`;
     body += `<p>${info.description}</p>`;
     body += writeCommentList(ArgDict.com);
-    body += '<div class="argumentRow"><div class="pro argumentColumn" style = "border-color: #ccffcc;"><center>PRO</center>';
-    body += '</div><div class="con argumentColumn"style = "border-color: #ffcccc;"><center>CON</center>';
+    body += '<div class="argumentRow"><div class="pro argumentColumn"><center>PRO</center>';
+    body += '</div><div class="con argumentColumn"><center>CON</center>';
     body += '</div></div>';
     discussionBody.innerHTML = body;
     if (user !== '' && user !== undefined) {

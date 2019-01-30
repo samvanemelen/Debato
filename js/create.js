@@ -8,7 +8,10 @@ function publish() {
     alert('Please log in before publishing a discussion');
     window.location.href = '/index';
   }
-  // Publish a new discussion
+  /*
+  This function gets the user's input. When all fields are filled in correctly
+  it will disable all input elements while publishing.
+  */
   const title = document.getElementById('discussionTitle').value;
   const titleLow = title.toLowerCase();
   let body = document.getElementById('discussionBody').value;
@@ -31,6 +34,11 @@ function publish() {
   document.getElementById('discussionBody').disabled = true;
   document.getElementById('discussionTags').disabled = true;
   document.getElementById('publishBtn').disabled = false;
+  /*
+  A permlink can only contain lower case letters and hyphens can be used
+  Loop through all characters and when anything else is found
+  it should be replaced with a hyphen
+  */
   let perm = '';
   for (let i = 0; i < titleLow.length; i += 1) {
     if ('abcdefghijklmnopqrstuvwxyz-'.includes(titleLow.charAt(i))) {
@@ -38,11 +46,20 @@ function publish() {
     } else { perm += '-'; }
   }
   const taglist = tags.split(' ');
-  let tagsMeta = `{"image":["${coverImage}"], "tags":["debato",`;
+  /*
+  added "debato-discussion" to accomodate future switch.
+  since "debato" is a too general tag, front page would clutter with non-debate posts
+  */
+  let tagsMeta = `{"image":["${coverImage}"], "tags":["debato","debato-discussion",`;
   for (let i = 0; i < taglist.length; i += 1) {
     tagsMeta += `"${taglist[i]}"`;
     if (i + 1 < taglist.length) { tagsMeta += ','; }
   }
+  /*
+  The discussion context is stored in the custom JSON metadata,
+  The body of the post will be used to redirect readers from other platforms
+  to debato where the discussions structure can be found.
+  */
   tagsMeta += `], "context":"${body}"`;
   tagsMeta += '}';
   body = `<center>${body} <br> To display the structured discussion or engage in the debate, view the topic on `;
