@@ -31,7 +31,7 @@ function writeDiscussionList(postlist, amount, previous) {
     const details = getPostData(postlist[i]);
     body += `<div class = "discussionObj" id = "${details.perm}"><button class="ObjLink" onclick="window.location.href='/html/discussion?a=${details.author}&p=${details.perm}'">`;
     if (details.thumbnail === false || details.thumbnail === '') {
-      body += `<div class = "thumbnail" style = "background-image:none"><div class="ratio box" id='ratio-${details.perm}'></div></div>`;
+      body += `<div class = "thumbnail" style = "background-image:none"><p class="ratio box" id='ratio-${details.perm}'></p></div>`;
     } else {
       body += `<div class = "thumbnail" style = "background-image:url('${details.thumbnail}')"><div class="ratio box" id='ratio-${details.perm}'></div></div>`;
     }

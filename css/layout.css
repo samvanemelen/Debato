@@ -4,31 +4,98 @@ body {
 a {
   color: #000000;
 }
+h2 {
+  margin: 0.6em 0;
+}
+input {
+  width: 100%;
+  padding-top: 5;
+  padding-bottom: 5;
+  vertical-align: middle;
+}
+textarea {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+  height: 100px;
+  width: 100%;
+  max-width: 100%;
+}
 header {
   background-color: white;
   display: flex;
   justify-content: space-between;
   overflow: hidden;
 }
+footer {
+  background-color: #656e67;
+  padding: 10px;
+  width: 90%;
+}
 #body {
   width: 90%;
 }
-textarea {
-  margin: 10px;
-  width: 60%;
-  max-width: 100%;
-  min-height: 100px;
-}
-
 .homelink:hover {
   cursor: hand;
 }
-
+.popupbox {
+  display: none;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  padding: 20px;
+  min-width: 300px;
+  max-width: 400px;
+  color: white;
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+#errorbox {
+  background-color: #cf3328;
+}
+#warningbox {
+  background-color: #e2a217;
+}
+#successbox {
+  background-color: #3b9954;
+}
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.closebtn:hover {
+  color: black;
+}
+.boxcontent {
+  padding: 0;
+  margin: 0;
+}
 .tab {
   background-color: white;
   height: auto;
 }
-
+.tab button {
+  font-size: 1em;
+}
+.postbutton {
+  background-color: #ddd;
+  border: none;
+  outline: none;
+  margin: 8px;
+  padding: 5px 16px;
+  transition: 0.3s;
+}
+.postbutton:hover {
+  background-color: #ccc;
+  cursor: pointer;
+}
 .backButton {
   background-color: #ddd;
   border: none;
@@ -122,7 +189,7 @@ textarea {
 }
 .tabcontent {
   display: none;
-  padding: 6px 12px;
+  padding-bottom: 100px;
 }
 .discussionList{
   display: flex;
@@ -136,7 +203,7 @@ textarea {
   max-width: 300px;
   flex-grow: 1;
   background-color: white;
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
   padding: 5px;
   margin: 5px;
 }
@@ -164,13 +231,14 @@ textarea {
 .comment-card {
   width: 60%;
   background-color: white;
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
 }
 .comment {
   margin: 10px;
 }
 .discussionBody {
   max-height: 0;
+  width: 90%;
   overflow: hidden;
 }
 
@@ -179,6 +247,7 @@ textarea {
   border: none;
   outline: none;
   cursor: pointer;
+  padding: 0;
   transition: 0.3s;
 }
 
@@ -201,7 +270,7 @@ textarea {
   justify-content: flex-start;
   box-sizing: border-box;
   background-color: white;
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
   border-style: solid;
   border-width: thin;
   float: left;
@@ -227,7 +296,12 @@ textarea {
 }
 
 .discussionForm {
-  width: 60%;
+  width: 70%;
+  background-color: white;
+  padding: 15px;
+  margin: 20px;
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
+
 }
 .frontImage {
   width: 90%;
@@ -270,10 +344,10 @@ textarea {
 }
 .ratio.box {
   position: relative;
-  bottom: -126px;
+  bottom: calc(24px - 100%);
   width: 100%;
   margin: 0;
-  padding: 3px;
+  padding: 3px 0;
   background-color: white;
   box-shadow: 0 0 2px 2px white;
   opacity: 0.7;
@@ -281,7 +355,7 @@ textarea {
 #SteemConnect {
   box-sizing: border-box;
   padding: 10px 10px;
-  font-size: 20px;
+  font-size: 1.3em;
 }
 
 #profileImage {
@@ -294,6 +368,9 @@ textarea {
 }
 #accountLogin {
   max-height: 60px;
+}
+#accountLogin a{
+  text-decoration: none;;
 }
 #accountBox {
   margin: 10px;
@@ -366,7 +443,8 @@ textarea {
   cursor: pointer;
 }
 #publishBtn {
-  margin: 20;
+  margin-top: 20px;
+  margin-bottom: 5px;
   padding: 5 20;
   font-size: 18px;
   border: none;
@@ -384,22 +462,12 @@ textarea {
   }
 
   .discussionForm {
-    width: 100%;
-  }
-  .thumbnail {
-    margin: auto;
-    min-width: 0;
-    height: 150px;
-    width: 100%;
-    background-image: none;
-    background-position: center;
-    background-size: cover;
+    width: 90%;
   }
   .discussionList{
     display: inline;
   }
   .ObjLink {
-    width: 90%;
     background-color: inherit;
     border: none;
     outline: none;
@@ -409,7 +477,7 @@ textarea {
   .discussionObj {
     max-width: 90%;
     background-color: white;
-    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
     padding: 5px;
     margin: 5px;
   }

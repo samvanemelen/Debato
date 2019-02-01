@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-/* eslint-disable no-alert */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
 user = ''; accessToken = ''; expiresIn = ''; weight = 10000;
@@ -89,6 +88,48 @@ function logout() {
     window.location.href = '/index';
   });
 }
+function showError(message) {
+  /*
+  Custom alternative to "alert" function
+  displays the errorbox element and add custom message
+  after 7 seconds the box will automatically close
+  */
+  const errorbox = document.getElementById('errorbox');
+  const errortext = errorbox.getElementsByClassName('boxcontent')[0];
+  errortext.innerHTML = message;
+  errorbox.style.display = 'initial';
+  setTimeout(() => {
+    if (errorbox.style.display !== 'none') { errorbox.style.display = 'none'; }
+  }, 7000);
+}
+function showWarning(message) {
+  /*
+  Custom alternative to "alert" function
+  displays the warningbox element and add custom message
+  after 7 seconds the box will automatically close
+  */
+  const warningbox = document.getElementById('warningbox');
+  const warningtext = warningbox.getElementsByClassName('boxcontent')[0];
+  warningtext.innerHTML = message;
+  warningbox.style.display = 'initial';
+  setTimeout(() => {
+    if (warningbox.style.display !== 'none') { warningbox.style.display = 'none'; }
+  }, 7000);
+}
+function showSuccess(message) {
+  /*
+  Custom alternative to "alert" function
+  displays the successbox element and add custom message
+  after 7 seconds the box will automatically close
+  */
+  const successbox = document.getElementById('successbox');
+  const successtext = successbox.getElementsByClassName('boxcontent')[0];
+  successtext.innerHTML = message;
+  successbox.style.display = 'initial';
+  setTimeout(() => {
+    if (successbox.style.display !== 'none') { successbox.style.display = 'none'; }
+  }, 7000);
+}
 function upvote(obj, author, perm) {
   // Upvote a post and change the settings of the upvote button
   if (obj.children.length > 0) {
@@ -103,7 +144,7 @@ function upvote(obj, author, perm) {
         obj.style.borderBottom = '25px solid #3b9954';
       }
     } else {
-      alert('Could not broadcast vote. Please refresh the page and try again');
+      showError('Could not broadcast vote. Please refresh the page and try again');
     }
     if (obj.children.length > 0) {
       obj.children[0].style.backgroundColor = 'inherit';
@@ -129,7 +170,7 @@ function removeVote(obj, author, perm) {
         obj.style.borderBottom = '25px solid #ccc';
       }
     } else {
-      alert('Could not remove vote. Please refresh the page and try again');
+      showError('Could not remove vote. Please refresh the page and try again');
     }
     if (obj.children.length > 0) {
       obj.children[0].style.backgroundColor = 'inherit';
@@ -170,7 +211,7 @@ function comment(textbox, commenttype) {
   api.comment(readingAuthor, readingPerm, user, newPerm, '', body, JSON.parse(`{"type":"${type}"}`), (err, res) => {
     textbox.disabled = false;
     textbox.nextElementSibling.disabled = false;
-    if (!res) { alert('Could not post your comment. Please refresh the page and try again'); return; }
+    if (!res) { showError('Could not post your comment. Please refresh the page and try again'); return; }
     textbox.value = '';
     let newArg = '';
     if (commenttype === 'com') {
@@ -181,6 +222,7 @@ function comment(textbox, commenttype) {
       newArg += `<div class = "relevantButton" onclick="upvote(this, '${user}','${newPerm}')"><div></div></div>`;
       newArg += `<a class="commentLink" onclick="writeDropDown(event,'${user}', '${newPerm}')"> ${body}</a>`;
       newArg += `<a class = "removeButton" onclick = "deleteComment('${user}','${newPerm}')">    remove</a>`;
+      showSuccess('Successfully commented on the discussion!');
     }
     document.getElementsByClassName(commenttype)[0].innerHTML += newArg;
   });
@@ -188,8 +230,9 @@ function comment(textbox, commenttype) {
 function deleteComment(author, perm) {
   // Remove a comment and take it out of the list
   api.deleteComment(author, perm, (err, res) => {
-    if (!res) { alert('Could not remove your comment. Please refresh the page and try again'); return; }
+    if (!res) { showError('Could not remove your comment. Please refresh the page and try again.'); return; }
     document.getElementById(`de-${perm}`).style.display = 'none';
+    showSuccess('Successfully commented on the discussion!');
   });
 }
 function openDropDown(perm, extra = 0) {
@@ -349,17 +392,17 @@ function writeCommentBox(action) {
   if (action === 'statement pro') {
     body = `<div class = "${action}Box"><button class = "collapsibleButton" onclick = "showCommentBox(this)">Add statement</button>`;
     body += '<div class = "inputZone"><textarea name = "comment" rows = "3"></textarea><br>';
-    body += "<button onclick = \"comment(this.previousElementSibling.previousElementSibling,'pro')\">post</button></div></div>";
+    body += "<button class = 'postbutton' onclick = \"comment(this.previousElementSibling.previousElementSibling,'pro')\">post</button></div></div>";
   }
   if (action === 'statement con') {
     body = `<div class = "${action}Box"><button class = "collapsibleButton" onclick = "showCommentBox(this)">Add statement</button>`;
     body += '<div class = "inputZone"><textarea name = "comment" rows = "3"></textarea><br>';
-    body += "<button onclick = \"comment(this.previousElementSibling.previousElementSibling,'con')\">post</button></div></div>";
+    body += "<button class = 'postbutton' onclick = \"comment(this.previousElementSibling.previousElementSibling,'con')\">post</button></div></div>";
   }
   if (action === 'comment') {
     body = `<div class = "${action}Box"><button class = "collapsibleButton" onclick = "showCommentBox(this)">Add comment</button>`;
     body += '<div class = "inputZone"><textarea name = "comment" rows = "3"></textarea><br>';
-    body += "<button onclick = \"comment(this.previousElementSibling.previousElementSibling,'com')\">post</button></div></div>";
+    body += "<button class = 'postbutton' onclick = \"comment(this.previousElementSibling.previousElementSibling,'com')\">post</button></div></div>";
   }
   return body;
 }
@@ -422,6 +465,7 @@ function writeArgumentList(comments, divID) {
   } else {
     body += '<p>No arguments on this point</p>';
     document.getElementById(activePerm).getElementsByClassName(divID)[0].innerHTML = body;
+    document.getElementsByClassName('postbutton')[0].disabled = true;
   }
 }
 function writeCommentList(commentList) {
@@ -444,8 +488,9 @@ function writeCommentList(commentList) {
       body += `<p class = "comment" id = de-${commentList[i].permlink}><strong>${commentList[i].author}</strong> - ${commentList[i].body}${removeButton}</p>`;
     }
   } else {
+    body = '<div class="comment-card">';
     body = '<button class="collapsibleButton comments" onclick="commentsDropDown(this)">There are no comments on this statement</button>';
-    body += '<div class="commentList">';
+    body += '</div><div class="commentList">';
     if (user !== '' && user !== undefined) {
       body += writeCommentBox('comment');
     }
@@ -487,9 +532,9 @@ function writeDropDown(evt, author, perm) {
         const info = getPostData(post);
         const discussionBody = bodydiv.getElementsByClassName('discussionBody')[0];
         body += `<div id = 'button-${readingPerm}' style='display: inline-block' ></div>`;
-        body += `<h1>${info.title}</h1>`;
+        body += `<h1 style ="display: inline-block">${info.title}</h1>`;
         if (parentAuthor !== '' && parentPerm !== '') {
-          body += `<button class="backButton" onclick = "writeDropDown(event,'${parentAuthor}','${parentPerm}')">back</button>`;
+          body += `<br><button class="backButton" onclick = "writeDropDown(event,'${parentAuthor}','${parentPerm}')">back</button>`;
         }
         body += `<p><strong>By: ${info.author}</strong> - ${info.reward}</p>`;
         body += `<p>${info.description}</p>`;

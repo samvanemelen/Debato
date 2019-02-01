@@ -19,19 +19,31 @@
                     </div>
                 </div>
             </header>
-            <h2 style="padding-bottom: 20;">Discussion details</h2>
             <div class="discussionForm">
+                <h2 style="padding-bottom: 20;">Discussion details</h2>
                 <p>Brief discussion statement (title)</p>
-                <input id="discussionTitle" style="width: 100%; padding-top: 5; padding-bottom: 5;">
+                <input id="discussionTitle">
                 <p>Optionally further ellaborate on the statement with context, background information, relevance etc.</p>
-                <textarea id="discussionBody" style="margin: 10px; height: 100px; width: 599px;"></textarea>
+                <textarea id="discussionContext"></textarea>
                 <p>Cover image URL</p>
-                <input id="coverImage" style="width: 100%; padding-top: 5; padding-bottom: 5; vertical-align: middle;">
+                <input id="coverImage">
                 <p>Tags to find the discussion</p>
-                <input id="discussionTags" style="width: 100%; padding-top: 5; padding-bottom: 5; vertical-align: middle;">
+                <input id="discussionTags">
                 <button id="publishBtn" onclick="publish()">Publish</button>
             </div>
-        </center>         
+        </center>
+        <div id="errorbox" class = "popupbox">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <p class="boxcontent">error</p>
+        </div>
+        <div id="warningbox" class = "popupbox">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <p class="boxcontent">warning</p>
+        </div>
+        <div id="successbox" class = "popupbox">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <p class="boxcontent">warning</p>
+        </div>                   
     </body>     
 </html> 
 <script src="https://cdn.jsdelivr.net/npm/steemconnect@latest"></script> 

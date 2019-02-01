@@ -14,24 +14,22 @@ function publish() {
   */
   const title = document.getElementById('discussionTitle').value;
   const titleLow = title.toLowerCase();
-  let body = document.getElementById('discussionBody').value;
+  let body = document.getElementById('discussionContext').value;
   const tags = document.getElementById('discussionTags').value;
   const coverImage = document.getElementById('coverImage').value;
   if (title === '' || body === '' || tags === '' || coverImage === '') {
-    // eslint-disable-next-line no-alert
-    alert('Please make sure to fill in all fields');
+    showWarning('Please make sure to fill in all fields');
     return;
   }
   for (let i = 0; i < tags.length; i += 1) {
     if (!'abcdefghijklmnopqrstuvwxyz- '.includes(tags.charAt(i))) {
-      // eslint-disable-next-line no-alert
-      alert('Your tags should be separated by spaces and consist only out of lowercase letters');
+      showWarning('Your tags should be separated by spaces and consist only out of lowercase letters');
       return;
     }
   }
   document.getElementById('coverImage').disabled = true;
   document.getElementById('discussionTitle').disabled = true;
-  document.getElementById('discussionBody').disabled = true;
+  document.getElementById('discussionContext').disabled = true;
   document.getElementById('discussionTags').disabled = true;
   document.getElementById('publishBtn').disabled = false;
   /*
@@ -62,9 +60,9 @@ function publish() {
   */
   tagsMeta += `], "context":"${body}"`;
   tagsMeta += '}';
-  body = `<center>${body} <br> To display the structured discussion or engage in the debate, view the topic on `;
-  body += `<a href='www.debato.org/discussion?a=${user}&p=${perm}'>www.debato.org/discussion?a=${user}&p=${perm}</a>`;
-  body += `<img src = '${coverImage}'/></center>`;
+  body = `<center><p>${body}</p><p>To display the structured discussion or engage in the debate, view the topic on `;
+  body += `<a href='debato.org/html/discussion?a=${user}&p=${perm}'>https://debato.org/html/discussion?a=${user}&p=${perm}</a></p>`;
+  body += `<p><img src = '${coverImage}'/></p></center>`;
   let randomstr = '';
   const possible = '1234567890abcdefghijklmnopqrstuvwxyz';
   for (let i = 0; i < 5; i += 1) {
@@ -75,13 +73,12 @@ function publish() {
   console.log('', 'debato', user, perm, title, body, JSON.parse(tagsMeta));
   api.comment('', 'debato', user, perm, title, body, JSON.parse(tagsMeta), (err, res) => {
     if (res) {
-      window.location.href = `/discussion?a=${user}&p=${perm}`;
+      window.location.href = `/html/discussion?a=${user}&p=${perm}`;
     } else {
-      // eslint-disable-next-line no-alert
-      alert('Could not publish the discussion. Please refresh the page or try again later');
+      showError('Could not publish the discussion. Please refresh the page or try again later');
       document.getElementById('coverImage').disabled = false;
       document.getElementById('discussionTitle').disabled = false;
-      document.getElementById('discussionBody').disabled = false;
+      document.getElementById('discussionContext').disabled = false;
       document.getElementById('discussionTags').disabled = false;
       document.getElementById('publishBtn').disabled = false;
     }

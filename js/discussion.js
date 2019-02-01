@@ -10,12 +10,17 @@ try {
 updateLoginStatus();
 /*
 First permlink and author are retrieved from the URL
+If not available, user is sent to index page
 Then the code is similar to the writeDropDown function
 but modified to fit the new page since there is no
 button to drop down from
 */
-const perm = getUrlVars().p;
-const author = getUrlVars().a;
+URLvars = getUrlVars();
+if (!('p' in URLvars) || !('a' in URLvars)) {
+  window.location.href = '/';
+}
+const perm = URLvars.p;
+const author = URLvars.a;
 const discussionBody = document.getElementsByClassName('discussionBody')[0];
 document.getElementById('discussion').id = perm;
 discussionBody.style.maxHeight = 'none';
