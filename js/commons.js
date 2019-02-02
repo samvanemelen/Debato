@@ -465,7 +465,6 @@ function writeArgumentList(comments, divID) {
   } else {
     body += '<p>No arguments on this point</p>';
     document.getElementById(activePerm).getElementsByClassName(divID)[0].innerHTML = body;
-    document.getElementsByClassName('postbutton')[0].disabled = true;
   }
 }
 function writeCommentList(commentList) {
@@ -489,7 +488,7 @@ function writeCommentList(commentList) {
     }
   } else {
     body = '<div class="comment-card">';
-    body = '<button class="collapsibleButton comments" onclick="commentsDropDown(this)">There are no comments on this statement</button>';
+    body += '<button class="collapsibleButton comments" onclick="commentsDropDown(this)">There are no comments on this statement</button>';
     body += '</div><div class="commentList">';
     if (user !== '' && user !== undefined) {
       body += writeCommentBox('comment');
@@ -525,7 +524,6 @@ function writeDropDown(evt, author, perm) {
       readingAuthor = author;
     }
     const bodydiv = document.getElementById(activePerm);
-    const allDiscussionBodies = document.getElementsByClassName('discussionBody');
     let body = '';
     steem.api.getContent(author, perm, (err, post) => {
       getPostArguments(author, perm).then((ArgDict) => {
@@ -543,6 +541,8 @@ function writeDropDown(evt, author, perm) {
         body += '</div><div class="con argumentColumn"><center>CON</center>';
         body += '</div></div>';
         discussionBody.innerHTML = body;
+        // eslint-disable-next-line no-restricted-globals
+        history.pushState(info.title, info.title, `discussion?a=${author}&p=${perm}`);
         openDropDown(activePerm);
         if (user !== '' && user !== undefined) {
           let upvoteButtonBody = '';

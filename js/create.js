@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 updateLoginStatus();
-
-// eslint-disable-next-line no-unused-vars
 function publish() {
   if (user === '' || user === undefined) {
     // eslint-disable-next-line no-alert

@@ -17,7 +17,34 @@ button to drop down from
 */
 URLvars = getUrlVars();
 if (!('p' in URLvars) || !('a' in URLvars)) {
-  window.location.href = '/';
+  window.location.href = '/'; // If there are no variables parsed in URL, go to index
+}
+function getRootImage(post) {
+/*
+Loading a subdiscussion will only change the "discussionbody" element.
+When a subdiscussion is loaded directly from the URL, information such as
+the thumbnail image are not loaded again.
+This function goes up the 'parent tree' to find the greatest grand parent
+and use the image attribute from the original discussion.
+
+1.  check if this post has an 'image' attribute in the JSON
+2.  if no error, resolve the found 'image'
+3.  if error, get parent comment and repeat the process.
+*/
+  return new Promise(((resolve, reject) => {
+    let image;
+    try {
+      const parsedJSON = JSON.parse(post.json_metadata);
+      // eslint-disable-next-line prefer-destructuring
+      image = parsedJSON.image[0];
+      resolve(image);
+    } catch (error) {
+      steem.api.getContent(post.parent_author, post.parent_permlink, (err, parentpost) => {
+        if (parentpost.author === '') { reject(); }
+        getRootImage(parentpost).then((parentimage) => { resolve(parentimage); });
+      });
+    }
+  }));
 }
 const perm = URLvars.p;
 const author = URLvars.a;
@@ -54,6 +81,7 @@ steem.api.getContent(author, perm, (err, post) => {
         document.getElementById(`button-${readingPerm}`).innerHTML = upvoteButtonBody;
       });
     }
+    getRootImage(post).then((rootimage) => { document.getElementsByClassName('thumbnail')[0].style.backgroundImage = `url(${rootimage})`; });
     writeArgumentList(ArgDict.pro, 'pro');
     writeArgumentList(ArgDict.con, 'con');
   });

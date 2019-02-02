@@ -32,6 +32,9 @@ footer {
   padding: 10px;
   width: 90%;
 }
+button:disabled {
+  cursor: default;
+}
 #body {
   width: 90%;
 }
@@ -95,6 +98,9 @@ footer {
 .postbutton:hover {
   background-color: #ccc;
   cursor: pointer;
+}
+#coverPreview {
+  font-size: 0.8em;
 }
 .backButton {
   background-color: #ddd;
@@ -451,10 +457,28 @@ footer {
   outline: none;
   background-color: #d3d3d3;
 }
-
 #publishBtn:hover {
   background-color: #eeeeee;
   cursor: pointer;
+}
+#coverPlaceholder {
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 35%;
+  min-height: 150px;
+  max-height: 20%;
+  background-image: url('https://cdn.steemitimages.com/DQmTb43e7begK93PRNBvKY7Mk6TjyZyxybuV2JyuEcb556R/placeholder.jpg');
+  background-position: center;
+  background-size: cover;
+  overflow: hidden;
+}
+#coverPreview {
+  display: inline-block;
+  vertical-align: middle;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
 }
 @media screen and (max-width: 600px) {
   .argumentColumn {
