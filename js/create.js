@@ -59,9 +59,9 @@ function publish() {
   */
   tagsMeta += `], "context":"${body}"`;
   tagsMeta += '}';
-  body = `<center><p>${body}</p><p>To display the structured discussion or engage in the debate, view the topic on `;
+  body = '<center><p>To display the structured discussion or engage in the debate, view the topic on ';
   body += `<a href='debato.org/html/discussion?a=${user}&p=${perm}'>https://debato.org/html/discussion?a=${user}&p=${perm}</a></p>`;
-  body += `<p><img src = '${coverImage}'/></p></center>`;
+  body += `<p>${body}</p><p><img src = '${coverImage}'/></p></center>`;
   let randomstr = '';
   const possible = '1234567890abcdefghijklmnopqrstuvwxyz';
   for (let i = 0; i < 5; i += 1) {
