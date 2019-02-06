@@ -130,6 +130,11 @@ function showSuccess(message) {
     if (successbox.style.display !== 'none') { successbox.style.display = 'none'; }
   }, 7000);
 }
+function sanitizeInput(string) {
+  const htmlregex = new RegExp(/<.+?>/, 'g');
+  const clean = string.replace(htmlregex, '');
+  return clean;
+}
 function upvote(obj, author, perm) {
   // Upvote a post and change the settings of the upvote button
   if (obj.children.length > 0) {
@@ -448,7 +453,7 @@ function writeArgumentList(comments, divID) {
           line += '<div></div></div>';
         }
         line += `<a class="commentLink" onclick="writeDropDown(event,'${commentElement.author}','${commentElement.permlink}')"> `;
-        line += `${commentElement.body}<p class='ratio' id='ratio-${commentElement.permlink}'></p></a>`;
+        line += `${sanitizeInput(commentElement.body)}<p class='ratio' id='ratio-${commentElement.permlink}'></p></a>`;
         if (commentElement.author === user
           && commentElement.children === 0
           && commentElement.active_votes.length === 0) {
@@ -484,7 +489,7 @@ function writeCommentList(commentList) {
         && commentList[i].active_votes.length === 0) {
         removeButton = `<a class = "removeButton" onclick = "deleteComment('${commentList[i].author}','${commentList[i].permlink}')">    remove</a>`;
       }
-      body += `<p class = "comment" id = de-${commentList[i].permlink}><strong>${commentList[i].author}</strong> - ${commentList[i].body}${removeButton}</p>`;
+      body += `<p class = "comment" id = de-${commentList[i].permlink}><strong>${commentList[i].author}</strong> - ${sanitizeInput(commentList[i].body)}${removeButton}</p>`;
     }
   } else {
     body = '<div class="comment-card">';
