@@ -37,14 +37,25 @@ function updateLoginStatus() {
   */
   try {
     try {
-      const cookieresult = document.cookie.split(';');
+      const cookieresult = document.cookie.replace(/ /g, '');
+      const cookielist = cookieresult.split(';');
       // eslint-disable-next-line prefer-destructuring
-      user = cookieresult[0].split('=')[1];
-      // eslint-disable-next-line prefer-destructuring
-      accessToken = cookieresult[1].split('=')[1];
-      weight = parseInt(cookieresult[2].split('=')[1], 10);
-      weightSlider.value = weight;
-      document.getElementById('voteIndicator').innerHTML = `${weightSlider.value / 100}% upvotes`;
+      const cookieuser = cookielist[0].split('=');
+      const cookietoken = cookielist[1].split('=');
+      const cookieweight = cookielist[2].split('=');
+      if (cookieuser[0] === 'username') {
+        // eslint-disable-next-line prefer-destructuring
+        user = cookieuser[1];
+      }
+      if (cookietoken[0] === 'accessToken') {
+        // eslint-disable-next-line prefer-destructuring
+        accessToken = cookietoken[1];
+      }
+      if (cookieweight[0] === 'weight') {
+        weight = parseInt(cookieweight[1], 10);
+        weightSlider.value = weight;
+        document.getElementById('voteIndicator').innerHTML = `${weightSlider.value / 100}% upvotes`;
+      }
     } catch (err) { console.log(err); }
 
     if (accessToken !== '') {
