@@ -24,6 +24,7 @@ textarea {
 header {
   background-color: white;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   overflow: hidden;
 }
@@ -31,6 +32,15 @@ footer {
   background-color: #656e67;
   padding: 10px;
   width: 90%;
+}
+#createAccount {
+  margin: auto;
+  margin-right: 10px;
+  text-decoration: none;
+}
+#createAccount:hover {
+  opacity: 0.5;
+  cursor: hand;
 }
 button:disabled {
   cursor: default;
@@ -376,7 +386,7 @@ button:disabled {
   max-height: 60px;
 }
 #accountLogin a{
-  text-decoration: none;;
+  text-decoration: none;
 }
 #accountBox {
   margin: 10px;
