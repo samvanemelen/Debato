@@ -59,6 +59,9 @@ let body = '';
 steem.api.getContent(author, perm, (err, post) => {
   getPostArguments(author, perm).then((ArgDict) => {
     const info = getPostData(post);
+    const metaList = document.getElementsByTagName('meta');
+    metaList[0].setAttribute('content', info.description);
+    document.title = `Debato - ${info.title}`;
     document.getElementsByClassName('thumbnail')[0].style.backgroundImage = `url(${info.thumbnail})`;
     body += `<div id = 'button-${readingPerm}' style='display: inline-block' ></div>`;
     body += `<h1 style='display: inline-block'>${info.title}</h1>`;
