@@ -36,48 +36,43 @@ function updateLoginStatus() {
   the link to SteemConnect is shown
   */
   try {
-    try {
-      const cookieresult = document.cookie.replace(/ /g, '');
-      const cookielist = cookieresult.split(';');
-      // eslint-disable-next-line prefer-destructuring
-      const cookieuser = cookielist[0].split('=');
-      const cookietoken = cookielist[1].split('=');
-      const cookieweight = cookielist[2].split('=');
-      if (cookieuser[0] === 'username') {
-        // eslint-disable-next-line prefer-destructuring
-        user = cookieuser[1];
-      }
-      if (cookietoken[0] === 'accessToken') {
-        // eslint-disable-next-line prefer-destructuring
-        accessToken = cookietoken[1];
-      }
-      if (cookieweight[0] === 'weight') {
-        weight = parseInt(cookieweight[1], 10);
-        weightSlider.value = weight;
-        document.getElementById('voteIndicator').innerHTML = `${weightSlider.value / 100}% upvotes`;
-      }
-    } catch (err) { console.log(err); }
-
-    if (accessToken !== '') {
-      steem.api.getAccounts([user], (err, result) => {
-        const name = user;
-        const profileImage = JSON.parse(result[0].json_metadata).profile.profile_image;
-        const body = `<div id = "profileImage" style="background-image:url(${profileImage}); display:inline-block;"></div><p style="color:#000000; font-size:22px"><strong>${name}</strong></p>`;
-        document.getElementById('accountLogin').innerHTML = body;
-        document.getElementById('accountBox').style.backgroundColor = 'none';
-        api = sc2.Initialize({
-          app: 'debato-app',
-          callbackURL: 'http://www.debato.org',
-          accessToken,
-          scope: ['vote', 'comment', 'delete_comment'],
-        });
-      });
-    } else {
-      const redirURL = window.location.href.split('/').slice(0, 3).join('/');
-      const link = `<a href = "https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=${redirURL}&scope=vote,comment,delete_comment"><div id = "SteemConnect">Log in</div></a>`;
-      document.getElementById('accountLogin').innerHTML = link;
+    const cookieresult = document.cookie.replace(/ /g, '');
+    const cookielist = cookieresult.split(';');
+    const cookieDict = {};
+    for (let i = 0; i < cookielist.length; i += 1) {
+      const pair = cookielist[i].split('=');
+      const key = pair[0];
+      const value = pair[1];
+      cookieDict[key] = value;
+    }
+    if ('username' in cookieDict) { user = cookieDict.username; }
+    // eslint-disable-next-line prefer-destructuring
+    if ('accessToken' in cookieDict) { accessToken = cookieDict.accessToken; }
+    if (weight in cookieDict) {
+      weight = parseInt(cookieDict.weight, 10);
+      weightSlider.value = weight;
+      document.getElementById('voteIndicator').innerHTML = `${weightSlider.value / 100}% upvotes`;
     }
   } catch (error) { accessToken = ''; }
+  if (accessToken !== '') {
+    steem.api.getAccounts([user], (err, result) => {
+      const name = user;
+      const profileImage = JSON.parse(result[0].json_metadata).profile.profile_image;
+      const body = `<div id = "profileImage" style="background-image:url(${profileImage}); display:inline-block;"></div><p style="color:#000000; font-size:22px"><strong>${name}</strong></p>`;
+      document.getElementById('accountLogin').innerHTML = body;
+      document.getElementById('accountBox').style.backgroundColor = 'none';
+      api = sc2.Initialize({
+        app: 'debato-app',
+        callbackURL: 'http://www.debato.org',
+        accessToken,
+        scope: ['vote', 'comment', 'delete_comment'],
+      });
+    });
+  } else {
+    const redirURL = window.location.href.split('/').slice(0, 3).join('/');
+    const link = `<a href = "https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=${redirURL}&scope=vote,comment,delete_comment"><div id = "SteemConnect">Log in</div></a>`;
+    document.getElementById('accountLogin').innerHTML = link;
+  }
 }
 function getUrlVars() {
   // Get the variables passed in the URL
