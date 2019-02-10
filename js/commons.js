@@ -143,24 +143,21 @@ function sanitizeInput(string) {
 }
 function upvote(obj, author, perm) {
   // Upvote a post and change the settings of the upvote button
-  if (obj.children.length > 0) {
-    obj.children[0].style.backgroundColor = 'black';
-  }
+  obj.classList.add('rotate');
   api.vote(user, author, perm, weight, (err, res) => {
+    console.log(res);
+    console.log(err);
     if (res) {
       obj.setAttribute('onclick', `removeVote(this, '${author}', '${perm}')`);
-      if (obj.children.length > 0) {
-        obj.style.backgroundColor = '#3b9954';
-      } else {
-        obj.style.borderBottom = '25px solid #3b9954';
-      }
+      obj.classList.add('activated');
+      const prevElement = obj.previousElementSibling;
+      try {
+        prevElement.innerHTML = parseInt(prevElement.innerHTML, 10) + 1;
+      } catch (error) { console.log(err); }
     } else {
       showError('Could not broadcast vote. Please refresh the page and try again');
     }
-    if (obj.children.length > 0) {
-      obj.children[0].style.backgroundColor = 'inherit';
-      obj.previousElementSibling.innerHTML = parseInt(obj.previousElementSibling.innerHTML, 10) + 1;
-    }
+    obj.classList.remove('rotate');
   });
 }
 function removeVote(obj, author, perm) {
@@ -169,27 +166,22 @@ function removeVote(obj, author, perm) {
   change the settings of the button
   remove the element from the page
   */
-  if (obj.children.length > 0) {
-    obj.children[0].style.backgroundColor = 'black';
-  }
+  obj.classList.add('rotate');
   api.vote(user, author, perm, 0, (err, res) => {
+    console.log(res, err);
     if (res) {
       obj.setAttribute('onclick', `upvote(this, '${author}', '${perm}')`);
-      if (obj.children.length > 0) {
-        obj.style.backgroundColor = '#3b9954';
-      } else {
-        obj.style.borderBottom = '25px solid #ccc';
-      }
+      obj.classList.remove('activated');
+      const prevElement = obj.previousElementSibling;
+      try {
+        if (parseInt(prevElement.innerHTML, 10) > 0) {
+          prevElement.innerHTML = parseInt(prevElement.innerHTML, 10) - 1;
+        }
+      } catch (error) { console.log(err); }
     } else {
       showError('Could not remove vote. Please refresh the page and try again');
     }
-    if (obj.children.length > 0) {
-      obj.children[0].style.backgroundColor = 'inherit';
-      if (parseInt(obj.previousElementSibling.innerHTML, 10) > 0) {
-        const prevElement = obj.previousElementSibling;
-        prevElement.innerHTML = parseInt(obj.previousElementSibling.innerHTML, 10) - 1;
-      }
-    }
+    obj.classList.remove('rotate');
   });
 }
 function comment(textbox, commenttype) {
@@ -450,12 +442,12 @@ function writeArgumentList(comments, divID) {
         let attributes = '';
         if (values[i].voteStatus) {
           voteType = 'removeVote';
-          attributes = " style = \"background-color: #3b9954\" onmouseover=\"this.style.backgroundColor ='#ba5925';\" onmouseout=\"this.style.backgroundColor='#3b9954';\"";
+          attributes = 'activated';
         }
         line += `<h3 id = de-${commentElement.permlink}>`;
         if (user !== '' && user !== undefined) {
           line += `<p class='voteCounter'>${values[i].net_votes}</p>`;
-          line += `<div class = "relevantButton" onclick="${voteType}(this,'${commentElement.author}','${commentElement.permlink}')" ${attributes}>`;
+          line += `<div class = "relevantButton ${attributes}" onclick="${voteType}(this,'${commentElement.author}','${commentElement.permlink}')">`;
           line += '<div></div></div>';
         }
         line += `<a class="commentLink" onclick="writeDropDown(event,'${commentElement.author}','${commentElement.permlink}')"> `;

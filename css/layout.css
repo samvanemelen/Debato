@@ -121,29 +121,59 @@ button:disabled {
   padding: 8px 16px;
   transition: 0.3s;
 }
-
 .relevantButton {
   display: inline-block;
   height: 16px;
   width: 16px;
   border-radius: 50%;
   background-color: #ccc;
-  -webkit-animation: rotation 2s infinite linear;
 }
-
 .relevantButton:hover {
   background-color: #73a07f;
   cursor: pointer;
 }
-
-.relevantButton div {
+.relevantButton.activated {
+  background-color: #3b9954;
+}
+.relevantButton.activated:hover {
+  background-color: #ba5925;
+}
+.relevantButton.rotate {
+  -webkit-animation: upvoteRotation 1.5s infinite 0s ease-in-out;
+  cursor: default;
+}
+.relevantButton.rotate div {
   height: 5px;
   width: 5px;
   border-radius: 50%;
-  background-color: inherit;
+  background-color: black;
   margin: 2px;
 }
-
+.triangle {
+  width: 0;
+  height: 0;
+  margin-right: 10px;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 25px solid #ccc;
+}
+.triangle:hover {
+  border-bottom: 25px solid #73a07f;
+  cursor: pointer;
+}
+.triangle.rotate {
+  -webkit-animation: upvoteRotation 1.5s infinite 0s ease-in-out;
+  cursor: default;
+}
+.triangle.rotate:hover {
+  background-color: inherit;
+}
+.triangle.activated {
+  border-bottom: 25px solid #3b9954;
+}
+.triangle.activated:hover {
+  border-bottom: 25px solid #ba5925;
+}
 .removeButton {
   font-weight: normal;
   transform: translate(0, -4px);
@@ -245,7 +275,7 @@ button:disabled {
   text-align: left;
 }
 .comment-card {
-  width: 60%;
+  width: 100%;
   background-color: white;
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
 }
@@ -331,18 +361,6 @@ button:disabled {
   margin-top: auto;
   margin-bottom: auto;
   text-align: left;
-}
-.triangle {
-  width: 0;
-  height: 0;
-  margin-right: 10px;
-  border-left: 15px solid transparent;
-  border-right: 15px solid transparent;
-  border-bottom: 25px solid #ccc;
-}
-.triangle:hover {
-  border-bottom: 25px solid #73a07f;
-  cursor: pointer;
 }
 .voteCounter {
   display: inline-block;
@@ -528,12 +546,17 @@ button:disabled {
   background: #ccc;
   border-radius: 2px;
 }
-@-webkit-keyframes rotation {
-  from {
-    -webkit-transform: rotate(0deg);
-  }
-
-  to {
-    -webkit-transform: rotate(359deg);
-  }
+@keyframes upvoteRotation{
+  0%{
+      transform: rotate(10deg);
+      transform-origin: 50% 50%;
+      }
+  10%{
+      transform: rotate(-10deg);
+      transform-origin: 50% 50%;
+      }
+  100%{
+      transform: rotate(370deg);
+      transform-origin: 50% 50%;
+      }
 }
