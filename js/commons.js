@@ -220,7 +220,7 @@ function comment(textbox, commenttype) {
     } else {
       newArg = `<h3 id = de-${newPerm}><p class='voteCounter'>0</p>`;
       newArg += `<div class = "relevantButton" onclick="upvote(this, '${user}','${newPerm}')"><div></div></div>`;
-      newArg += `<a class="commentLink" onclick="writeDropDown(event,'${user}', '${newPerm}')"> ${body}</a>`;
+      newArg += `<a class="commentLink" onclick="writeDropDown('${user}', '${newPerm}')"> ${body}</a>`;
       newArg += `<a class = "removeButton" onclick = "deleteComment('${user}','${newPerm}')">    remove</a>`;
       showSuccess('Successfully commented on the discussion!');
     }
@@ -235,12 +235,6 @@ function deleteComment(author, perm) {
     showSuccess('Successfully commented on the discussion!');
   });
 }
-function openDropDown(perm, extra = 0) {
-  // Opens a selected discussion on the home page CURRENTLY NOT IN USE
-  const element = document.getElementById(perm).getElementsByClassName('discussionBody')[0];
-  element.style.maxHeight = 'none';
-  element.style.height = 'auto';
-}
 function commentsDropDown(obj) {
   // Display the comment section of a certain discussion
   let content;
@@ -250,7 +244,6 @@ function commentsDropDown(obj) {
     content.style.maxHeight = null;
     content.style.borderStyle = 'none';
   } else if (content.scrollHeight > 500) { content.style.maxHeight = '500px'; content.style.overflow = 'scroll'; } else { content.style.maxHeight = `${content.scrollHeight}px`; }
-  openDropDown(activePerm, content.scrollHeight);
 }
 function showCommentBox(buttonObj) {
   // Displays the text area for typing a new comment
@@ -260,22 +253,9 @@ function showCommentBox(buttonObj) {
     textbox.style.display = 'block';
     if (commentobj.style.overflow !== ('scroll')) { commentobj.style.maxHeight = 'none'; }
   } else { textbox.style.display = 'none'; }
-  openDropDown(activePerm, textbox.scrollHeight);
   if (commentobj.style.maxHeight !== '500px' && buttonObj.parentElement.className !== 'statementBox') {
     commentsDropDown(buttonObj);
   }
-}
-function closeDropDown(perm) {
-  // Closes an opened discussion on the home page CURRENTLY NOT IN USE
-  if (perm === '') { return; }
-  const elements = document.getElementsByClassName('discussionBody');
-  for (let i = 0; i < elements.length; i += 1) {
-    elements[i].style.maxHeight = null;
-  }
-  parentAuthor = 'none';
-  parentPerm = 'none';
-  activePerm = '';
-  activeAuthor = '';
 }
 function getPostData(postobj) {
   /*
@@ -425,7 +405,7 @@ function writeArgumentList(comments, divID) {
   if (user !== '' && user !== undefined) {
     body += writeCommentBox(`statement ${divID}`);
   }
-  document.getElementById(activePerm).getElementsByClassName(divID)[0].innerHTML = body;
+  document.getElementsByClassName(divID)[0].innerHTML = body;
   if (comments.length > 0) {
     for (let i = 0; i < comments.length; i += 1) {
       PromiseList.push(getVoteStatus(comments[i]));
@@ -447,7 +427,7 @@ function writeArgumentList(comments, divID) {
           line += `<div class = "relevantButton ${attributes}" onclick="${voteType}(this,'${commentElement.author}','${commentElement.permlink}')">`;
           line += '<div></div></div>';
         }
-        line += `<a class="commentLink" onclick="writeDropDown(event,'${commentElement.author}','${commentElement.permlink}')"> `;
+        line += `<a class="commentLink" onclick="writeDropDown('${commentElement.author}','${commentElement.permlink}')"> `;
         line += `${sanitizeInput(commentElement.body)}<p class='ratio' id='ratio-${commentElement.permlink}'></p></a>`;
         if (commentElement.author === user
           && commentElement.children === 0
@@ -455,7 +435,7 @@ function writeArgumentList(comments, divID) {
           line += `<a class = "removeButton" onclick = "deleteComment('${commentElement.author}','${commentElement.permlink}')">    remove</a>`;
         }
         body += '</h3>';
-        document.getElementById(activePerm).getElementsByClassName(divID)[0].innerHTML += line;
+        document.getElementsByClassName(divID)[0].innerHTML += line;
         getCommentStatus(commentElement.author, commentElement.permlink, `ratio-${commentElement.permlink}`).then((ratio) => {
           // eslint-disable-next-line prefer-destructuring
           document.getElementById(ratio[1]).innerHTML = ratio[0];
@@ -464,7 +444,7 @@ function writeArgumentList(comments, divID) {
     });
   } else {
     body += '<p>No arguments on this point</p>';
-    document.getElementById(activePerm).getElementsByClassName(divID)[0].innerHTML = body;
+    document.getElementsByClassName(divID)[0].innerHTML = body;
   }
 }
 function writeCommentList(commentList) {
@@ -497,7 +477,7 @@ function writeCommentList(commentList) {
   body += '</div></div>';
   return body;
 }
-function writeDropDown(evt, author, perm) {
+function writeDropDown(author, perm) {
   /*
   Displays the entire discussion structure for a new comment (perm)
   First checks if there is a parent post. If there is none, it should
@@ -507,10 +487,7 @@ function writeDropDown(evt, author, perm) {
   checkForParent(author, perm).then((parent) => {
     if (!parent[0]) { // There is no higher parent
       if (parentPerm === '' && parentAuthor === '') { // This is discussion top statement
-        let shouldreturn = false;
-        if (perm === activePerm) { shouldreturn = true; }
-        closeDropDown(activePerm);
-        if (shouldreturn) { return; }
+        if (perm === activePerm) { return; }
       }
       activePerm = perm; activeAuthor = author; // new main discussion
       readingPerm = perm; readingAuthor = author; // currently reading the main discussion
@@ -523,19 +500,19 @@ function writeDropDown(evt, author, perm) {
       readingPerm = perm;
       readingAuthor = author;
     }
-    const bodydiv = document.getElementById(activePerm);
     let body = '';
     steem.api.getContent(author, perm, (err, post) => {
       getPostArguments(author, perm).then((ArgDict) => {
         const info = getPostData(post);
-        const discussionBody = bodydiv.getElementsByClassName('discussionBody')[0];
+        document.title = `Debato - ${info.title}`;
+        const discussionBody = document.getElementsByClassName('discussionBody')[0];
         body += `<div id = 'button-${readingPerm}' style='display: inline-block' ></div>`;
         body += `<h1 style ="display: inline-block">${info.title}</h1>`;
         if (info.author === user) {
           body += `<a class = "editlink" href='http://localhost/html/create?p=${readingPerm}'>edit</a>`;
         }
         if (parentAuthor !== '' && parentPerm !== '') {
-          body += `<br><button class="backButton" onclick = "writeDropDown(event,'${parentAuthor}','${parentPerm}')">back</button>`;
+          body += `<br><button class="backButton" onclick = "writeDropDown('${parentAuthor}','${parentPerm}')">back</button>`;
         }
         body += `<p><strong>By: ${info.author}</strong> - ${info.reward}</p>`;
         body += `<p>${info.description}</p>`;
@@ -546,7 +523,6 @@ function writeDropDown(evt, author, perm) {
         discussionBody.innerHTML = body;
         // eslint-disable-next-line no-restricted-globals
         history.pushState(info.title, info.title, `discussion?a=${author}&p=${perm}`);
-        openDropDown(activePerm);
         if (user !== '' && user !== undefined) {
           let upvoteButtonBody = '';
           getVoteStatus(post).then((values) => {

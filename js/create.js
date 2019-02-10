@@ -3,6 +3,10 @@
 let perm = '';
 
 updateLoginStatus();
+/*
+If a permlink is present in the URL it should set up the page for editing a post
+the post is fetched and the values are filled in in the input sections
+*/
 if ('p' in getUrlVars()) {
   steem.api.getContent(user, getUrlVars().p, (err, post) => {
     info = getPostData(post);
@@ -24,7 +28,7 @@ function publish() {
     window.location.href = '/index';
   }
   /*
-  This function gets the user's input. When all fields are filled in correctly
+  This function gets the user's input. When all fields are filled in
   it will disable all input elements while publishing.
   */
   const title = document.getElementById('discussionTitle').value;
@@ -67,8 +71,8 @@ function publish() {
   }
   const taglist = tags.split(' ');
   /*
-  added "debato-discussion" to accomodate future switch.
-  since "debato" is a too general tag, front page would clutter with non-debate posts
+  New discussions are tagged with "debato-discussion". This tag is used by the platform
+  to filter actual discussions from posts about debato in general
   */
   let tagsMeta = `{"image":["${coverImage}"], "tags":["debato","debato-discussion",`;
   for (let i = 0; i < taglist.length; i += 1) {
