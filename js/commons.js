@@ -145,8 +145,6 @@ function upvote(obj, author, perm) {
   // Upvote a post and change the settings of the upvote button
   obj.classList.add('rotate');
   api.vote(user, author, perm, weight, (err, res) => {
-    console.log(res);
-    console.log(err);
     if (res) {
       obj.setAttribute('onclick', `removeVote(this, '${author}', '${perm}')`);
       obj.classList.add('activated');
@@ -168,7 +166,6 @@ function removeVote(obj, author, perm) {
   */
   obj.classList.add('rotate');
   api.vote(user, author, perm, 0, (err, res) => {
-    console.log(res, err);
     if (res) {
       obj.setAttribute('onclick', `upvote(this, '${author}', '${perm}')`);
       obj.classList.remove('activated');
@@ -534,6 +531,9 @@ function writeDropDown(evt, author, perm) {
         const discussionBody = bodydiv.getElementsByClassName('discussionBody')[0];
         body += `<div id = 'button-${readingPerm}' style='display: inline-block' ></div>`;
         body += `<h1 style ="display: inline-block">${info.title}</h1>`;
+        if (info.author === user) {
+          body += `<a class = "editlink" href='http://localhost/html/create?p=${readingPerm}'>edit</a>`;
+        }
         if (parentAuthor !== '' && parentPerm !== '') {
           body += `<br><button class="backButton" onclick = "writeDropDown(event,'${parentAuthor}','${parentPerm}')">back</button>`;
         }

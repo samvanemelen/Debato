@@ -48,9 +48,7 @@ button:disabled {
 #body {
   width: 90%;
 }
-.homelink:hover {
-  cursor: hand;
-}
+
 .popupbox {
   display: none;
   position: fixed;
@@ -179,13 +177,19 @@ button:disabled {
   transform: translate(0, -4px);
   font-size: 70%;
 }
-
 .removeButton:hover {
   cursor: pointer;
   font-weight: bold;
   cursor: pointer;
 }
-
+.editlink{
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 1.2em;
+}
+.editlink:hover {
+  cursor: pointer;
+}
 .collapsibleButton {
   padding: 8px;
   margin: 5px;
@@ -195,15 +199,12 @@ button:disabled {
   border: none;
   font-size: 15px;
 }
-
 .collapsible:hover {
   background-color: #ccc;
 }
-
 .backButton:hover {
   background-color: #ccc;
 }
-
 .tab button {
   background-color: inherit;
   border: none;
@@ -212,11 +213,9 @@ button:disabled {
   padding: 14px 16px;
   transition: 0.3s;
 }
-
 .tab button:hover {
   background-color: #ddd;
 }
-
 .tab button.active {
   background-color: #ccc;
 }
@@ -262,7 +261,6 @@ button:disabled {
   background-position: center;
   background-size: cover;
 }
-
 .inputZone {
   display: none;
 }
@@ -287,7 +285,6 @@ button:disabled {
   width: 90%;
   overflow: hidden;
 }
-
 .ObjLink {
   background-color: inherit;
   border: none;
@@ -296,20 +293,16 @@ button:disabled {
   padding: 0;
   transition: 0.3s;
 }
-
 .ObjLink:hover {
   opacity: 0.5;
 }
-
 .argumentRow {
   padding-top: 10px;
 }
-
 .argumentRow:after {
   display: table;
   clear: both;
 }
-
 .argumentColumn {
   display: flex;
   flex-direction: column;
@@ -335,12 +328,10 @@ button:disabled {
   margin-left: 10px;
   margin-right: 10px;
 }
-
 .commentLink:hover {
   opacity: 0.7;
   cursor: pointer;
 }
-
 .discussionForm {
   width: 70%;
   background-color: white;
@@ -355,12 +346,14 @@ button:disabled {
   background-size: cover;
   padding-bottom: 30%;
 }
-
 .homelink {
   padding-left: 20px;
   margin-top: auto;
   margin-bottom: auto;
   text-align: left;
+}
+.homelink:hover {
+  cursor: hand;
 }
 .voteCounter {
   display: inline-block;
@@ -391,7 +384,6 @@ button:disabled {
   padding: 10px 10px;
   font-size: 1.3em;
 }
-
 #profileImage {
   height: 50px;
   width: 50px;
@@ -413,7 +405,6 @@ button:disabled {
   overflow: hidden;
   background-color: #ddd;
 }
-
 #accountBox p {
   display: inline-block;
   margin-left: 10px;
@@ -469,7 +460,6 @@ button:disabled {
   background: #4CAF50;
   cursor: pointer;
 }
-
 #voteSlider::-moz-range-thumb {
   width: 15px;
   height: 15px;
@@ -537,11 +527,9 @@ button:disabled {
 ::-webkit-scrollbar {
   width: 6px;
 }
-
 ::-webkit-scrollbar-track {
   border-radius: 2px;
 }
-
 ::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 2px;

@@ -65,6 +65,9 @@ steem.api.getContent(author, perm, (err, post) => {
     document.getElementsByClassName('thumbnail')[0].style.backgroundImage = `url(${info.thumbnail})`;
     body += `<div id = 'button-${readingPerm}' style='display: inline-block' ></div>`;
     body += `<h1 style='display: inline-block'>${info.title}</h1>`;
+    if (info.author === user) {
+      body += `<a class = "editlink" href='http://localhost/html/create?p=${readingPerm}'>edit</a>`;
+    }
     body += `<p><strong>By: ${info.author}</strong> - ${info.reward}</p>`;
     body += `<p>${info.description}</p>`;
     body += writeCommentList(ArgDict.com);

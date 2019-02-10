@@ -1,6 +1,22 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
+let perm = '';
+
 updateLoginStatus();
+if ('p' in getUrlVars()) {
+  steem.api.getContent(user, getUrlVars().p, (err, post) => {
+    info = getPostData(post);
+    // title, thumbnail, description, author, perm, reward,
+    document.getElementById('discussionTitle').value = info.title;
+    document.getElementById('discussionContext').value = info.description;
+    // eslint-disable-next-line prefer-destructuring
+    perm = info.perm;
+    // const tags = document.getElementById('discussionTags').value;
+    document.getElementById('coverImage').value = info.thumbnail;
+    document.getElementById('coverPreview').src = info.thumbnail;
+  });
+}
+
 function publish() {
   if (user === '' || user === undefined) {
     // eslint-disable-next-line no-alert
@@ -13,10 +29,10 @@ function publish() {
   */
   const title = document.getElementById('discussionTitle').value;
   const titleLow = title.toLowerCase();
-  let body = document.getElementById('discussionContext').value;
+  const context = document.getElementById('discussionContext').value;
   const tags = document.getElementById('discussionTags').value;
   const coverImage = document.getElementById('coverImage').value;
-  if (title === '' || body === '' || tags === '' || coverImage === '') {
+  if (title === '' || context === '' || tags === '' || coverImage === '') {
     showWarning('Please make sure to fill in all fields');
     return;
   }
@@ -36,11 +52,18 @@ function publish() {
   Loop through all characters and when anything else is found
   it should be replaced with a hyphen
   */
-  let perm = '';
-  for (let i = 0; i < titleLow.length; i += 1) {
-    if ('abcdefghijklmnopqrstuvwxyz-'.includes(titleLow.charAt(i))) {
-      perm += titleLow.charAt(i);
-    } else { perm += '-'; }
+  if (perm === '') {
+    for (let i = 0; i < titleLow.length; i += 1) {
+      if ('abcdefghijklmnopqrstuvwxyz-'.includes(titleLow.charAt(i))) {
+        perm += titleLow.charAt(i);
+      } else { perm += '-'; }
+    }
+    let randomstr = '';
+    const possible = '1234567890abcdefghijklmnopqrstuvwxyz';
+    for (let i = 0; i < 5; i += 1) {
+      randomstr += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    perm += randomstr;
   }
   const taglist = tags.split(' ');
   /*
@@ -57,19 +80,12 @@ function publish() {
   The body of the post will be used to redirect readers from other platforms
   to debato where the discussions structure can be found.
   */
-  tagsMeta += `], "context":"${body}"`;
+  tagsMeta += `], "context":"${context}"`;
   tagsMeta += '}';
-  body = '<center><p>To display the structured discussion or engage in the debate, view the topic on ';
+  let body = '<center><p>To display the structured discussion or engage in the debate, view the topic on ';
   body += `<a href='debato.org/html/discussion?a=${user}&p=${perm}'>https://debato.org/html/discussion?a=${user}&p=${perm}</a></p>`;
-  body += `<p>${body}</p><p><img src = '${coverImage}'/></p></center>`;
-  let randomstr = '';
-  const possible = '1234567890abcdefghijklmnopqrstuvwxyz';
-  for (let i = 0; i < 5; i += 1) {
-    randomstr += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  perm += randomstr;
+  body += `<p>${context}</p><p><img src = '${coverImage}'/></p></center>`;
   // eslint-disable-next-line no-console
-  console.log('', 'debato', user, perm, title, body, JSON.parse(tagsMeta));
   api.comment('', 'debato', user, perm, title, body, JSON.parse(tagsMeta), (err, res) => {
     if (res) {
       window.location.href = `/html/discussion?a=${user}&p=${perm}`;
