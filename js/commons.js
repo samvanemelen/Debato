@@ -6,7 +6,7 @@ weightSlider.oninput = function () {
   // When the weight slider changes, change the cookie and change the indicator
   weight = this.value;
   document.getElementById('voteIndicator').innerHTML = `${this.value / 100}% upvotes`;
-  document.cookie = `weight=${weight};`;
+  document.cookie = `weight=${weight}; path=/`;
 };
 function showError(message) {
   /*
@@ -119,9 +119,7 @@ function getUrlVars() {
 }
 function logout() {
   // Revokes the active token and return to the home page
-  console.log('euhM?');
   api.revokeToken((err, res) => {
-    console.log(err, res);
     if (err) { showError(`Could not revoke token; ${err.toString()}`); return; }
     if (res) {
       showSuccess('Successfully revoked token');
@@ -178,6 +176,35 @@ function removeVote(obj, author, perm) {
     obj.classList.remove('rotate');
   });
 }
+function commentsDropDown(obj) {
+  /*
+  Display the comment section of a certain discussion
+  also expands the box when content size changes
+  */
+  let content;
+  if (obj.className.indexOf('comments') !== -1) { content = obj.nextElementSibling; } else { content = obj.parentElement.parentElement; }
+  /*
+  If the button object has the class 'comments', The next element is the commentList
+  If another button is passed (Add comment) it should just expand the existing div element
+  And in that case, the commentList is the grandparent element
+  */
+  if ((content.style.maxHeight === (`${content.scrollHeight}px`) || content.style.maxHeight === '500px')) {
+    content.style.maxHeight = null;
+    content.style.borderStyle = 'none';
+  } else if (content.scrollHeight > 500) { content.style.maxHeight = '500px'; content.style.overflow = 'scroll'; } else { content.style.maxHeight = `${content.scrollHeight}px`; }
+}
+function showCommentBox(buttonObj) {
+  // Displays the text area for typing a new comment
+  const commentobj = buttonObj.parentElement.parentElement;
+  const textbox = buttonObj.nextElementSibling;
+  if (textbox.style.display === 'none' || textbox.style.display === '') {
+    textbox.style.display = 'block';
+    if (commentobj.style.overflow !== ('scroll')) { commentobj.style.maxHeight = 'none'; }
+  } else { textbox.style.display = 'none'; }
+  if (commentobj.style.maxHeight !== '500px' && buttonObj.parentElement.className !== 'statementBox') {
+    commentsDropDown(buttonObj);
+  }
+}
 function comment(textbox, commenttype) {
   /*
   This function is used for comments, arguments pro and arguments con
@@ -211,6 +238,10 @@ function comment(textbox, commenttype) {
     if (!res) { showError('Could not post your comment. Please refresh the page and try again'); return; }
     commentTextBox.value = '';
     let newArg = '';
+    const contentBox = document.getElementsByClassName(commenttype)[0];
+    if (contentBox.getElementsByClassName('blank').length > 0) {
+      contentBox.removeChild(contentBox.getElementsByClassName('blank')[0]);
+    }
     if (commenttype === 'com') {
       newArg = `<p id = de-${newPerm}><strong>${user}</strong> - ${body}`;
       newArg += `<a class = "removeButton" onclick = "deleteComment('${user}','${newPerm}')">    remove</a></p>`;
@@ -221,7 +252,8 @@ function comment(textbox, commenttype) {
       newArg += `<a class = "removeButton" onclick = "deleteComment('${user}','${newPerm}')">    remove</a>`;
       showSuccess('Successfully commented on the discussion!');
     }
-    document.getElementsByClassName(commenttype)[0].innerHTML += newArg;
+    contentBox.innerHTML += newArg;
+    showCommentBox(contentBox.getElementsByClassName('collapsibleButton')[0]);
   });
 }
 function deleteComment(author, perm) {
@@ -229,37 +261,8 @@ function deleteComment(author, perm) {
   api.deleteComment(author, perm, (err, res) => {
     if (!res) { showError('Could not remove your comment. Please refresh the page and try again.'); return; }
     document.getElementById(`de-${perm}`).style.display = 'none';
-    showSuccess('Successfully commented on the discussion!');
+    showSuccess('Successfully removed comment.');
   });
-}
-function commentsDropDown(obj) {
-  /*
-  Display the comment section of a certain discussion
-  also expands the box when content size changes
-  */
-  let content;
-  if (obj.className.indexOf('comments') !== -1) { content = obj.nextElementSibling; } else { content = obj.parentElement.parentElement; }
-  /*
-  If the button object has the class 'comments', The next element is the commentList
-  If another button is passed (Add comment) it should just expand the existing div element
-  And in that case, the commentList is the grandparent element
-  */
-  if (content.style.maxHeight && (content.style.maxHeight === (`${content.scrollHeight}px`) || content.style.maxHeight === '500px')) {
-    content.style.maxHeight = null;
-    content.style.borderStyle = 'none';
-  } else if (content.scrollHeight > 500) { content.style.maxHeight = '500px'; content.style.overflow = 'scroll'; } else { content.style.maxHeight = `${content.scrollHeight}px`; }
-}
-function showCommentBox(buttonObj) {
-  // Displays the text area for typing a new comment
-  const commentobj = buttonObj.parentElement.parentElement;
-  const textbox = buttonObj.nextElementSibling;
-  if (textbox.style.display === 'none' || textbox.style.display === '') {
-    textbox.style.display = 'block';
-    if (commentobj.style.overflow !== ('scroll')) { commentobj.style.maxHeight = 'none'; }
-  } else { textbox.style.display = 'none'; }
-  if (commentobj.style.maxHeight !== '500px' && buttonObj.parentElement.className !== 'statementBox') {
-    commentsDropDown(buttonObj);
-  }
 }
 function getPostData(postobj) {
   /*
@@ -442,7 +445,7 @@ function writeArgumentList(comments, divID) {
       }
     });
   } else {
-    body += '<p>No arguments on this point</p>';
+    body += '<p class = "blank">No arguments on this point</p>';
     document.getElementsByClassName(divID)[0].innerHTML = body;
   }
 }
