@@ -5,16 +5,12 @@
     },
     "globals": {
         "user": true,
+        "api": true,
         "accessToken": true,
         "expiresIn": true,
         "weight": true,
         "steem": true,
         "sc2": true,
-        "activePerm": true,
-        "readingAuthor": true,
-        "readingPerm": true,
-        "parentAuthor": true,
-        "activeAuthor": true,
-        "parentPerm": true
+        "activePost": true
     }
 }

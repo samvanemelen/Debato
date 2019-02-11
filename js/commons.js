@@ -1,13 +1,6 @@
-/* eslint-disable no-console */
-/* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
 user = ''; accessToken = ''; expiresIn = ''; weight = 10000;
-activePerm = ''; readingAuthor = ''; readingPerm = ''; activeAuthor = '';
-parentAuthor = 'none';
-parentPerm = 'none';
 const weightSlider = document.getElementById('voteSlider');
-weight = 10000;
-let api;
 // eslint-disable-next-line func-names
 weightSlider.oninput = function () {
   // When the weight slider changes, change the cookie and change the indicator
@@ -15,6 +8,48 @@ weightSlider.oninput = function () {
   document.getElementById('voteIndicator').innerHTML = `${this.value / 100}% upvotes`;
   document.cookie = `weight=${weight};`;
 };
+function showError(message) {
+  /*
+  Custom alternative to "alert" function
+  displays the errorbox element and add custom message
+  after 7 seconds the box will automatically close
+  */
+  const errorbox = document.getElementById('errorbox');
+  const errortext = errorbox.getElementsByClassName('boxcontent')[0];
+  errortext.innerHTML = message;
+  errorbox.style.display = 'initial';
+  setTimeout(() => {
+    if (errorbox.style.display !== 'none') { errorbox.style.display = 'none'; }
+  }, 7000);
+}
+function showWarning(message) {
+  /*
+  Custom alternative to "alert" function
+  displays the warningbox element and add custom message
+  after 7 seconds the box will automatically close
+  */
+  const warningbox = document.getElementById('warningbox');
+  const warningtext = warningbox.getElementsByClassName('boxcontent')[0];
+  warningtext.innerHTML = message;
+  warningbox.style.display = 'initial';
+  setTimeout(() => {
+    if (warningbox.style.display !== 'none') { warningbox.style.display = 'none'; }
+  }, 7000);
+}
+function showSuccess(message) {
+  /*
+  Custom alternative to "alert" function
+  displays the successbox element and add custom message
+  after 7 seconds the box will automatically close
+  */
+  const successbox = document.getElementById('successbox');
+  const successtext = successbox.getElementsByClassName('boxcontent')[0];
+  successtext.innerHTML = message;
+  successbox.style.display = 'initial';
+  setTimeout(() => {
+    if (successbox.style.display !== 'none') { successbox.style.display = 'none'; }
+  }, 7000);
+}
 function toggleMenu(show) {
   /*
   When the user hovers over the Account element it checks if the user is logged in
@@ -91,50 +126,10 @@ function logout() {
   accessToken = '';
   expiresIn = '';
   api.revokeToken((err, res) => {
+    if (err) { showError(`Could not revoke token; ${err.toString()}`); return; }
+    if (res) { showSuccess('Successfully revoked token'); }
     window.location.href = '/index';
   });
-}
-function showError(message) {
-  /*
-  Custom alternative to "alert" function
-  displays the errorbox element and add custom message
-  after 7 seconds the box will automatically close
-  */
-  const errorbox = document.getElementById('errorbox');
-  const errortext = errorbox.getElementsByClassName('boxcontent')[0];
-  errortext.innerHTML = message;
-  errorbox.style.display = 'initial';
-  setTimeout(() => {
-    if (errorbox.style.display !== 'none') { errorbox.style.display = 'none'; }
-  }, 7000);
-}
-function showWarning(message) {
-  /*
-  Custom alternative to "alert" function
-  displays the warningbox element and add custom message
-  after 7 seconds the box will automatically close
-  */
-  const warningbox = document.getElementById('warningbox');
-  const warningtext = warningbox.getElementsByClassName('boxcontent')[0];
-  warningtext.innerHTML = message;
-  warningbox.style.display = 'initial';
-  setTimeout(() => {
-    if (warningbox.style.display !== 'none') { warningbox.style.display = 'none'; }
-  }, 7000);
-}
-function showSuccess(message) {
-  /*
-  Custom alternative to "alert" function
-  displays the successbox element and add custom message
-  after 7 seconds the box will automatically close
-  */
-  const successbox = document.getElementById('successbox');
-  const successtext = successbox.getElementsByClassName('boxcontent')[0];
-  successtext.innerHTML = message;
-  successbox.style.display = 'initial';
-  setTimeout(() => {
-    if (successbox.style.display !== 'none') { successbox.style.display = 'none'; }
-  }, 7000);
 }
 function sanitizeInput(string) {
   const htmlregex = new RegExp(/<.+?>/, 'g');
@@ -149,9 +144,7 @@ function upvote(obj, author, perm) {
       obj.setAttribute('onclick', `removeVote(this, '${author}', '${perm}')`);
       obj.classList.add('activated');
       const prevElement = obj.previousElementSibling;
-      try {
-        prevElement.innerHTML = parseInt(prevElement.innerHTML, 10) + 1;
-      } catch (error) { console.log(err); }
+      if (prevElement) { prevElement.innerHTML = parseInt(prevElement.innerHTML, 10) + 1; }
     } else {
       showError('Could not broadcast vote. Please refresh the page and try again');
     }
@@ -170,11 +163,11 @@ function removeVote(obj, author, perm) {
       obj.setAttribute('onclick', `upvote(this, '${author}', '${perm}')`);
       obj.classList.remove('activated');
       const prevElement = obj.previousElementSibling;
-      try {
+      if (prevElement) {
         if (parseInt(prevElement.innerHTML, 10) > 0) {
           prevElement.innerHTML = parseInt(prevElement.innerHTML, 10) - 1;
         }
-      } catch (error) { console.log(err); }
+      }
     } else {
       showError('Could not remove vote. Please refresh the page and try again');
     }
@@ -187,16 +180,16 @@ function comment(textbox, commenttype) {
   comment and comment type (com, pro, con) are passed as variables
   When pressed, user input is disabled and a perm is generated
   */
-  textbox.disabled = true;
-  textbox.nextElementSibling.disabled = true;
-  const prefix = '';
+  const commentTextBox = textbox;
+  commentTextBox.disabled = true;
+  commentTextBox.nextElementSibling.disabled = true;
   const body = textbox.value;
   let randomstr = '';
   const possible = '1234567890abcdefghijklmnopqrstuvwxyz-';
   for (let i = 0; i < 5; i += 1) {
     randomstr += possible.charAt(Math.floor(Math.random() * possible.length));
   }
-  const newPerm = readingPerm + randomstr;
+  const newPerm = activePost.permlink + randomstr;
   let type;
   switch (commenttype) {
     case 'con': type = 'con'; break;
@@ -208,11 +201,11 @@ function comment(textbox, commenttype) {
   the comment can be placed in the correct discussion element on debato
   When commenting is successful, add new comments to the active discussion page
   */
-  api.comment(readingAuthor, readingPerm, user, newPerm, '', body, JSON.parse(`{"type":"${type}"}`), (err, res) => {
-    textbox.disabled = false;
-    textbox.nextElementSibling.disabled = false;
+  api.comment(activePost.author, activePost.permlink, user, newPerm, '', body, JSON.parse(`{"type":"${type}"}`), (err, res) => {
+    commentTextBox.disabled = false;
+    commentTextBox.nextElementSibling.disabled = false;
     if (!res) { showError('Could not post your comment. Please refresh the page and try again'); return; }
-    textbox.value = '';
+    commentTextBox.value = '';
     let newArg = '';
     if (commenttype === 'com') {
       newArg = `<p id = de-${newPerm}><strong>${user}</strong> - ${body}`;
@@ -236,10 +229,17 @@ function deleteComment(author, perm) {
   });
 }
 function commentsDropDown(obj) {
-  // Display the comment section of a certain discussion
+  /*
+  Display the comment section of a certain discussion
+  also expands the box when content size changes
+  */
   let content;
-  if (obj.className.indexOf('comments') !== -1) { content = obj.nextElementSibling; } else { content = obj.parentElement.parentElement.firstElementChild.nextElementSibling; }
-
+  if (obj.className.indexOf('comments') !== -1) { content = obj.nextElementSibling; } else { content = obj.parentElement.parentElement; }
+  /*
+  If the button object has the class 'comments', The next element is the commentList
+  If another button is passed (Add comment) it should just expand the existing div element
+  And in that case, the commentList is the grandparent element
+  */
   if (content.style.maxHeight && (content.style.maxHeight === (`${content.scrollHeight}px`) || content.style.maxHeight === '500px')) {
     content.style.maxHeight = null;
     content.style.borderStyle = 'none';
@@ -272,10 +272,8 @@ function getPostData(postobj) {
   // eslint-disable-next-line prefer-destructuring
   let title = postobj.title;
   let description = '';
-  try {
-    description = JSON.parse(postobj.json_metadata).context;
-    if (description === undefined) { description = ''; }
-  } catch (error) { console.log(error); }
+  description = JSON.parse(postobj.json_metadata).context;
+  if (description === undefined) { description = ''; }
   if (title === '') {
     title = postobj.body;
     description = '';
@@ -315,13 +313,10 @@ function getPostArguments(author, perm) {
     });
   }));
 }
-function checkForParent(author, perm) {
+function checkForParent(post) {
   // Check if the post has a parent post and resolve the author and permink
-  return new Promise(((resolve, reject) => {
-    steem.api.getContent(author, perm, (err, post) => {
-      if (post.parent_author === '') { resolve([false]); } else { resolve([true, post.parent_author, post.parent_permlink]); }
-    });
-  }));
+  if (post.parent_author === '') { return false; }
+  return [true, post.parent_author, post.parent_permlink];
 }
 function getVoteStatus(commentItem) {
   /*
@@ -410,8 +405,8 @@ function writeArgumentList(comments, divID) {
     for (let i = 0; i < comments.length; i += 1) {
       PromiseList.push(getVoteStatus(comments[i]));
     }
-    Promise.all(PromiseList).then((values) => {
-      values = sortReplies(values);
+    Promise.all(PromiseList).then((unsortedArguments) => {
+      const values = sortReplies(unsortedArguments);
       for (let i = 0; i < values.length; i += 1) {
         let line = '';
         let voteType = 'upvote';
@@ -422,8 +417,8 @@ function writeArgumentList(comments, divID) {
           attributes = 'activated';
         }
         line += `<h3 id = de-${commentElement.permlink}>`;
+        line += `<p class='voteCounter'>${values[i].net_votes}</p>`;
         if (user !== '' && user !== undefined) {
-          line += `<p class='voteCounter'>${values[i].net_votes}</p>`;
           line += `<div class = "relevantButton ${attributes}" onclick="${voteType}(this,'${commentElement.author}','${commentElement.permlink}')">`;
           line += '<div></div></div>';
         }
@@ -467,15 +462,41 @@ function writeCommentList(commentList) {
       body += `<p class = "comment" id = de-${commentList[i].permlink}><strong>${commentList[i].author}</strong> - ${sanitizeInput(commentList[i].body)}${removeButton}</p>`;
     }
   } else {
-    body = '<div class="comment-card">';
     body += '<button class="collapsibleButton comments" onclick="commentsDropDown(this)">There are no comments on this statement</button>';
-    body += '</div><div class="commentList">';
+    body += '<div class="commentList com">';
     if (user !== '' && user !== undefined) {
       body += writeCommentBox('comment');
     }
   }
   body += '</div></div>';
   return body;
+}
+function getRootImage(post) {
+  /*
+  Loading a subdiscussion will only change the "discussionbody" element.
+  When a subdiscussion is loaded directly from the URL, information such as
+  the thumbnail image are not loaded again.
+  This function goes up the 'parent tree' to find the greatest grand parent
+  and use the image attribute from the original discussion.
+
+  1.  check if this post has an 'image' attribute in the JSON
+  2.  if no error, resolve the found 'image'
+  3.  if error, get parent comment and repeat the process.
+  */
+  return new Promise(((resolve, reject) => {
+    let image;
+    try {
+      const parsedJSON = JSON.parse(post.json_metadata);
+      // eslint-disable-next-line prefer-destructuring
+      image = parsedJSON.image[0];
+      resolve(image);
+    } catch (error) {
+      steem.api.getContent(post.parent_author, post.parent_permlink, (err, parentpost) => {
+        if (parentpost.author === '') { reject(); }
+        getRootImage(parentpost).then((parentimage) => { resolve(parentimage); });
+      });
+    }
+  }));
 }
 function writeDropDown(author, perm) {
   /*
@@ -484,60 +505,50 @@ function writeDropDown(author, perm) {
   be regarded as a completely new discussion, otherwise just update
   the current discussed topic, add back button and leave the thumbnail
   */
-  checkForParent(author, perm).then((parent) => {
-    if (!parent[0]) { // There is no higher parent
-      if (parentPerm === '' && parentAuthor === '') { // This is discussion top statement
-        if (perm === activePerm) { return; }
+  let body = '';
+  steem.api.getContent(author, perm, (err, post) => {
+    if (err) { showError(`Something went wrong. ${err.toString()}`); return; }
+    activePost = post;
+    getRootImage(activePost).then((rootimage) => { document.getElementsByClassName('thumbnail')[0].style.backgroundImage = `url(${rootimage})`; });
+    getPostArguments(author, perm).then((ArgDict) => {
+      const info = getPostData(post);
+      document.title = `Debato - ${info.title}`;
+      const metaList = document.getElementsByTagName('meta');
+      metaList[0].setAttribute('content', info.description);
+      const discussionBody = document.getElementById('discussionBody');
+      body += '<div id = \'trianglePlaceholder\' style=\'display: inline-block\' ></div>'; // placeholder for upvote triangle
+      body += `<h1 style ="display: inline-block">${info.title}</h1>`;
+      if (info.author === user) {
+        body += `<a class = "editlink" href='http://localhost/html/create?p=${activePost.permlink}'>edit</a>`;
       }
-      activePerm = perm; activeAuthor = author; // new main discussion
-      readingPerm = perm; readingAuthor = author; // currently reading the main discussion
-      parentPerm = ''; parentAuthor = ''; // Reset parents
-    } else { // previous perm (parent) becomes parent en current perm becomes reading Perm
-      // eslint-disable-next-line prefer-destructuring
-      parentPerm = parent[2];
-      // eslint-disable-next-line prefer-destructuring
-      parentAuthor = parent[1];
-      readingPerm = perm;
-      readingAuthor = author;
-    }
-    let body = '';
-    steem.api.getContent(author, perm, (err, post) => {
-      getPostArguments(author, perm).then((ArgDict) => {
-        const info = getPostData(post);
-        document.title = `Debato - ${info.title}`;
-        const discussionBody = document.getElementsByClassName('discussionBody')[0];
-        body += `<div id = 'button-${readingPerm}' style='display: inline-block' ></div>`;
-        body += `<h1 style ="display: inline-block">${info.title}</h1>`;
-        if (info.author === user) {
-          body += `<a class = "editlink" href='http://localhost/html/create?p=${readingPerm}'>edit</a>`;
-        }
-        if (parentAuthor !== '' && parentPerm !== '') {
-          body += `<br><button class="backButton" onclick = "writeDropDown('${parentAuthor}','${parentPerm}')">back</button>`;
-        }
-        body += `<p><strong>By: ${info.author}</strong> - ${info.reward}</p>`;
-        body += `<p>${info.description}</p>`;
-        body += writeCommentList(ArgDict.com);
-        body += '<div class="argumentRow"><div class="pro argumentColumn""><center>PRO</center>';
-        body += '</div><div class="con argumentColumn"><center>CON</center>';
-        body += '</div></div>';
-        discussionBody.innerHTML = body;
-        // eslint-disable-next-line no-restricted-globals
-        history.pushState(info.title, info.title, `discussion?a=${author}&p=${perm}`);
-        if (user !== '' && user !== undefined) {
-          let upvoteButtonBody = '';
-          getVoteStatus(post).then((values) => {
-            if (values.voteStatus) {
-              upvoteButtonBody += `<div class='triangle' onclick="removeVote(this, '${readingAuthor}','${readingPerm}')"`;
-              upvoteButtonBody += " style = \"border-bottom: 25px solid #3b9954\" onmouseover=\"this.style.borderBottom = '25px solid #ba5925';\" onmouseout=\"this.style.borderBottom='25px solid #3b9954';\"</div>";
-            } else {
-              upvoteButtonBody += `<div class='triangle' onclick="upvote(this, '${readingAuthor}','${readingPerm}')"></div>`;
-            }
-            document.getElementById(`button-${readingPerm}`).innerHTML = upvoteButtonBody;
-          });
-        }
-        writeArgumentList(ArgDict.pro, 'pro');
-        writeArgumentList(ArgDict.con, 'con');
-      });
+      body += '<div id = "backPlaceholder"></div>'; // placeholder for back button
+      body += `<p><strong>By: ${info.author}</strong> - ${info.reward}</p>`;
+      body += `<p>${info.description}</p>`;
+      body += writeCommentList(ArgDict.com);
+      body += '<div class="argumentRow"><div class="pro argumentColumn""><center>PRO</center>';
+      body += '</div><div class="con argumentColumn"><center>CON</center>';
+      body += '</div></div>';
+      discussionBody.innerHTML = body;
+      const parentResult = checkForParent(post);
+      if (parentResult[0]) {
+        const backPlaceholder = document.getElementById('backPlaceholder');
+        backPlaceholder.innerHTML = `<button class="backButton" onclick="writeDropDown('${parentResult[1]}','${parentResult[2]}')">back</button>`;
+      }
+      if (user !== '' && user !== undefined) {
+        let upvoteButtonBody = '';
+        getVoteStatus(post).then((values) => {
+          if (values.voteStatus) {
+            upvoteButtonBody += `<div class='triangle activated' onclick="removeVote(this, '${activePost.author}','${activePost.permlink}')"></div>`;
+          } else {
+            upvoteButtonBody += `<div class='triangle' onclick="upvote(this, '${activePost.author}','${activePost.permlink}')"></div>`;
+          }
+          document.getElementById('trianglePlaceholder').innerHTML = upvoteButtonBody;
+        });
+      }
+      writeArgumentList(ArgDict.pro, 'pro');
+      writeArgumentList(ArgDict.con, 'con');
+      // eslint-disable-next-line no-restricted-globals
+      history.pushState(info.title, info.title, `discussion?a=${author}&p=${perm}`);
     });
   });
 }

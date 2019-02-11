@@ -1,5 +1,4 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
+/* global updateLoginStatus getUrlVars getPostData showWarning showError :true */
 let perm = '';
 
 updateLoginStatus();
@@ -9,7 +8,7 @@ the post is fetched and the values are filled in in the input sections
 */
 if ('p' in getUrlVars()) {
   steem.api.getContent(user, getUrlVars().p, (err, post) => {
-    info = getPostData(post);
+    const info = getPostData(post);
     // title, thumbnail, description, author, perm, reward,
     document.getElementById('discussionTitle').value = info.title;
     document.getElementById('discussionContext').value = info.description;
@@ -21,6 +20,7 @@ if ('p' in getUrlVars()) {
   });
 }
 
+// eslint-disable-next-line no-unused-vars
 function publish() {
   if (user === '' || user === undefined) {
     // eslint-disable-next-line no-alert
@@ -89,19 +89,16 @@ function publish() {
   let body = '<center><p>To display the structured discussion or engage in the debate, view the topic on ';
   body += `<a href='debato.org/html/discussion?a=${user}&p=${perm}'>https://debato.org/html/discussion?a=${user}&p=${perm}</a></p>`;
   body += `<p>${context}</p><p><img src = '${coverImage}'/></p></center>`;
-  // eslint-disable-next-line no-console
   api.comment('', 'debato', user, perm, title, body, JSON.parse(tagsMeta), (err, res) => {
     if (res) {
       window.location.href = `/html/discussion?a=${user}&p=${perm}`;
     } else {
-      showError('Could not publish the discussion. Please refresh the page or try again later');
+      showError('Could not publish the discussion. Please refresh the page or try again later. If the issue persists, please contact a developer');
       document.getElementById('coverImage').disabled = false;
       document.getElementById('discussionTitle').disabled = false;
       document.getElementById('discussionContext').disabled = false;
       document.getElementById('discussionTags').disabled = false;
       document.getElementById('publishBtn').disabled = false;
     }
-    // eslint-disable-next-line no-console
-    console.log(err, res);
   });
 }

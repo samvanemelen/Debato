@@ -48,7 +48,6 @@ button:disabled {
 #body {
   width: 90%;
 }
-
 .popupbox {
   display: none;
   position: fixed;
@@ -107,9 +106,6 @@ button:disabled {
   background-color: #ccc;
   cursor: pointer;
 }
-#coverPreview {
-  font-size: 0.8em;
-}
 .backButton {
   background-color: #ddd;
   border: none;
@@ -138,6 +134,7 @@ button:disabled {
 }
 .relevantButton.rotate {
   -webkit-animation: upvoteRotation 1.5s infinite 0s ease-in-out;
+          animation: upvoteRotation 1.5s infinite 0s ease-in-out;
   cursor: default;
 }
 .relevantButton.rotate div {
@@ -161,6 +158,7 @@ button:disabled {
 }
 .triangle.rotate {
   -webkit-animation: upvoteRotation 1.5s infinite 0s ease-in-out;
+          animation: upvoteRotation 1.5s infinite 0s ease-in-out;
   cursor: default;
 }
 .triangle.rotate:hover {
@@ -280,8 +278,7 @@ button:disabled {
 .comment {
   margin: 10px;
 }
-.discussionBody {
-  max-height: 0;
+#discussionBody {
   width: 90%;
   overflow: hidden;
 }
@@ -315,12 +312,14 @@ button:disabled {
   float: left;
   margin: 1%;
   padding: 5px;
-  width: 48%;
+  width: 49%;
 }
 .argumentColumn.pro {
+  margin-left: 0;
   border-color: rgba(0,133,0,0.5);
 }
 .argumentColumn.con {
+  margin-right: 0;
  border-color: rgba(158,0,0,0.5);
 }
 .argumentColumn h3 {
@@ -489,14 +488,12 @@ button:disabled {
   background-image: url('https://cdn.steemitimages.com/DQmTb43e7begK93PRNBvKY7Mk6TjyZyxybuV2JyuEcb556R/placeholder.jpg');
   background-position: center;
   background-size: cover;
+  display: flex;
+  justify-content: center;
   overflow: hidden;
 }
 #coverPreview {
-  display: inline-block;
-  vertical-align: middle;
   width: 100%;
-  background-position: center;
-  background-size: cover;
 }
 @media screen and (max-width: 600px) {
   .argumentColumn {
