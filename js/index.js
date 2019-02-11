@@ -12,9 +12,9 @@ if (currentURL.includes('access_token')) {
   const expiresOn = new Date();
   const weightSlider = document.getElementById('voteSlider');
   expiresOn.setSeconds(expiresOn.getSeconds() + parseInt(expiresIn, 10));
-  document.cookie = `username=${user};expires=${expiresOn};`;
-  document.cookie = `accessToken=${accessToken};expires=${expiresOn};`;
-  document.cookie = `weight=${weightSlider.value};`;
+  document.cookie = `username=${user};expires=${expiresOn}; path=/;`;
+  document.cookie = `accessToken=${accessToken};expires=${expiresOn}; path=/;`;
+  document.cookie = `weight=${weightSlider.value}; path=/;`;
 }
 updateLoginStatus();
 document.getElementById('defaultOpen').click();

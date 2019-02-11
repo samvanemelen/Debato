@@ -119,16 +119,20 @@ function getUrlVars() {
 }
 function logout() {
   // Revokes the active token and return to the home page
-  document.cookie = `username=${user};expires=expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
-  document.cookie = `accessToken=${accessToken};expires=expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
-  document.cookie = `weight=${weight};expires=expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
-  user = '';
-  accessToken = '';
-  expiresIn = '';
+  console.log('euhM?');
   api.revokeToken((err, res) => {
+    console.log(err, res);
     if (err) { showError(`Could not revoke token; ${err.toString()}`); return; }
-    if (res) { showSuccess('Successfully revoked token'); }
-    window.location.href = '/index';
+    if (res) {
+      showSuccess('Successfully revoked token');
+      document.cookie = `username=${user};expires=expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;`;
+      document.cookie = `accessToken=${accessToken};expires=expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;`;
+      document.cookie = `weight=${weight};expires=expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;`;
+      user = '';
+      accessToken = '';
+      expiresIn = '';
+      window.location.href = '/index';
+    }
   });
 }
 function sanitizeInput(string) {
