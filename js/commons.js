@@ -93,7 +93,7 @@ function updateLoginStatus() {
     steem.api.getAccounts([user], (err, result) => {
       const name = user;
       const profileImage = JSON.parse(result[0].json_metadata).profile.profile_image;
-      const body = `<div id = "profileImage" style="background-image:url(${profileImage}); display:inline-block;"></div><p style="color:#000000; font-size:22px"><strong>${name}</strong></p>`;
+      const body = `<div id = "profileImage" style="background-image:url(${profileImage});"></div><p id = "accountUsername">${name}</p>`;
       document.getElementById('accountLogin').innerHTML = body;
       document.getElementById('accountBox').style.backgroundColor = 'none';
       api = sc2.Initialize({
@@ -105,8 +105,9 @@ function updateLoginStatus() {
     });
   } else {
     const redirURL = window.location.href.split('/').slice(0, 3).join('/');
-    const link = `<a href = "https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=${redirURL}&scope=vote,comment,delete_comment"><div id = "SteemConnect">Log in</div></a>`;
+    const link = `<a id = "SteemConnect" href = "https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=${redirURL}&scope=vote,comment,delete_comment">Log in</a>`;
     document.getElementById('accountLogin').innerHTML = link;
+    document.getElementById('createAccount').style.display = 'block';
   }
 }
 function getUrlVars() {

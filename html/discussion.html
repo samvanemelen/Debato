@@ -8,19 +8,19 @@
     <body style="font-family: Aleo;">  
         <center style="width: 100%; max-width: 100%;">
             <header style="width: 90%;">
-                    <h1 class="homelink" onclick="window.location.href = '/index';">DEBATO</h1>
-                    <a id = "createAccount" href = 'https://signup.steemit.com/?ref=debato'><h4 style = "margin: 0;">Sign up</h4></a>
-                    <div id="accountBox" onmouseover="toggleMenu(true);" onmouseleave="toggleMenu(false);">
-                        <div id = "accountLogin"><a href="https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=https://www.debato.org&scope=vote,comment,delete_comment">
-                            <div id="SteemConnect">Log in</div>
-                        </a></div>
-                        <div id="accountMenu">
-                            <div><input id = "voteSlider" type = "range" min = "1" max = "10000" value = "10000" style = "margin: 10px auto;"><p id = "voteIndicator">100% upvotes</p></div>
-                            <a href="/html/create">Start discussion</a>
-                            <a onclick = "logout()">Log out</a>
-                        </div>
+                <a class="homelink" href="/index">DEBATO</a>
+                <a id = "createAccount" href = 'https://signup.steemit.com/?ref=debato'>Sign up</a>
+                <div id="accountBox" onmouseover="toggleMenu(true);" onmouseleave="toggleMenu(false);">
+                    <div id = "accountLogin"><a id ="SteemConnect" href="https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=https://www.debato.org&scope=vote,comment,delete_comment">
+                        Log in
+                    </a></div>
+                    <div id="accountMenu">
+                    	<div><input id = "voteSlider" type = "range" min = "1" max = "10000" value = "10000"><p id = "voteIndicator">100% upvotes</p></div>
+                    	<a href="/html/create">Start discussion</a>
+                    	<a onclick = "logout()">Log out</a>
                     </div>
-                </header>
+                </div>
+            </header>
             <div id = "discussion">
                 <div class="thumbnail" style="width: 90%; height: 300px;"></div>
                 <div id="discussionBody"></div>

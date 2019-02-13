@@ -38,7 +38,7 @@ function writeDiscussionList(postlist, loadedAmount, previous) {
     } else {
       body += `<div class = "thumbnail" style = "background-image:url('${details.thumbnail}')"><div class="ratio box" id='ratio-${details.perm}'></div></div>`;
     }
-    body += `<h2 style='display:inline-block'>${details.title}</h2>`;
+    body += `<p class = "cardTitle">${details.title}</h2>`;
     body += '<div id = "discussionBody"></div>';
     body += '</div>';
     Listbox.innerHTML += body;
@@ -78,6 +78,7 @@ function loadDiscussions(tab, shownAmount = PostPerLoad, previous = 0) {
   // Loads a list of posts according to the active tab
   if (tab === 'New') {
     steem.api.getDiscussionsByCreated({ limit: shownAmount + 1, tag: 'debato' }, (err, posts) => {
+      console.log(posts);
       writeDiscussionList(posts, shownAmount, previous);
     });
   }
