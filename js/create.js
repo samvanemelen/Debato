@@ -74,7 +74,7 @@ function publish() {
   New discussions are tagged with "debato-discussion". This tag is used by the platform
   to filter actual discussions from posts about debato in general
   */
-  let tagsMeta = `{"image":["${coverImage}"], "tags":["debato","debato-discussion",`;
+  let tagsMeta = `{"image":["${coverImage}"], "tags":["debato-discussion",`;
   for (let i = 0; i < taglist.length; i += 1) {
     tagsMeta += `"${taglist[i]}"`;
     if (i + 1 < taglist.length) { tagsMeta += ','; }

@@ -1,14 +1,17 @@
 /* global updateLoginStatus getUrlVars getPostData getCommentStatus:true */
 /* eslint-disable no-unused-vars */
 let activeTab = '';
+let activeTag = '';
+let expiresIn = '';
+const taglist = ['sport', 'politics', 'science', 'ethics'];
 const PostPerLoad = 6;
 const currentURL = window.location.href;
-let expiresIn = '';
-if (currentURL.includes('access_token')) {
-  const vars = getUrlVars();
-  accessToken = vars.access_token;
-  expiresIn = vars.expires_in;
-  user = vars.username;
+const URLvars = getUrlVars();
+
+if ('access_token' in URLvars) {
+  accessToken = URLvars.access_token;
+  expiresIn = URLvars.expires_in;
+  user = URLvars.username;
   const expiresOn = new Date();
   const weightSlider = document.getElementById('voteSlider');
   expiresOn.setSeconds(expiresOn.getSeconds() + parseInt(expiresIn, 10));
@@ -27,7 +30,9 @@ function writeDiscussionList(postlist, loadedAmount, previous) {
   */
   const Listbox = document.getElementById(activeTab).getElementsByClassName('discussionList')[0];
   let actualAmount = loadedAmount;
-  if (loadedAmount === PostPerLoad) { Listbox.innerHTML = ''; } // The first amount of posts is loaded so reset Listbox
+  if (postlist.length === 0) { Listbox.innerHTML = '<strong>Could not find any discussions with those tags.<strong>'; return; }
+  if (loadedAmount === PostPerLoad || loadedAmount === 99) { Listbox.innerHTML = ''; }
+  // The first amount of posts is loaded or all possible items are loaded, so reset Listbox
   if (postlist.length < loadedAmount) { actualAmount = postlist.length; }
   for (let i = previous; i < actualAmount; i += 1) {
     let body = '';
@@ -52,6 +57,73 @@ function writeDiscussionList(postlist, loadedAmount, previous) {
     Listbox.innerHTML += moreButton;
   }
 }
+function loadDiscussions(tab, shownAmount = PostPerLoad, previous = 0, tag = '') {
+  /*
+  The first part of the function deals with activating a tag to filter posts
+  If the clicked tag equals the active tag it should be disabled. (activeTag = '')
+  If clicked tag was not active already, the active tag should be the new tag
+
+  Then tag suggestions are shown, if the filtered tag is not in the suggestions,
+  it is temporarily added to show the filtered tag.
+  */
+  if (tag === activeTag) { activeTag = ''; } else if (tag !== '') { activeTag = tag; }
+  if (taglist.indexOf(activeTag) < 0 && activeTag !== '') { taglist.push(activeTag); }
+  let tagSugBody = '';
+  let tagClass = 'tag';
+  for (let i = 0; i < taglist.length; i += 1) {
+    if (activeTag === taglist[i]) { tagClass = 'tag active'; } else { tagClass = 'tag'; }
+    tagSugBody += `<p class = "${tagClass}" onclick="loadDiscussions('${tab}',99 ,0 ,'${taglist[i]}')">${taglist[i]}</p>`;
+  }
+  tagSugBody += '<input id = "tagSearchBar" placeholder="search">';
+  document.getElementById('tagSuggestions').innerHTML = tagSugBody;
+  /*
+  Add event listener for any keypress in the tag search bar
+  If any button is pressed, the width should update to the present content
+  This width is determined by a hidden span element on the page
+  The value of the input is placed in the span and scrollwidth is calculated
+  */
+  document.getElementById('tagSearchBar').addEventListener('keydown', (event) => {
+    const SearchTag = document.getElementById('tagSearchBar');
+    const ruler = document.getElementById('ruler');
+    ruler.innerHTML = SearchTag.value;
+    SearchTag.style.width = ruler.scrollWidth + 20;
+    // When enter is pressed, perform a search for that tag
+    if (event.keyCode === 13) {
+      loadDiscussions(activeTab, 99, 0, SearchTag.value);
+    }
+  });
+  /*
+  The filterPosts function will take a postlist and filter on posts which have
+  the filtertag in their metadata. These posts are returned as a list
+  */
+  function filterPosts(postlist, filtertag) {
+    const returnlist = [];
+    for (let i = 0; i < postlist.length; i += 1) {
+      if (getPostData(postlist[i]).tags.indexOf(filtertag) >= 0) {
+        returnlist.push(postlist[i]);
+      }
+    }
+    return returnlist;
+  }
+  /*
+  If a tag was parsed to the function, it should write the discussionlist
+  with the filtered results. If not, the entire postlist is used
+  */
+  if (tab === 'New') {
+    steem.api.getDiscussionsByCreated({ limit: shownAmount + 1, tag: 'debato-discussion' }, (err, posts) => {
+      let postlist = [];
+      if (activeTag !== '') { postlist = filterPosts(posts, activeTag); } else { postlist = posts; }
+      writeDiscussionList(postlist, shownAmount, previous);
+    });
+  }
+  if (tab === 'Trending') {
+    steem.api.getDiscussionsByTrending({ limit: shownAmount + 1, tag: 'debato-discussion' }, (err, posts) => {
+      let postlist = [];
+      if (activeTag !== '') { postlist = filterPosts(posts, activeTag); } else { postlist = posts; }
+      writeDiscussionList(filterPosts(posts, tag), shownAmount, previous);
+    });
+  }
+}
 function openTab(evt, tabName) {
   const evnt = evt;
   /*
@@ -71,20 +143,7 @@ function openTab(evt, tabName) {
   document.getElementById(tabName).style.display = 'block';
   evnt.currentTarget.className += ' active';
   activeTab = tabName;
-  // eslint-disable-next-line no-use-before-define
+  // eslint-disable-next-line no-restricted-globals
+  if ('tag' in getUrlVars()) { activeTag = getUrlVars().tag; history.pushState({}, document.title, '/'); }
   loadDiscussions(tabName);
-}
-function loadDiscussions(tab, shownAmount = PostPerLoad, previous = 0) {
-  // Loads a list of posts according to the active tab
-  if (tab === 'New') {
-    steem.api.getDiscussionsByCreated({ limit: shownAmount + 1, tag: 'debato' }, (err, posts) => {
-      console.log(posts);
-      writeDiscussionList(posts, shownAmount, previous);
-    });
-  }
-  if (tab === 'Trending') {
-    steem.api.getDiscussionsByTrending({ limit: shownAmount + 1, tag: 'debato' }, (err, posts) => {
-      writeDiscussionList(posts, shownAmount, previous);
-    });
-  }
 }

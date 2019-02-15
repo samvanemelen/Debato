@@ -95,6 +95,9 @@ button:disabled {
 .tab button {
   font-size: 1em;
 }
+#tagSuggestions {
+  margin-top: 10px;
+}
 .postbutton {
   background-color: #ddd;
   border: none;
@@ -248,7 +251,7 @@ button:disabled {
   background-color: white;
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
   padding: 5px;
-  margin: 5px;
+  margin: 20px;
 }
 .thumbnail {
   margin: auto;
@@ -381,6 +384,46 @@ button:disabled {
   background-color: white;
   box-shadow: 0 0 2px 2px white;
   opacity: 0.7;
+}
+.tag {
+  display: inline-block;
+  margin: 5px;
+  font-size: 0.8em;
+  padding: 1px 5px; 
+  color: #005451;
+  border: 2px solid #238784;
+  border-radius: 0.8em;
+}
+.tag:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}
+.tag.active {
+  opacity: 0.5;
+}
+.tag.active:hover {
+  opacity: 0.7;
+}
+#tagSearchBar{
+  display: inline-block;
+  margin: 5px;
+  font-size: 0.8em;
+  padding: 1px 5px; 
+  color: #005451;
+  border: 2px solid #238784;
+  border-radius: 0.8em;
+  min-width: 30px;
+  max-width: 130px;
+  width: 55px;
+  text-align: center; 
+  background-color: rgba(255, 255, 255, 0.7);
+}
+#ruler {
+  width: auto;
+  display: inline-block;
+  visibility: hidden;
+  position: fixed;
+  overflow: auto;
 }
 #accountLogin {
   margin: 7px;

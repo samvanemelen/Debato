@@ -28,11 +28,11 @@
                     <button class="tablinks" id="defaultOpen" onclick="openTab(event, 'New')">New</button>                     
                     <button class="tablinks" onclick="openTab(event, 'Trending')">Trending</button>                     
                 </div>                 
-                <!-- Tab content -->                 
+                <div id = "tagSuggestions"></div>               
                 <div id="New" class="tabcontent"> 
-                    <h2>New Discussions</h2> 
-                    <div class="discussionList">loading.</div>                     
-                </div>                 
+                    <h2>New Discussions</h2>
+                    <div class="discussionList">loading.</div>                    
+                </div>
                 <div id="Trending" class="tabcontent"> 
                     <h2>Trending Discussions</h2> 
                     <div class="discussionList">loading.</div>                     
@@ -50,9 +50,10 @@
         <div id="successbox" class = "popupbox">
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
             <p class="boxcontent">warning</p>
-        </div>             
+        </div>
+        <span id = 'ruler'></span>            
     </body>     
-</html> 
+</html>
 <script src="https://cdn.jsdelivr.net/npm/steemconnect@latest"></script> 
 <script src="https://cdn.steemjs.com/lib/latest/steem.min.js"></script>
 <script src="/js/commons.js"></script>

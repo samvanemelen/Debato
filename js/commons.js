@@ -271,9 +271,13 @@ function getPostData(postobj) {
   (thumbnail, author, title, description, rewards, permlink)
   */
   let thumbnail;
+  const postJSON = JSON.parse(postobj.json_metadata);
+  let tags = [];
+  // eslint-disable-next-line prefer-destructuring
+  if ('tags' in postJSON) { tags = postJSON.tags; }
   try {
     // eslint-disable-next-line prefer-destructuring
-    thumbnail = JSON.parse(postobj.json_metadata).image[0];
+    thumbnail = postJSON.image[0];
   } catch (error) { thumbnail = false; }
   // eslint-disable-next-line prefer-destructuring
   const author = postobj.author;
@@ -289,7 +293,7 @@ function getPostData(postobj) {
   const reward = postobj.pending_payout_value;
   const perm = postobj.permlink;
   return {
-    title, thumbnail, description, author, perm, reward,
+    title, thumbnail, description, author, perm, reward, tags,
   };
 }
 function getPostArguments(author, perm) {
@@ -525,9 +529,12 @@ function writeDropDown(author, perm) {
       metaList[0].setAttribute('content', info.description);
       const discussionBody = document.getElementById('discussionBody');
       body += '<div id = \'trianglePlaceholder\' style=\'display: inline-block\' ></div>'; // placeholder for upvote triangle
-      body += `<h1 style ="display: inline-block">${info.title}</h1>`;
+      body += `<h1 style ="display: inline-block">${info.title}</h1><br>`;
       if (info.author === user) {
         body += `<a class = "editlink" href='http://localhost/html/create?p=${activePost.permlink}'>edit</a>`;
+      }
+      for (let i = 0; i < info.tags.length; i += 1) {
+        if (info.tags[i] !== 'debato-discussion') { body += `<a class = "tag" href="/index?tag=${info.tags[i]}">${info.tags[i]}</a>`; }
       }
       body += '<div id = "backPlaceholder"></div>'; // placeholder for back button
       body += `<p><strong>By: ${info.author}</strong> - ${info.reward}</p>`;
