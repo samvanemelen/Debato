@@ -28,6 +28,7 @@
                 <input id="discussionTitle">
                 <p>Optionally further ellaborate on the statement with context, background information, relevance etc.</p>
                 <textarea id="discussionContext"></textarea>
+                <div class = "previewElement"></div>
                 <p>Cover image URL</p>
                 <input id="coverImage" onchange="document.getElementById('coverPreview').src = this.value">
                 <div id = "coverPlaceholder">
@@ -54,5 +55,6 @@
 </html> 
 <script src="https://cdn.jsdelivr.net/npm/steemconnect@latest"></script> 
 <script src="https://cdn.steemjs.com/lib/latest/steem.min.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/showdown@latest/dist/showdown.min.js"></script>
 <script src="/js/commons.js"></script>
 <script src="/js/create.js"></script>

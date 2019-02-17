@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 user = ''; accessToken = ''; expiresIn = ''; weight = 10000;
 const weightSlider = document.getElementById('voteSlider');
+const converter = new showdown.Converter({ simplifiedAutoLink: true });
 // eslint-disable-next-line func-names
 weightSlider.oninput = function () {
   // When the weight slider changes, change the cookie and change the indicator
@@ -134,10 +135,12 @@ function logout() {
     }
   });
 }
-function sanitizeInput(string) {
-  const htmlregex = new RegExp(/<.+?>/, 'g');
-  const clean = string.replace(htmlregex, '');
-  return clean;
+function escapeHtml(string) {
+  let parsedString = string.replace(/&/g, '&amp;');
+  parsedString = parsedString.replace(/</g, '&lt;');
+  parsedString = parsedString.replace(/>/g, '&gt;');
+  parsedString = parsedString.replace(/"/g, '&quot;');
+  return parsedString;
 }
 function upvote(obj, author, perm) {
   // Upvote a post and change the settings of the upvote button
@@ -244,7 +247,7 @@ function comment(textbox, commenttype) {
       contentBox.removeChild(contentBox.getElementsByClassName('blank')[0]);
     }
     if (commenttype === 'com') {
-      newArg = `<p id = de-${newPerm}><strong>${user}</strong> - ${body}`;
+      newArg = `<p id = de-${newPerm}><strong>${user}</strong> - ${escapeHtml(body)}`;
       newArg += `<a class = "removeButton" onclick = "deleteComment('${user}','${newPerm}')">    remove</a></p>`;
     } else {
       newArg = `<h3 id = de-${newPerm}><p class='voteCounter'>0</p>`;
@@ -388,7 +391,7 @@ function writeCommentBox(action) {
   }
   if (action === 'comment') {
     body = `<div class = "${action}Box"><button class = "collapsibleButton" onclick = "showCommentBox(this)">Add comment</button>`;
-    body += '<div class = "inputZone"><textarea name = "comment" rows = "3"></textarea><br>';
+    body += '<div class = "inputZone"><textarea name = "comment" rows = "3"></textarea><div class = "previewElement"></div>';
     body += "<button class = 'postbutton' onclick = \"comment(this.previousElementSibling.previousElementSibling,'com')\">post</button></div></div>";
   }
   return body;
@@ -435,7 +438,7 @@ function writeArgumentList(comments, divID) {
           line += '<div></div></div>';
         }
         line += `<a class="commentLink" onclick="writeDropDown('${commentElement.author}','${commentElement.permlink}')"> `;
-        line += `${sanitizeInput(commentElement.body)}<p class='ratio' id='ratio-${commentElement.permlink}'></p></a>`;
+        line += `${escapeHtml(commentElement.body)}<p class='ratio' id='ratio-${commentElement.permlink}'></p></a>`;
         if (commentElement.author === user
           && commentElement.children === 0
           && commentElement.active_votes.length === 0) {
@@ -465,13 +468,15 @@ function writeCommentList(commentList) {
       body += writeCommentBox('comment');
     }
     for (let i = 0; i < commentCount; i += 1) {
+      if (i !== 0) { body += '<hr>'; }
       let removeButton = '';
       if (user === commentList[i].author
         && commentList[i].children === 0
         && commentList[i].active_votes.length === 0) {
         removeButton = `<a class = "removeButton" onclick = "deleteComment('${commentList[i].author}','${commentList[i].permlink}')">    remove</a>`;
       }
-      body += `<p class = "comment" id = de-${commentList[i].permlink}><strong>${commentList[i].author}</strong> - ${sanitizeInput(commentList[i].body)}${removeButton}</p>`;
+      const commentContent = converter.makeHtml(escapeHtml(commentList[i].body));
+      body += `<div class = "comment" id = de-${commentList[i].permlink}><strong>${commentList[i].author}:</strong><div style="margin-left: 10px;">${commentContent}${removeButton}</div></div>`;
     }
   } else {
     body += '<button class="collapsibleButton comments" onclick="commentsDropDown(this)">There are no comments on this statement</button>';
@@ -538,7 +543,8 @@ function writeDropDown(author, perm) {
       }
       body += '<div id = "backPlaceholder"></div>'; // placeholder for back button
       body += `<p><strong>By: ${info.author}</strong> - ${info.reward}</p>`;
-      body += `<p>${info.description}</p>`;
+      const parsedContext = converter.makeHtml(escapeHtml(info.description));
+      body += `<p>${parsedContext}</p>`;
       body += writeCommentList(ArgDict.com);
       body += '<div class="argumentRow"><div class="pro argumentColumn""><center>PRO</center>';
       body += '</div><div class="con argumentColumn"><center>CON</center>';
@@ -564,6 +570,13 @@ function writeDropDown(author, perm) {
       writeArgumentList(ArgDict.con, 'con');
       // eslint-disable-next-line no-restricted-globals
       history.pushState(info.title, info.title, `discussion?a=${author}&p=${perm}`);
+
+      // Adding an event listener to the comment box which updates the comment preview
+      document.getElementsByClassName('commentBox')[0].getElementsByTagName('textarea')[0].addEventListener('keyup', () => {
+        const previewElement = document.getElementsByClassName('previewElement')[0];
+        const contextValue = document.getElementsByClassName('commentBox')[0].getElementsByTagName('textarea')[0].value;
+        previewElement.innerHTML = converter.makeHtml(escapeHtml(contextValue));
+      });
     });
   });
 }

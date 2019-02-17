@@ -1,6 +1,5 @@
-/* global updateLoginStatus getUrlVars getPostData showWarning showError :true */
+/* global updateLoginStatus getUrlVars getPostData showWarning escapeHtml showError:true */
 let perm = '';
-
 updateLoginStatus();
 /*
 If a permlink is present in the URL it should set up the page for editing a post
@@ -19,7 +18,12 @@ if ('p' in getUrlVars()) {
     document.getElementById('coverPreview').src = info.thumbnail;
   });
 }
-
+// Update a preview of what the context will look like after parsing Markdown
+document.getElementById('discussionContext').addEventListener('keyup', () => {
+  const previewElement = document.getElementsByClassName('previewElement')[0];
+  const contextValue = document.getElementById('discussionContext').value;
+  previewElement.innerHTML = converter.makeHtml(escapeHtml(contextValue));
+});
 // eslint-disable-next-line no-unused-vars
 function publish() {
   if (user === '' || user === undefined) {
@@ -34,6 +38,7 @@ function publish() {
   const title = document.getElementById('discussionTitle').value;
   const titleLow = title.toLowerCase();
   const context = document.getElementById('discussionContext').value;
+  const parsedContext = escapeHtml(context);
   const tags = document.getElementById('discussionTags').value;
   const coverImage = document.getElementById('coverImage').value;
   if (title === '' || context === '' || tags === '' || coverImage === '') {
@@ -84,11 +89,11 @@ function publish() {
   The body of the post will be used to redirect readers from other platforms
   to debato where the discussions structure can be found.
   */
-  tagsMeta += `], "context":"${context}"`;
+  tagsMeta += `], "context":"${parsedContext}"`;
   tagsMeta += '}';
   let body = '<center><p>To display the structured discussion or engage in the debate, view the topic on ';
   body += `<a href='debato.org/html/discussion?a=${user}&p=${perm}'>https://debato.org/html/discussion?a=${user}&p=${perm}</a></p>`;
-  body += `<p>${context}</p><p><img src = '${coverImage}'/></p></center>`;
+  body += `<div>${parsedContext}</div><p><img src = '${coverImage}'/></p></center>`;
   api.comment('', 'debato', user, perm, title, body, JSON.parse(tagsMeta), (err, res) => {
     if (res) {
       window.location.href = `/html/discussion?a=${user}&p=${perm}`;

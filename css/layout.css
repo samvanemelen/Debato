@@ -8,6 +8,14 @@ a {
   color: #000000;
   text-decoration: none;
 }
+.comment a {
+  color: #3b9954;
+  text-decoration: underline;
+}
+.previewElement a {
+  color: #3b9954;
+  text-decoration: underline;
+}
 input {
   width: 100%;
   padding-top: 5;
@@ -15,12 +23,12 @@ input {
   vertical-align: middle;
 }
 textarea {
-  margin-left: 0;
-  margin-right: 0;
-  padding: 0;
+  margin-left: 1%;
+  margin-right: 1%;
+  padding: 5;
   height: 100px;
-  width: 100%;
-  max-width: 100%;
+  width: 98%;
+  max-width: 98%;
 }
 header {
   background-color: white;
@@ -279,7 +287,9 @@ button:disabled {
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
 }
 .comment {
-  margin: 10px;
+  margin: 30px;
+  font-size: 0.9em;
+  text-align: left;
 }
 #discussionBody {
   width: 90%;
@@ -333,6 +343,13 @@ button:disabled {
 .commentLink:hover {
   opacity: 0.7;
   cursor: pointer;
+}
+.previewElement {
+  border: 1px solid #ddd;
+  text-align: left;
+  margin: 20px;
+  min-height: 1em;
+  background-color: #f5f5f5;
 }
 .discussionForm {
   width: 70%;
@@ -454,7 +471,7 @@ button:disabled {
 }
 #accountMenu {
   position: relative;
-  font-size: 0.8em;
+  font-size: 0.9em;
   max-height: 0;
   transition: max-height 0.4s ease-out;
   background-color: #f1f1f1;
@@ -476,6 +493,7 @@ button:disabled {
   display: block;
 }
 #accountMenu a:hover {
+  cursor: pointer;
   background-color: #ddd;
 }
 #voteSlider{

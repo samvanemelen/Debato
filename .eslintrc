@@ -6,6 +6,8 @@
     "globals": {
         "user": true,
         "api": true,
+        "showdown": true,
+        "converter": true,
         "accessToken": true,
         "expiresIn": true,
         "weight": true,

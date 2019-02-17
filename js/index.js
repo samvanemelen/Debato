@@ -82,7 +82,7 @@ function loadDiscussions(tab, shownAmount = PostPerLoad, previous = 0, tag = '')
   This width is determined by a hidden span element on the page
   The value of the input is placed in the span and scrollwidth is calculated
   */
-  document.getElementById('tagSearchBar').addEventListener('keydown', (event) => {
+  document.getElementById('tagSearchBar').addEventListener('keyup', (event) => {
     const SearchTag = document.getElementById('tagSearchBar');
     const ruler = document.getElementById('ruler');
     ruler.innerHTML = SearchTag.value;
