@@ -120,7 +120,21 @@ function loadDiscussions(tab, shownAmount = PostPerLoad, previous = 0, tag = '')
     steem.api.getDiscussionsByTrending({ limit: shownAmount + 1, tag: 'debato-discussion' }, (err, posts) => {
       let postlist = [];
       if (activeTag !== '') { postlist = filterPosts(posts, activeTag); } else { postlist = posts; }
-      writeDiscussionList(filterPosts(posts, tag), shownAmount, previous);
+      writeDiscussionList(filterPosts(postlist, tag), shownAmount, previous);
+    });
+  }
+  if (tab === 'Feed') {
+    steem.api.getDiscussionsByFeed({ limit: 100, tag: user }, (err, posts) => {
+      let postlist = [];
+      const discussionlist = [];
+      if (activeTag !== '') { postlist = filterPosts(posts, activeTag); } else { postlist = posts; }
+      for (let i = 0; i < postlist.length; i += 1) {
+        const tags = JSON.parse(postlist[i].json_metadata);
+        if ('debato-discussion' in tags) {
+          discussionlist.push(postlist[i]);
+        }
+      }
+      writeDiscussionList(filterPosts(discussionlist, tag), 99, previous);
     });
   }
 }

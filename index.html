@@ -26,7 +26,8 @@
             <div id="body"> 
                 <div class="tab"> 
                     <button class="tablinks" id="defaultOpen" onclick="openTab(event, 'New')">New</button>                     
-                    <button class="tablinks" onclick="openTab(event, 'Trending')">Trending</button>                     
+                    <button class="tablinks" onclick="openTab(event, 'Trending')">Trending</button>
+                    <button class="tablinks" id="feed" style = "display: none;" onclick="openTab(event, 'Feed')">Feed</button>                     
                 </div>                 
                 <div id = "tagSuggestions"></div>               
                 <div id="New" class="tabcontent"> 
@@ -36,7 +37,11 @@
                 <div id="Trending" class="tabcontent"> 
                     <h2>Trending Discussions</h2> 
                     <div class="discussionList">loading.</div>                     
-                </div>                 
+                </div>
+                <div id="Feed" class="tabcontent"> 
+                    <h2>Feed</h2> 
+                    <div class="discussionList">loading.</div>                     
+                </div>                      
             </div>          
         </center>
         <div id="errorbox" class = "popupbox">

@@ -97,6 +97,7 @@ function updateLoginStatus() {
       const body = `<div id = "profileImage" style="background-image:url(${profileImage});"></div><p id = "accountUsername">${name}</p>`;
       document.getElementById('accountLogin').innerHTML = body;
       document.getElementById('accountBox').style.backgroundColor = 'none';
+      document.getElementById('feed').style.display = '';
       api = sc2.Initialize({
         app: 'debato-app',
         callbackURL: 'http://www.debato.org',
