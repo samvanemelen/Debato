@@ -1,0 +1,81 @@
+#profileCard{
+    display: flex;
+    margin-top: 10px;
+    width: 90%;
+    background-color: white;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15);
+}
+#profileInfo{
+    background-color: #238784da;
+    color: white;
+    min-width: 100px;
+    width:20%;
+    padding: 10px;
+}
+#profileInfo p{
+    margin: 10px;
+    text-align: justify;
+}
+#profileContent{
+    min-height: 300px;
+    width: 80%;
+    padding: 20px;
+}
+#profileImageLarge{
+    width: 90%;
+    border-radius: 50%;
+    border: 2px solid white;
+    padding-top: 90%;
+    background-position: center;
+    background-size: cover;
+    vertical-align: middle;
+}
+#ProfileUsername{
+    display: inline-block;
+    font-size: 1.5em;
+}
+#profileReputation{
+    display: inline-block;
+    font-size: 1em;
+    padding: 0.3em;
+    margin: 0;
+    height: 1em;
+    border-radius: 5px;
+    background-color: #00706cda;
+}
+#powerBarContainer{
+    width: calc(100% - 20px);
+    height: 1.5em;
+    top: 10px;
+    background-color: #ddd;
+    border-radius: 2px;
+    text-align: left;
+}
+#votePowerBar{
+    width: 100%;
+    height: calc(100% - 0.5em);
+    background-color: #00706cda;
+    border-radius: 2px;
+    padding: 0.25em;
+    font-size: 1em;
+}
+.tabcontent {
+    display: none;
+    padding-bottom: 100px;
+  }
+.argumentCard{
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15);
+    padding: 5px;
+    text-align: left;
+  }
+  .argumentCard p{
+    margin: 5px;
+  }
+  .argumentCard .parentLink{
+    color: #3b9954;
+    text-decoration: underline;
+  }
+  .argumentCard .commentLink:hover{
+    opacity: 0.5;
+    cursor: pointer;
+  }

@@ -1,4 +1,4 @@
-/* global updateLoginStatus getUrlVars getPostData showWarning escapeHtml showError:true */
+/* global updateLoginStatus getUrlVars getPostData showWarning parseHtml showError:true */
 let perm = '';
 updateLoginStatus();
 /*
@@ -22,7 +22,7 @@ if ('p' in getUrlVars()) {
 document.getElementById('discussionContext').addEventListener('keyup', () => {
   const previewElement = document.getElementsByClassName('previewElement')[0];
   const contextValue = document.getElementById('discussionContext').value;
-  previewElement.innerHTML = converter.makeHtml(escapeHtml(contextValue));
+  previewElement.innerHTML = converter.makeHtml(parseHtml(contextValue));
 });
 // eslint-disable-next-line no-unused-vars
 function publish() {
@@ -38,7 +38,7 @@ function publish() {
   const title = document.getElementById('discussionTitle').value;
   const titleLow = title.toLowerCase();
   const context = document.getElementById('discussionContext').value;
-  const parsedContext = escapeHtml(context);
+  const parsedContext = parseHtml(context);
   const tags = document.getElementById('discussionTags').value;
   const coverImage = document.getElementById('coverImage').value;
   if (title === '' || context === '' || tags === '' || coverImage === '') {

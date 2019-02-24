@@ -37,11 +37,6 @@ header {
   justify-content: space-between;
   max-height: 60px;
 }
-footer {
-  background-color: #656e67;
-  padding: 10px;
-  width: 90%;
-}
 #createAccount {
   margin: auto;
   margin-right: 10px;
@@ -96,16 +91,6 @@ button:disabled {
   padding: 0;
   margin: 0;
 }
-.tab {
-  background-color: white;
-  height: auto;
-}
-.tab button {
-  font-size: 1em;
-}
-#tagSuggestions {
-  margin-top: 10px;
-}
 .postbutton {
   background-color: #ddd;
   border: none;
@@ -118,101 +103,33 @@ button:disabled {
   background-color: #ccc;
   cursor: pointer;
 }
-.backButton {
-  background-color: #ddd;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  margin: 10px;
-  padding: 8px 16px;
-  transition: 0.3s;
+.inputZone {
+  display: none;
 }
-.relevantButton {
-  display: inline-block;
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  background-color: #ccc;
-}
-.relevantButton:hover {
-  background-color: #73a07f;
+.commentLink:hover {
+  opacity: 0.7;
   cursor: pointer;
 }
-.relevantButton.activated {
-  background-color: #3b9954;
-}
-.relevantButton.activated:hover {
-  background-color: #ba5925;
-}
-.relevantButton.rotate {
-  -webkit-animation: upvoteRotation 1.5s infinite 0s ease-in-out;
-          animation: upvoteRotation 1.5s infinite 0s ease-in-out;
-  cursor: default;
-}
-.relevantButton.rotate div {
-  height: 5px;
-  width: 5px;
-  border-radius: 50%;
-  background-color: black;
-  margin: 2px;
-}
-.triangle {
-  width: 0;
-  height: 0;
-  margin-right: 10px;
-  border-left: 15px solid transparent;
-  border-right: 15px solid transparent;
-  border-bottom: 25px solid #ccc;
-}
-.triangle:hover {
-  border-bottom: 25px solid #73a07f;
-  cursor: pointer;
-}
-.triangle.rotate {
-  -webkit-animation: upvoteRotation 1.5s infinite 0s ease-in-out;
-          animation: upvoteRotation 1.5s infinite 0s ease-in-out;
-  cursor: default;
-}
-.triangle.rotate:hover {
-  background-color: inherit;
-}
-.triangle.activated {
-  border-bottom: 25px solid #3b9954;
-}
-.triangle.activated:hover {
-  border-bottom: 25px solid #ba5925;
-}
-.removeButton {
-  font-weight: normal;
-  transform: translate(0, -4px);
-  font-size: 70%;
-}
-.removeButton:hover {
-  cursor: pointer;
-  font-weight: bold;
-  cursor: pointer;
-}
-.editlink{
-  margin: 0 10px;
-  font-size: 1.2em;
-}
-.editlink:hover {
-  cursor: pointer;
-}
-.collapsibleButton {
-  padding: 8px;
+.frontImage {
+  width: 90%;
   margin: 5px;
-  background-color: #ddd;
-  cursor: pointer;
-  width: 60%;
-  border: none;
-  font-size: 15px;
+  background-color: white;
 }
-.collapsible:hover {
-  background-color: #ccc;
+.homelink {
+  font-weight: bold;
+  font-size: 2em;
+  padding-left: 20px;
+  margin: 10px;
 }
-.backButton:hover {
-  background-color: #ccc;
+.homelink:hover {
+  cursor: hand;
+}
+.tab {
+  background-color: white;
+  height: auto;
+}
+.tab button {
+  font-size: 1em;
 }
 .tab button {
   background-color: inherit;
@@ -227,19 +144,6 @@ button:disabled {
 }
 .tab button.active {
   background-color: #ccc;
-}
-.moreButton {
-  margin: 10px;
-  flex: 0 0 100%;
-  background-color: #ccc;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 14px 16px;
-  transition: 0.3s;
-}
-.moreButton:hover {
-  background-color: #ddd;
 }
 .tabcontent {
   display: none;
@@ -257,43 +161,9 @@ button:disabled {
   max-width: 300px;
   flex-grow: 1;
   background-color: white;
-  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15);
   padding: 5px;
   margin: 20px;
-}
-.thumbnail {
-  margin: auto;
-  height: 150px;
-  min-width: 200px;
-  width: 100%;
-  background-image: none;
-  background-position: center;
-  background-size: cover;
-}
-.inputZone {
-  display: none;
-}
-.commentList {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-}
-.commentList p {
-  text-align: left;
-}
-.comment-card {
-  width: 100%;
-  background-color: white;
-  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
-}
-.comment {
-  margin: 30px;
-  font-size: 0.9em;
-  text-align: left;
-}
-#discussionBody {
-  width: 90%;
-  overflow: hidden;
 }
 .ObjLink {
   background-color: inherit;
@@ -305,102 +175,6 @@ button:disabled {
 }
 .ObjLink:hover {
   opacity: 0.5;
-}
-.argumentRow {
-  padding-top: 10px;
-}
-.argumentRow:after {
-  display: table;
-  clear: both;
-}
-.argumentColumn {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  box-sizing: border-box;
-  background-color: white;
-  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
-  border-style: solid;
-  border-width: thin;
-  float: left;
-  margin: 1%;
-  padding: 5px;
-  width: 49%;
-}
-.argumentColumn.pro {
-  margin-left: 0;
-  border-color: rgba(0,133,0,0.5);
-}
-.argumentColumn.con {
-  margin-right: 0;
- border-color: rgba(158,0,0,0.5);
-}
-.argumentColumn h3 {
-  text-align: left;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-.commentLink:hover {
-  opacity: 0.7;
-  cursor: pointer;
-}
-.previewElement {
-  border: 1px solid #ddd;
-  text-align: left;
-  margin: 20px;
-  min-height: 1em;
-  background-color: #f5f5f5;
-}
-.discussionForm {
-  width: 70%;
-  background-color: white;
-  padding: 15px;
-  margin: 20px;
-  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
-
-}
-.frontImage {
-  width: 90%;
-  margin: 5px;
-  background-color: white;
-}
-.homelink {
-  font-weight: bold;
-  font-size: 2em;
-  padding-left: 20px;
-  margin: 10px;
-}
-.homelink:hover {
-  cursor: hand;
-}
-.voteCounter {
-  display: inline-block;
-  font-size: 12px;
-  margin-right: 5px;
-  transform: translate(0, -4px);
-}
-.cardTitle{
-  display: inline-block;
-  font-size: 1.2em;
-  font-weight: bold;
-}
-.ratio {
-  margin-top: 0;
-  margin-bottom: 0;
-  display: inline-block;
-  font-size: 16px;
-  margin-left: 4px;
-  margin-right: 4px;
-}
-.ratio.box {
-  position: relative;
-  bottom: calc(24px - 100%);
-  width: 100%;
-  margin: 0;
-  padding: 3px 0;
-  background-color: white;
-  box-shadow: 0 0 2px 2px white;
-  opacity: 0.7;
 }
 .tag {
   display: inline-block;
@@ -435,12 +209,37 @@ button:disabled {
   text-align: center; 
   background-color: rgba(255, 255, 255, 0.7);
 }
-#ruler {
-  width: auto;
+.thumbnail {
+  margin: auto;
+  height: 150px;
+  min-width: 200px;
+  width: 100%;
+  background-image: none;
+  background-position: center;
+  background-size: cover;
+}
+.cardTitle{
   display: inline-block;
-  visibility: hidden;
-  position: fixed;
-  overflow: auto;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.ratio {
+  margin-top: 0;
+  margin-bottom: 0;
+  display: inline-block;
+  font-size: 16px;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+.ratio.box {
+  position: relative;
+  bottom: calc(24px - 100%);
+  width: 100%;
+  margin: 0;
+  padding: 3px 0;
+  background-color: white;
+  box-shadow: 0 0 2px 2px white;
+  opacity: 0.7;
 }
 #accountLogin {
   margin: 7px;
@@ -524,36 +323,6 @@ button:disabled {
   background: #4CAF50;
   cursor: pointer;
 }
-#publishBtn {
-  margin-top: 20px;
-  margin-bottom: 5px;
-  padding: 5 20;
-  font-size: 18px;
-  border: none;
-  outline: none;
-  background-color: #d3d3d3;
-}
-#publishBtn:hover {
-  background-color: #eeeeee;
-  cursor: pointer;
-}
-#coverPlaceholder {
-  margin-top: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 35%;
-  min-height: 150px;
-  max-height: 20%;
-  background-image: url('https://cdn.steemitimages.com/DQmTb43e7begK93PRNBvKY7Mk6TjyZyxybuV2JyuEcb556R/placeholder.jpg');
-  background-position: center;
-  background-size: cover;
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-}
-#coverPreview {
-  width: 100%;
-}
 @media screen and (max-width: 600px) {
   .argumentColumn {
     width: 100%;
@@ -575,7 +344,6 @@ button:disabled {
   .discussionObj {
     max-width: 90%;
     background-color: white;
-    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
     padding: 5px;
     margin: 5px;
   }

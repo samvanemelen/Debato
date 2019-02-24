@@ -1,0 +1,23 @@
+#ruler {
+    width: auto;
+    display: inline-block;
+    visibility: hidden;
+    position: fixed;
+    overflow: auto;
+  }
+  .moreButton {
+    margin: 10px;
+    flex: 0 0 100%;
+    background-color: #ccc;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+  }
+  .moreButton:hover {
+    background-color: #ddd;
+  }
+  #tagSuggestions {
+    margin-top: 10px;
+  }

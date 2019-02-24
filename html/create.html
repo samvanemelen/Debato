@@ -4,6 +4,7 @@
         <meta name="description" content="Create a new discussion on debato.org.
         The discussion will be visible to the more than 1 million users on the Steem blockchain">  
         <link rel="stylesheet" type="text/css" href="/css/layout.css"> 
+        <link rel="stylesheet" type="text/css" href="/css/create.css"> 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aleo">
     </head>     
     <body style="font-family: Aleo;"> 
@@ -17,7 +18,8 @@
                     </a></div>
                     <div id="accountMenu">
                     	<div><input id = "voteSlider" type = "range" min = "1" max = "10000" value = "10000"><p id = "voteIndicator">100% upvotes</p></div>
-                    	<a href="/html/create">Start discussion</a>
+                        <a href="/html/create">Start discussion</a>
+                        <a id="profileLink" href="/html/profile">My profile</a>
                     	<a onclick = "logout()">Log out</a>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-/* global updateLoginStatus getUrlVars getPostData getCommentStatus:true */
+/* global updateLoginStatus getUrlVars getPostData getCommentStatus createDiscussionCard:true */
 /* eslint-disable no-unused-vars */
 let activeTab = '';
 let activeTag = '';
@@ -20,6 +20,9 @@ if ('access_token' in URLvars) {
   document.cookie = `weight=${weightSlider.value}; path=/;`;
 }
 updateLoginStatus();
+if (user !== '' && user !== undefined) {
+  document.getElementById('Feed').style.display = '';
+}
 document.getElementById('defaultOpen').click();
 function writeDiscussionList(postlist, loadedAmount, previous) {
   /*
@@ -30,23 +33,13 @@ function writeDiscussionList(postlist, loadedAmount, previous) {
   */
   const Listbox = document.getElementById(activeTab).getElementsByClassName('discussionList')[0];
   let actualAmount = loadedAmount;
-  if (postlist.length === 0) { Listbox.innerHTML = '<strong>Could not find any discussions with those tags.<strong>'; return; }
+  if (postlist.length === 0) { Listbox.innerHTML = '<strong>Could not find any discussions with those criteria.<strong>'; return; }
   if (loadedAmount === PostPerLoad || loadedAmount === 99) { Listbox.innerHTML = ''; }
   // The first amount of posts is loaded or all possible items are loaded, so reset Listbox
   if (postlist.length < loadedAmount) { actualAmount = postlist.length; }
   for (let i = previous; i < actualAmount; i += 1) {
-    let body = '';
+    Listbox.innerHTML += createDiscussionCard(postlist[i]);
     const details = getPostData(postlist[i]);
-    body += `<div class = "discussionObj" id = "${details.perm}"><button class="ObjLink" onclick="window.location.href='/html/discussion?a=${details.author}&p=${details.perm}'">`;
-    if (details.thumbnail === false || details.thumbnail === '') {
-      body += `<div class = "thumbnail" style = "background-image:none"><p class="ratio box" id='ratio-${details.perm}'></p></div>`;
-    } else {
-      body += `<div class = "thumbnail" style = "background-image:url('${details.thumbnail}')"><div class="ratio box" id='ratio-${details.perm}'></div></div>`;
-    }
-    body += `<p class = "cardTitle">${details.title}</h2>`;
-    body += '<div id = "discussionBody"></div>';
-    body += '</div>';
-    Listbox.innerHTML += body;
     getCommentStatus(details.author, details.perm, `ratio-${details.perm}`).then((ratio) => {
       const rat = `<strong>${ratio[0]}</strong>`;
       document.getElementById(ratio[1]).innerHTML = rat;
@@ -139,7 +132,7 @@ function loadDiscussions(tab, shownAmount = PostPerLoad, previous = 0, tag = '')
   }
 }
 function openTab(evt, tabName) {
-  const evnt = evt;
+  const event = evt;
   /*
   Display a new tab when clicked
   Hide previous tab element and activate the new tab
@@ -155,7 +148,7 @@ function openTab(evt, tabName) {
     tablinks[i].className = tablinks[i].className.replace(' active', '');
   } // Show the current tab, and add an "active" class to the button that opened the tab
   document.getElementById(tabName).style.display = 'block';
-  evnt.currentTarget.className += ' active';
+  event.currentTarget.className += ' active';
   activeTab = tabName;
   // eslint-disable-next-line no-restricted-globals
   if ('tag' in getUrlVars()) { activeTag = getUrlVars().tag; history.pushState({}, document.title, '/'); }

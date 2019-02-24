@@ -98,6 +98,7 @@ function updateLoginStatus() {
       document.getElementById('accountLogin').innerHTML = body;
       document.getElementById('accountBox').style.backgroundColor = 'none';
       document.getElementById('feed').style.display = '';
+      document.getElementById('profileLink').href = `/html/profile?u=${user}`;
       api = sc2.Initialize({
         app: 'debato-app',
         callbackURL: 'http://www.debato.org',
@@ -136,11 +137,46 @@ function logout() {
     }
   });
 }
-function escapeHtml(string) {
+function timeSince(UTCstring) {
+  /*
+  Accepts a date in UTC format and returns the age relative to the present
+  Will display age in years, months, days, hours, minutes or seconds depending
+  on the age. (at least 2 of the longer time unit to switch to that unit)
+  */
+  const AgeSeconds = Math.floor((new Date() - new Date(UTCstring)) / 1000);
+  let interval = Math.floor(AgeSeconds / 31536000);
+  if (interval > 1) {
+    return `${interval} years`;
+  }
+  interval = Math.floor(AgeSeconds / 2592000);
+  if (interval > 1) {
+    return `${interval} months`;
+  }
+  interval = Math.floor(AgeSeconds / 86400);
+  if (interval > 1) {
+    return `${interval} days`;
+  }
+  interval = Math.floor(AgeSeconds / 3600);
+  if (interval > 1) {
+    return `${interval} hours`;
+  }
+  interval = Math.floor(AgeSeconds / 60);
+  if (interval > 1) {
+    return `${interval} minutes`;
+  }
+  return `${Math.floor(AgeSeconds)} seconds`;
+}
+function parseHtml(string) {
   let parsedString = string.replace(/&/g, '&amp;');
   parsedString = parsedString.replace(/</g, '&lt;');
   parsedString = parsedString.replace(/>/g, '&gt;');
   parsedString = parsedString.replace(/"/g, '&quot;');
+  /*
+  If a username is detected
+  ('@' followed by a letter, followed by any character, ending with a letter or number)
+  it will replace it with a link to that user's profile page
+  */
+  parsedString = parsedString.replace(/@([a-zA-Z]+[a-zA-Z1-9-.]+[a-zA-Z1-9]+)/g, '<a href = "/html/profile?u=$1">@$1</a>');
   return parsedString;
 }
 function upvote(obj, author, perm) {
@@ -248,7 +284,7 @@ function comment(textbox, commenttype) {
       contentBox.removeChild(contentBox.getElementsByClassName('blank')[0]);
     }
     if (commenttype === 'com') {
-      newArg = `<p id = de-${newPerm}><strong>${user}</strong> - ${escapeHtml(body)}`;
+      newArg = `<p id = de-${newPerm}><strong>${user}</strong> - ${parseHtml(body)}`;
       newArg += `<a class = "removeButton" onclick = "deleteComment('${user}','${newPerm}')">    remove</a></p>`;
     } else {
       newArg = `<h3 id = de-${newPerm}><p class='voteCounter'>0</p>`;
@@ -296,8 +332,10 @@ function getPostData(postobj) {
   }
   const reward = postobj.pending_payout_value;
   const perm = postobj.permlink;
+  // eslint-disable-next-line prefer-destructuring
+  const created = postobj.created;
   return {
-    title, thumbnail, description, author, perm, reward, tags,
+    title, thumbnail, description, author, perm, reward, tags, created,
   };
 }
 function getPostArguments(author, perm) {
@@ -439,7 +477,7 @@ function writeArgumentList(comments, divID) {
           line += '<div></div></div>';
         }
         line += `<a class="commentLink" onclick="writeDropDown('${commentElement.author}','${commentElement.permlink}')"> `;
-        line += `${escapeHtml(commentElement.body)}<p class='ratio' id='ratio-${commentElement.permlink}'></p></a>`;
+        line += `${parseHtml(commentElement.body)}<p class='ratio' id='ratio-${commentElement.permlink}'></p></a>`;
         if (commentElement.author === user
           && commentElement.children === 0
           && commentElement.active_votes.length === 0) {
@@ -476,7 +514,7 @@ function writeCommentList(commentList) {
         && commentList[i].active_votes.length === 0) {
         removeButton = `<a class = "removeButton" onclick = "deleteComment('${commentList[i].author}','${commentList[i].permlink}')">    remove</a>`;
       }
-      const commentContent = converter.makeHtml(escapeHtml(commentList[i].body));
+      const commentContent = converter.makeHtml(parseHtml(commentList[i].body));
       body += `<div class = "comment" id = de-${commentList[i].permlink}><strong>${commentList[i].author}:</strong><div style="margin-left: 10px;">${commentContent}${removeButton}</div></div>`;
     }
   } else {
@@ -516,6 +554,20 @@ function getRootImage(post) {
     }
   }));
 }
+function createDiscussionCard(post) {
+  let body = '';
+  const details = getPostData(post);
+  body += `<div class = "discussionObj" id = "${details.perm}"><button class="ObjLink" onclick="window.location.href='/html/discussion?a=${details.author}&p=${details.perm}'">`;
+  if (details.thumbnail === false || details.thumbnail === '') {
+    body += `<div class = "thumbnail" style = "background-image:none"><p class="ratio box" id='ratio-${details.perm}'></p></div>`;
+  } else {
+    body += `<div class = "thumbnail" style = "background-image:url('${details.thumbnail}')"><div class="ratio box" id='ratio-${details.perm}'></div></div>`;
+  }
+  body += `<p class = "cardTitle">${details.title}</h2>`;
+  body += '<div id = "discussionBody"></div>';
+  body += '</div>';
+  return body;
+}
 function writeDropDown(author, perm) {
   /*
   Displays the entire discussion structure for a new comment (perm)
@@ -544,7 +596,7 @@ function writeDropDown(author, perm) {
       }
       body += '<div id = "backPlaceholder"></div>'; // placeholder for back button
       body += `<p><strong>By: ${info.author}</strong> - ${info.reward}</p>`;
-      const parsedContext = converter.makeHtml(escapeHtml(info.description));
+      const parsedContext = converter.makeHtml(parseHtml(info.description));
       body += `<p>${parsedContext}</p>`;
       body += writeCommentList(ArgDict.com);
       body += '<div class="argumentRow"><div class="pro argumentColumn""><center>PRO</center>';
@@ -576,7 +628,7 @@ function writeDropDown(author, perm) {
       document.getElementsByClassName('commentBox')[0].getElementsByTagName('textarea')[0].addEventListener('keyup', () => {
         const previewElement = document.getElementsByClassName('previewElement')[0];
         const contextValue = document.getElementsByClassName('commentBox')[0].getElementsByTagName('textarea')[0].value;
-        previewElement.innerHTML = converter.makeHtml(escapeHtml(contextValue));
+        previewElement.innerHTML = converter.makeHtml(parseHtml(contextValue));
       });
     });
   });

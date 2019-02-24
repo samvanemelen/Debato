@@ -1,9 +1,9 @@
 <html> 
     <head> 
-        <title>Debato - Discussion</title>
-        <meta name="description" content="Read the debato discussion here."> 
+        <title>Debato - Profile</title>
+        <meta name="description" content="Your Steem profile details"> 
         <link rel="stylesheet" type="text/css" href="/css/layout.css"> 
-        <link rel="stylesheet" type="text/css" href="/css/discussion.css"> 
+        <link rel="stylesheet" type="text/css" href="/css/profile.css"> 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aleo">
     </head>     
     <body style="font-family: Aleo;">  
@@ -23,10 +23,46 @@
                     </div>
                 </div>
             </header>
-            <div id = "discussion">
-                <div class="thumbnail" style="width: 90%; height: 300px;"></div>
-                <div id="discussionBody"></div>
+            <div id="profileCard">
+                <div id="profileInfo">
+                    <div id="profileImageLarge"></div>
+                    <p id="profileUsername"></p><p id="profileReputation"></p>
+                    <div id="powerBarContainer">
+                        <div id = "votePowerBar">
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="text-align: left">
+                        <p id="activeFor">Active for</p>
+                        <p id="followers">Followers</p>
+                        <p id="following">Following</p>
+                        <hr>
+                        <p id="about" style="font-size: 0.8em;"></p>
+                    </div>
+                    
+                </div>
+                <div id="profileContent"> 
+                    <div class="tab"> 
+                        <button class="tablinks" id="defaultOpen" onclick="openProfileTab(event, 'Discussions')">Discussions</button>                     
+                        <button class="tablinks" onclick="openProfileTab(event, 'Arguments')">Arguments</button>
+                        <button class="tablinks" onclick="openProfileTab(event, 'Wallet')">Wallet</button>                     
+                    </div>
+                    <hr>                              
+                    <div id="Discussions" class="tabcontent"> 
+                        <h3>created discussions</h3>
+                        <div class="discussionList" id="authorDiscussions"></div>                
+                    </div>
+                    <div id="Arguments" class="tabcontent"> 
+                        <h3>arguments on other discussions</h3> 
+                        <div id="authorComments"></div>                   
+                    </div>
+                    <div id="Wallet" class="tabcontent"> 
+                        <h3>wallet</h3>                     
+                    </div>                      
+                </div>          
             </div>
+
+
         </center>   
         <div id="errorbox" class = "popupbox">
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
@@ -46,4 +82,4 @@
 <script src="https://cdn.steemjs.com/lib/latest/steem.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/showdown@latest/dist/showdown.min.js"></script>
 <script src="/js/commons.js"></script>
-<script src="/js/discussion.js"></script>
+<script src="/js/profile.js"></script>
