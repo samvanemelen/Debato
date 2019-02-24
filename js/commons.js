@@ -93,7 +93,10 @@ function updateLoginStatus() {
   if (accessToken !== '') {
     steem.api.getAccounts([user], (err, result) => {
       const name = user;
-      const profileImage = JSON.parse(result[0].json_metadata).profile.profile_image;
+      let profileImage = '';
+      try {
+        profileImage = JSON.parse(result[0].json_metadata).profile.profile_image;
+      } catch (error) { profileImage = ''; }
       const body = `<div id = "profileImage" style="background-image:url(${profileImage});"></div><p id = "accountUsername">${name}</p>`;
       document.getElementById('accountLogin').innerHTML = body;
       document.getElementById('accountBox').style.backgroundColor = 'none';
