@@ -93,14 +93,11 @@ function updateLoginStatus() {
   if (accessToken !== '') {
     steem.api.getAccounts([user], (err, result) => {
       const name = user;
-      let profileImage = '';
-      try {
-        profileImage = JSON.parse(result[0].json_metadata).profile.profile_image;
-      } catch (error) { profileImage = ''; }
+      let profileImage = JSON.parse(result[0].json_metadata).profile.profile_image;
+      if (profileImage === undefined) { profileImage = ''; }
       const body = `<div id = "profileImage" style="background-image:url(${profileImage});"></div><p id = "accountUsername">${name}</p>`;
       document.getElementById('accountLogin').innerHTML = body;
-      document.getElementById('accountBox').style.backgroundColor = 'none';
-      document.getElementById('feed').style.display = '';
+      if (document.getElementById('feed')) { document.getElementById('feed').style.display = ''; }
       document.getElementById('profileLink').href = `/html/profile?u=${user}`;
       api = sc2.Initialize({
         app: 'debato-app',

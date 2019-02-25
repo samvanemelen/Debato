@@ -43,15 +43,12 @@ steem.api.getAccounts([profileUsername], (error, account) => {
   const profileUser = account[0];
   // eslint-disable-next-line prefer-destructuring
   const name = profileUser.name;
-  let profileImage = '';
   /*
-  JSON requests are temporarily run in a try statement
   if the JSON does not containt information such as 'profile image' or 'about'
   it should skip the step until a default image is incorporated
   */
-  try {
-    profileImage = JSON.parse(profileUser.json_metadata).profile.profile_image;
-  } catch (failed) { showError(failed); }
+  let profileImage = JSON.parse(account[0].json_metadata).profile.profile_image;
+  if (profileImage === undefined) { profileImage = ''; }
   const rawReputation = profileUser.reputation;
   let simpleReputation = 0;
   /*
@@ -62,11 +59,8 @@ steem.api.getAccounts([profileUsername], (error, account) => {
   const votingPower = profileUser.voting_power / 100;
   const createdDate = profileUser.created;
   const createdAge = timeSince(createdDate);
-  let about = '';
-  try {
-    // eslint-disable-next-line prefer-destructuring
-    about = JSON.parse(profileUser.json_metadata).profile.about;
-  } catch (failed) { showError(failed); }
+  // eslint-disable-next-line prefer-destructuring
+  let about = JSON.parse(profileUser.json_metadata).profile.about;
   if (about === undefined) { about = ''; }
   document.getElementById('profileUsername').innerHTML = name;
   document.getElementById('profileImageLarge').style.backgroundImage = `url(${profileImage})`;
