@@ -9,12 +9,18 @@ a {
   text-decoration: none;
 }
 .comment a {
-  color: #3b9954;
+  color: #005551;
   text-decoration: underline;
 }
+.comment a:hover {
+  color: #3b9954
+}
 .previewElement a {
-  color: #3b9954;
+  color: #005551;
   text-decoration: underline;
+}
+.previewElement a:hover {
+  color: #3b9954
 }
 input {
   width: 100%;
@@ -110,16 +116,12 @@ button:disabled {
   opacity: 0.7;
   cursor: pointer;
 }
-.frontImage {
-  width: 90%;
-  margin: 5px;
-  background-color: white;
-}
 .homelink {
   font-weight: bold;
   font-size: 2em;
   padding-left: 20px;
-  margin: 10px;
+  margin: 15px 0;
+  height: 1em;
 }
 .homelink:hover {
   cursor: hand;
@@ -181,8 +183,8 @@ button:disabled {
   margin: 5px;
   font-size: 0.8em;
   padding: 1px 5px; 
-  color: #005451;
-  border: 2px solid #238784;
+  color: #005551;
+  border: 2px solid #005551;
   border-radius: 0.8em;
 }
 .tag:hover {
@@ -196,13 +198,6 @@ button:disabled {
   opacity: 0.7;
 }
 #tagSearchBar{
-  display: inline-block;
-  margin: 5px;
-  font-size: 0.8em;
-  padding: 1px 5px; 
-  color: #005451;
-  border: 2px solid #238784;
-  border-radius: 0.8em;
   min-width: 55px;
   max-width: 130px;
   width: 55px;
@@ -314,13 +309,13 @@ button:disabled {
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background: #4CAF50;
+  background: #005551;
   cursor: pointer;
 }
 #voteSlider::-moz-range-thumb {
   width: 10px;
   height: 10px;
-  background: #4CAF50;
+  background: #005551;
   cursor: pointer;
 }
 @media screen and (max-width: 600px) {

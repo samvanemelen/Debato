@@ -6,7 +6,7 @@
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15);
 }
 #profileInfo{
-    background-color: #238784da;
+    background-color: #06706b;
     color: white;
     min-width: 100px;
     width:20%;
@@ -41,7 +41,7 @@
     margin: 0;
     height: 1em;
     border-radius: 5px;
-    background-color: #00706cda;
+    background-color: #005551;
 }
 #powerBarContainer{
     width: calc(100% - 20px);
@@ -54,7 +54,7 @@
 #votePowerBar{
     width: 100%;
     height: calc(100% - 0.5em);
-    background-color: #00706cda;
+    background-color: #005551;
     border-radius: 2px;
     padding: 0.25em;
     font-size: 1em;
@@ -72,8 +72,11 @@
     margin: 5px;
   }
   .argumentCard .parentLink{
-    color: #3b9954;
+    color: #005551;
     text-decoration: underline;
+  }
+  .argumentCard .parentLink:hover{
+    color: #3b9954;
   }
   .argumentCard .commentLink:hover{
     opacity: 0.5;

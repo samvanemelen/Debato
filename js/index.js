@@ -67,7 +67,7 @@ function loadDiscussions(tab, shownAmount = PostPerLoad, previous = 0, tag = '')
     if (activeTag === taglist[i]) { tagClass = 'tag active'; } else { tagClass = 'tag'; }
     tagSugBody += `<p class = "${tagClass}" onclick="loadDiscussions('${tab}',99 ,0 ,'${taglist[i]}')">${taglist[i]}</p>`;
   }
-  tagSugBody += '<input id = "tagSearchBar" placeholder="search">';
+  tagSugBody += '<input class= "tag" id = "tagSearchBar" placeholder="search">';
   document.getElementById('tagSuggestions').innerHTML = tagSugBody;
   /*
   Add event listener for any keypress in the tag search bar
