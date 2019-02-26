@@ -146,9 +146,9 @@ steem.api.getAccounts([profileUsername], (error, account) => {
           // Creates a card that displays the comment, the parent title, reward and age
           body += '<div class="argumentCard">';
           body += `<p style="font-size: 0.9em; color: ">Argumented (${postType}) on: `;
-          body += `<a class="parentLink" href="/html/discussion?a=${argumentParents[i].author}&p=${argumentParents[i].perm}">${argumentParents[i].title}</a>`;
-          body += ` by <a class="parentLink" href="/html/profile?u=${argumentParents[i].author}">${argumentParents[i].author}</a></p>`;
-          body += `<p class="commentLink" style="font-size:1.2em;"><a href = "/html/discussion?a=${postDetails.author}&p=${postDetails.perm}">${postDetails.title}</a></p>`;
+          body += `<a href="/html/discussion?a=${argumentParents[i].author}&p=${argumentParents[i].perm}">${argumentParents[i].title}</a>`;
+          body += ` by <a href="/html/profile?u=${argumentParents[i].author}">${argumentParents[i].author}</a></p>`;
+          body += `<p style="font-size:1.2em;"><a class="blackLink" href = "/html/discussion?a=${postDetails.author}&p=${postDetails.perm}">${postDetails.title}</a></p>`;
           body += `<p>${postDetails.reward} - ${timeSince(postDetails.created)} ago</p>`;
           body += '</div>';
         }
