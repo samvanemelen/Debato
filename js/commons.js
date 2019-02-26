@@ -559,12 +559,15 @@ function getRootImage(post) {
 function createDiscussionCard(post) {
   let body = '';
   const details = getPostData(post);
-  body += `<div class = "discussionObj" id = "${details.perm}"><button class="ObjLink" onclick="window.location.href='/html/discussion?a=${details.author}&p=${details.perm}'">`;
+  body += `<div class = "discussionObj" id = "${details.perm}">`;
+  body += `<button class="ObjLink" onclick="window.location.href='/html/discussion?a=${details.author}&p=${details.perm}'">`;
   if (details.thumbnail === false || details.thumbnail === '') {
-    body += `<div class = "thumbnail" style = "background-image:none"><p class="ratio box" id='ratio-${details.perm}'></p></div>`;
+    body += '<div class = "thumbnail" style = "background-image:none">';
   } else {
-    body += `<div class = "thumbnail" style = "background-image:url('${details.thumbnail}')"><div class="ratio box" id='ratio-${details.perm}'></div></div>`;
+    body += `<div class = "thumbnail" style = "background-image:url('${details.thumbnail}')">`;
   }
+  body += `<div title="${details.created}" class="ageBox">${timeSince(details.created)} ago</div>`;
+  body += `<div class="ratio box" id='ratio-${details.perm}'></div></div>`;
   body += `<p class = "cardTitle">${details.title}</h2>`;
   body += '<div id = "discussionBody"></div>';
   body += '</div>';

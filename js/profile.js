@@ -149,7 +149,7 @@ steem.api.getAccounts([profileUsername], (error, account) => {
           body += `<a href="/html/discussion?a=${argumentParents[i].author}&p=${argumentParents[i].perm}">${argumentParents[i].title}</a>`;
           body += ` by <a href="/html/profile?u=${argumentParents[i].author}">${argumentParents[i].author}</a></p>`;
           body += `<p style="font-size:1.2em;"><a class="blackLink" href = "/html/discussion?a=${postDetails.author}&p=${postDetails.perm}">${postDetails.title}</a></p>`;
-          body += `<p>${postDetails.reward} - ${timeSince(postDetails.created)} ago</p>`;
+          body += `<p title="${postDetails.created}">${postDetails.reward} - ${timeSince(postDetails.created)} ago</p>`;
           body += '</div>';
         }
         document.getElementById('authorComments').innerHTML = body;
