@@ -401,11 +401,13 @@ function getCommentStatus(author, perm, objId) {
       let conCount = 0;
       if (comments.length > 0) {
         for (let i = 0; i < comments.length; i += 1) {
-          if (JSON.parse(comments[i].json_metadata).type === 'pro') {
-            proCount += 1;
-          } else if (JSON.parse(comments[i].json_metadata).type === 'con') {
-            conCount += 1;
-          }
+          try {
+            if (JSON.parse(comments[i].json_metadata).type === 'pro') {
+              proCount += 1;
+            } else if (JSON.parse(comments[i].json_metadata).type === 'con') {
+              conCount += 1;
+            }
+          } catch (error) { /* Do nothing */ }
         }
       }
       resolve([`${proCount}|${conCount}`, objId]);
@@ -595,7 +597,7 @@ function writeDropDown(author, perm) {
         if (info.tags[i] !== 'debato-discussion') { body += `<a class = "tag" href="/index?tag=${info.tags[i]}">${info.tags[i]}</a>`; }
       }
       body += '<div id = "backPlaceholder"></div>'; // placeholder for back button
-      body += `<p><strong>By: ${info.author}</strong> - ${info.reward}</p>`;
+      body += `<p><strong>By: <a href="/html/profile?u=${info.author}">${info.author}</a></strong> - ${info.reward}</p>`;
       const parsedContext = converter.makeHtml(parseHtml(info.description));
       body += `<p>${parsedContext}</p>`;
       body += writeCommentList(ArgDict.com);

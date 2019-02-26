@@ -8,6 +8,9 @@ a {
   color: #000000;
   text-decoration: none;
 }
+a:hover {
+  opacity: 0.8;
+}
 .comment a {
   color: #005551;
   text-decoration: underline;
