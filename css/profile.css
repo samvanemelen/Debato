@@ -71,13 +71,6 @@
   .argumentCard p{
     margin: 5px;
   }
-  .argumentCard .parentLink{
-    color: #005551;
-    text-decoration: underline;
-  }
-  .argumentCard .parentLink:hover{
-    color: #3b9954;
-  }
   .argumentCard .commentLink:hover{
     opacity: 0.5;
     cursor: pointer;

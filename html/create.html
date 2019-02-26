@@ -19,17 +19,17 @@
     <body style="font-family: Aleo;"> 
         <center style="width: 100%; max-width: 100%;">
             <header style="width: 90%;">
-                <a class="homelink" href="/index">DEBATO</a>
-                <a id = "createAccount" href = 'https://signup.steemit.com/?ref=debato'>Sign up</a>
+                <a class="homelink blackLink" href="/index">DEBATO</a>
+                <a id = "createAccount" class="blackLink" href = 'https://signup.steemit.com/?ref=debato'>Sign up</a>
                 <div id="accountBox" onmouseover="toggleMenu(true);" onmouseleave="toggleMenu(false);">
-                    <div id = "accountLogin"><a id ="SteemConnect" href="https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=https://www.debato.org&scope=vote,comment,delete_comment">
+                    <div id = "accountLogin"><a id ="SteemConnect" class="blackLink" href="https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=https://www.debato.org&scope=vote,comment,delete_comment">
                         Log in
                     </a></div>
                     <div id="accountMenu">
                     	<div><input id = "voteSlider" type = "range" min = "1" max = "10000" value = "10000"><p id = "voteIndicator">100% upvotes</p></div>
-                        <a href="/html/create">Start discussion</a>
-                        <a id="profileLink" href="/html/profile">My profile</a>
-                    	<a onclick = "logout()">Log out</a>
+                        <a class="blackLink" href="/html/create">Start discussion</a>
+                        <a class="blackLink" id="profileLink" href="/html/profile">My profile</a>
+                    	<a class="blackLink" onclick = "logout()">Log out</a>
                     </div>
                 </div>
             </header>

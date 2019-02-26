@@ -108,7 +108,7 @@ function updateLoginStatus() {
     });
   } else {
     const redirURL = window.location.href.split('/').slice(0, 3).join('/');
-    const link = `<a id = "SteemConnect" href = "https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=${redirURL}&scope=vote,comment,delete_comment">Log in</a>`;
+    const link = `<a id = "SteemConnect" class="blackLink" href = "https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=${redirURL}&scope=vote,comment,delete_comment">Log in</a>`;
     document.getElementById('accountLogin').innerHTML = link;
     document.getElementById('createAccount').style.display = 'block';
   }
@@ -289,7 +289,7 @@ function comment(textbox, commenttype) {
     } else {
       newArg = `<h3 id = de-${newPerm}><p class='voteCounter'>0</p>`;
       newArg += `<div class = "relevantButton" onclick="upvote(this, '${user}','${newPerm}')"><div></div></div>`;
-      newArg += `<a class="commentLink" onclick="writeDropDown('${user}', '${newPerm}')"> ${body}</a>`;
+      newArg += `<a class="commentLink blackLink" onclick="writeDropDown('${user}', '${newPerm}')"> ${body}</a>`;
       newArg += `<a class = "removeButton" onclick = "deleteComment('${user}','${newPerm}')">    remove</a>`;
       showSuccess('Successfully commented on the discussion!');
     }
@@ -478,7 +478,7 @@ function writeArgumentList(comments, divID) {
           line += `<div class = "relevantButton ${attributes}" onclick="${voteType}(this,'${commentElement.author}','${commentElement.permlink}')">`;
           line += '<div></div></div>';
         }
-        line += `<a class="commentLink" onclick="writeDropDown('${commentElement.author}','${commentElement.permlink}')"> `;
+        line += `<a class="commentLink blackLink" onclick="writeDropDown('${commentElement.author}','${commentElement.permlink}')"> `;
         line += `${parseHtml(commentElement.body)}<p class='ratio' id='ratio-${commentElement.permlink}'></p></a>`;
         if (commentElement.author === user
           && commentElement.children === 0
