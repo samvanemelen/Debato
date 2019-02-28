@@ -594,7 +594,7 @@ function writeDropDown(author, perm) {
       body += '<div id = \'trianglePlaceholder\' style=\'display: inline-block\' ></div>'; // placeholder for upvote triangle
       body += `<h1 style ="display: inline-block">${info.title}</h1><br>`;
       if (info.author === user) {
-        body += `<a class = "editlink" href='http://localhost/html/create?p=${activePost.permlink}'>edit</a>`;
+        body += `<a class = "editlink" href='/html/create?p=${activePost.permlink}'>edit</a>`;
       }
       for (let i = 0; i < info.tags.length; i += 1) {
         if (info.tags[i] !== 'debato-discussion') { body += `<a class = "tag" href="/index?tag=${info.tags[i]}">${info.tags[i]}</a>`; }
