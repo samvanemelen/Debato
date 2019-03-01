@@ -51,16 +51,23 @@ function showSuccess(message) {
     if (successbox.style.display !== 'none') { successbox.style.display = 'none'; }
   }, 7000);
 }
-function toggleMenu(show) {
+function toggleMenu(show = null) {
   /*
   When the user hovers over the Account element it checks if the user is logged in
   -> the user is not '' nor undefined
   if this is the case the max height is set to 200px, if the user leaves the element
   max height is set to 0
+  For mobile versions the button can also be clicked to toggle the menu. In this case
+  the variable 'show' is not given and remains null. Then it should toggle depending
+  on the existing value of max-Height.
   */
   const accountMenu = document.getElementById('accountMenu');
   if (user !== '' && user !== undefined) {
-    if (show) { accountMenu.style.maxHeight = '200px'; } else { accountMenu.style.maxHeight = '0'; }
+    if (show === null) {
+      if (accountMenu.style.maxHeight === '' || accountMenu.style.maxHeight === '0px') {
+        accountMenu.style.maxHeight = '200px';
+      } else { accountMenu.style.maxHeight = '0'; }
+    } else if (show) { accountMenu.style.maxHeight = '200px'; } else if (!show) { accountMenu.style.maxHeight = '0'; }
   }
 }
 function updateLoginStatus() {
