@@ -1,4 +1,5 @@
-/* global updateLoginStatus getUrlVars getPostData getCommentStatus createDiscussionCard:true */
+/* global updateLoginStatus getUrlVars getPostData
+getCommentStatus createDiscussionCard :true */
 /* eslint-disable no-unused-vars */
 let activeTab = '';
 let activeTag = '';
@@ -102,33 +103,44 @@ function loadDiscussions(tab, shownAmount = PostPerLoad, previous = 0, tag = '')
   If a tag was parsed to the function, it should write the discussionlist
   with the filtered results. If not, the entire postlist is used
   */
-  if (tab === 'New') {
-    steem.api.getDiscussionsByCreated({ limit: shownAmount + 1, tag: 'debato-discussion' }, (err, posts) => {
-      let postlist = [];
-      if (activeTag !== '') { postlist = filterPosts(posts, activeTag); } else { postlist = posts; }
-      writeDiscussionList(postlist, shownAmount, previous);
-    });
-  }
-  if (tab === 'Trending') {
-    steem.api.getDiscussionsByTrending({ limit: shownAmount + 1, tag: 'debato-discussion' }, (err, posts) => {
-      let postlist = [];
-      if (activeTag !== '') { postlist = filterPosts(posts, activeTag); } else { postlist = posts; }
-      writeDiscussionList(filterPosts(postlist, tag), shownAmount, previous);
-    });
-  }
-  if (tab === 'Feed') {
-    steem.api.getDiscussionsByFeed({ limit: 100, tag: user }, (err, posts) => {
-      let postlist = [];
-      const discussionlist = [];
-      if (activeTag !== '') { postlist = filterPosts(posts, activeTag); } else { postlist = posts; }
-      for (let i = 0; i < postlist.length; i += 1) {
-        const tags = JSON.parse(postlist[i].json_metadata);
-        if ('debato-discussion' in tags) {
-          discussionlist.push(postlist[i]);
+  switch (tab) {
+    case 'New':
+      steem.api.getDiscussionsByCreated({ limit: shownAmount + 1, tag: 'debato-discussion' }, (err, posts) => {
+        let postlist = [];
+        if (activeTag !== '') { postlist = filterPosts(posts, activeTag); } else { postlist = posts; }
+        writeDiscussionList(postlist, shownAmount, previous);
+      });
+      break;
+    case 'Trending':
+      steem.api.getDiscussionsByTrending({ limit: shownAmount + 1, tag: 'debato-discussion' }, (err, posts) => {
+        let postlist = [];
+        if (activeTag !== '') { postlist = filterPosts(posts, activeTag); } else { postlist = posts; }
+        writeDiscussionList(postlist, shownAmount, previous);
+      });
+      break;
+    case 'Feed':
+      steem.api.getDiscussionsByFeed({ limit: 100, tag: user }, (err, posts) => {
+        let postlist = [];
+        const discussionlist = [];
+        if (activeTag !== '') { postlist = filterPosts(posts, activeTag); } else { postlist = posts; }
+        for (let i = 0; i < postlist.length; i += 1) {
+          const tags = JSON.parse(postlist[i].json_metadata);
+          if ('debato-discussion' in tags) {
+            discussionlist.push(postlist[i]);
+          }
         }
-      }
-      writeDiscussionList(filterPosts(discussionlist, tag), 99, previous);
-    });
+        writeDiscussionList(filterPosts(discussionlist, tag), 99, previous);
+      });
+      break;
+    case 'Hot':
+      steem.api.getDiscussionsByHot({ limit: shownAmount + 1, tag: 'debato-discussion' }, (err, posts) => {
+        let postlist = [];
+        if (activeTag !== '') { postlist = filterPosts(posts, activeTag); } else { postlist = posts; }
+        writeDiscussionList(postlist, shownAmount, previous);
+      });
+      break;
+    default:
+    // Do nothing
   }
 }
 function openTab(evt, tabName) {

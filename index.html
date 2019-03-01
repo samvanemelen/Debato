@@ -12,6 +12,7 @@
         <link rel="manifest" href="/imgs/favicon/site.webmanifest">
         <link rel="mask-icon" href="/imgs/favicon/safari-pinned-tab.svg" color="#5bbad5">
         <link rel="shortcut icon" href="/imgs/favicon/favicon.ico">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
         <meta name="msapplication-TileColor" content="#00aba9">
         <meta name="msapplication-config" content="/imgs/favicon/browserconfig.xml">
         <meta name="theme-color" content="#ffffff">
@@ -38,6 +39,7 @@
                 <div class="tab"> 
                     <button class="tablinks" id="defaultOpen" onclick="openTab(event, 'New')">New</button>                     
                     <button class="tablinks" onclick="openTab(event, 'Trending')">Trending</button>
+                    <button class="tablinks" onclick="openTab(event, 'Hot')">Hot</button>
                     <button class="tablinks" id="feed" style = "display: none;" onclick="openTab(event, 'Feed')">Feed</button>                     
                 </div>                 
                 <div id = "tagSuggestions"></div>               
@@ -47,6 +49,10 @@
                 </div>
                 <div id="Trending" class="tabcontent"> 
                     <h2>Trending Discussions</h2> 
+                    <div class="discussionList">loading.</div>                     
+                </div>
+                <div id="Hot" class="tabcontent"> 
+                    <h2>Hot Discussions</h2> 
                     <div class="discussionList">loading.</div>                     
                 </div>
                 <div id="Feed" class="tabcontent"> 

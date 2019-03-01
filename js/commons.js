@@ -186,6 +186,27 @@ function parseHtml(string) {
   parsedString = parsedString.replace(/@([a-zA-Z]+[a-zA-Z1-9-.]+[a-zA-Z1-9]+)/g, '<a href = "/html/profile?u=$1">@$1</a>');
   return parsedString;
 }
+function isHot(post) {
+  /*
+  This formula is derrived from the steem source code
+  https://github.com/steemit/steem/blob/f2c60798dc8b0aeaebb5b077b703b07a2642b412/libraries/plugins/tags/tags_plugin.cpp#L27
+  In the source they use unix time in stead of age. With this the score gets higher and higher
+  In this way new hot posts are always scoring higher compared to previous posts.
+  To make it comparable to a fixed value (to determine whether it is hot or not)
+  age is used in stead of unix time of creation. With this they can reach a peak score,
+  but quickly lose score again rather than every other post gaining score
+  This adaptation might need to be tweaked in the future
+  */
+  const rshares = post.net_rshares;
+  const age = new Date(post.created) - new Date();
+  const modscore = rshares / 10000000;
+  const order = Math.log10(Math.abs(modscore));
+  let sign = -1;
+  if (modscore > 0) { sign = 1; }
+  const Finalscore = sign * order + age / (1000 * 10000);
+  if (Finalscore > 3 && Finalscore !== Infinity) { return true; }
+  return false;
+}
 function upvote(obj, author, perm) {
   // Upvote a post and change the settings of the upvote button
   obj.classList.add('rotate');
@@ -575,7 +596,9 @@ function createDiscussionCard(post) {
   }
   body += `<div title="${details.created}" class="ageBox">${timeSince(details.created)} ago</div>`;
   body += `<div class="ratio box" id='ratio-${details.perm}'></div></div>`;
-  body += `<p class = "cardTitle">${details.title}</h2>`;
+  body += '<p class = "cardTitle">';
+  if (isHot(post)) { body += '<i class="fas fa-fire-alt" title="Hot!" style="color:rgb(121, 6, 2);"></i> '; }
+  body += `${details.title}</h2>`;
   body += '<div id = "discussionBody"></div>';
   body += '</div>';
   return body;
@@ -599,7 +622,9 @@ function writeDropDown(author, perm) {
       metaList[0].setAttribute('content', info.description);
       const discussionBody = document.getElementById('discussionBody');
       body += '<div id = \'trianglePlaceholder\' style=\'display: inline-block\' ></div>'; // placeholder for upvote triangle
-      body += `<h1 style ="display: inline-block">${info.title}</h1><br>`;
+      body += `<h1 style ="display: inline-block">${info.title}`;
+      if (isHot(post)) { body += ' <i class="fas fa-fire-alt" title="Hot!" style="color:rgb(121, 6, 2);"></i>'; }
+      body += '</h1><br>';
       if (info.author === user) {
         body += `<a class = "editlink" href='/html/create?p=${activePost.permlink}'>edit</a>`;
       }
