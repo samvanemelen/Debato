@@ -208,6 +208,19 @@ button:disabled {
   font-size: 1.2em;
   font-weight: bold;
 }
+.argumentCard{
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+  padding: 5px;
+  margin: 5px 0 5px 0;
+  text-align: left;
+}
+.argumentCard p{
+  margin: 5px;
+}
+.argumentCard .commentLink:hover{
+  opacity: 0.5;
+  cursor: pointer;
+}
 .ratio {
   margin-top: 0;
   margin-bottom: 0;
@@ -321,7 +334,7 @@ button:disabled {
   cursor: pointer;
 }
 @media screen and (max-width: 600px) {
-  .argumentColumn {
+  .argumentRow > .argumentColumn {
     width: 100%;
   }
   .discussionForm {

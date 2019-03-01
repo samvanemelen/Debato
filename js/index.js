@@ -5,7 +5,7 @@ let activeTab = '';
 let activeTag = '';
 let expiresIn = '';
 const taglist = ['sport', 'politics', 'science', 'ethics'];
-const PostPerLoad = 6;
+const PostPerLoad = 20;
 const currentURL = window.location.href;
 const URLvars = getUrlVars();
 

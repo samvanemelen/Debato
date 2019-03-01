@@ -16,7 +16,7 @@
     border-width: thin;
     float: left;
     margin: 1%;
-    padding: 5px;
+    padding: 15px;
     width: 49%;
   }
   .argumentColumn.pro {
@@ -50,7 +50,7 @@
     box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
   }
   .comment {
-    margin: 30px;
+    margin: 10px;
     font-size: 0.9em;
     text-align: left;
   }
@@ -82,34 +82,24 @@
   }
   .collapsible:hover {
     background-color: #ccc;
-  }.relevantButton {
-  display: inline-block;
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  background-color: #ccc;
+  }
+  .relevantButton {
+  color: #ccc;
 }
 .relevantButton:hover {
-  background-color: #73a07f;
+  color: #73a07f;
   cursor: pointer;
 }
 .relevantButton.activated {
-  background-color: #3b9954;
+  color: #3b9954;
 }
 .relevantButton.activated:hover {
-  background-color: #ba5925;
+  color: #ba5925;
 }
 .relevantButton.rotate {
   -webkit-animation: upvoteRotation 1.5s infinite 0s ease-in-out;
           animation: upvoteRotation 1.5s infinite 0s ease-in-out;
   cursor: default;
-}
-.relevantButton.rotate div {
-  height: 5px;
-  width: 5px;
-  border-radius: 50%;
-  background-color: black;
-  margin: 2px;
 }
 .voteCounter {
     display: inline-block;
@@ -144,60 +134,43 @@
   border-bottom: 25px solid #ba5925;
 }
 .relevantButton {
-    display: inline-block;
-    height: 16px;
-    width: 16px;
-    border-radius: 50%;
-    background-color: #ccc;
+    color: #ccc;
   }
   .relevantButton:hover {
-    background-color: #73a07f;
+    color: #73a07f;
     cursor: pointer;
   }
   .relevantButton.activated {
-    background-color: #3b9954;
+    color: #3b9954;
   }
   .relevantButton.activated:hover {
-    background-color: #ba5925;
+    color: #ba5925;
   }
   .relevantButton.rotate {
     -webkit-animation: upvoteRotation 1.5s infinite 0s ease-in-out;
             animation: upvoteRotation 1.5s infinite 0s ease-in-out;
     cursor: default;
   }
-  .relevantButton.rotate div {
-    height: 5px;
-    width: 5px;
-    border-radius: 50%;
-    background-color: black;
-    margin: 2px;
+  #upvoteButton {
+    color: #ccc;
   }
-  .triangle {
-    width: 0;
-    height: 0;
-    margin-right: 10px;
-    margin-top: 10px;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-bottom: 25px solid #ccc;
-  }
-  .triangle:hover {
-    border-bottom: 25px solid #73a07f;
+  #upvoteButton:hover {
+    color: #73a07f;
     cursor: pointer;
   }
-  .triangle.rotate {
+  #upvoteButton.rotate {
     -webkit-animation: upvoteRotation 1.5s infinite 0s ease-in-out;
             animation: upvoteRotation 1.5s infinite 0s ease-in-out;
     cursor: default;
   }
-  .triangle.rotate:hover {
-    background-color: inherit;
+  #upvoteButton.rotate:hover {
+    color: #ccc;
   }
-  .triangle.activated {
-    border-bottom: 25px solid #3b9954;
+  #upvoteButton.activated {
+    color: #3b9954;
   }
-  .triangle.activated:hover {
-    border-bottom: 25px solid #ba5925;
+  #upvoteButton.activated:hover {
+    color: #ba5925;
   }
   .backButton {
     background-color: #ddd;

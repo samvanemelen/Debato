@@ -500,20 +500,23 @@ function writeArgumentList(comments, divID) {
           voteType = 'removeVote';
           attributes = 'activated';
         }
-        line += `<h3 id = de-${commentElement.permlink}>`;
-        line += `<p class='voteCounter'>${values[i].net_votes}</p>`;
+        line += `<div class="argumentCard"  id = de-${commentElement.permlink} style="display: flex;justify-content: space-between">`;
+        line += '<span style=" line-height:100%; padding:5px;"><center>';
+        line += `<p class='voteCounter'>${values[i].net_votes}</p><br>`;
         if (user !== '' && user !== undefined) {
-          line += `<div class = "relevantButton ${attributes}" onclick="${voteType}(this,'${commentElement.author}','${commentElement.permlink}')">`;
-          line += '<div></div></div>';
+          line += `<i class="fas fa-chevron-circle-up relevantButton ${attributes}" onclick="${voteType}(this,'${commentElement.author}','${commentElement.permlink}')"></i>`;
+          line += '</center></span>';
         }
-        line += `<a class="commentLink blackLink" onclick="writeDropDown('${commentElement.author}','${commentElement.permlink}')"> `;
-        line += `${parseHtml(commentElement.body)}<p class='ratio' id='ratio-${commentElement.permlink}'></p></a>`;
+        line += '<span style="width:100%;padding: 5px;margin:auto 0 auto 0;">';
+        line += `<a class="commentLink blackLink" style="font-size:1.2em;" onclick="writeDropDown('${commentElement.author}','${commentElement.permlink}')"> `;
+        line += `${parseHtml(commentElement.body)}</a></span>`;
+        line += `<span style="padding: 5px;margin:auto 0 auto 0;"><p class='ratio' id='ratio-${commentElement.permlink}'></p></span>`;
         if (commentElement.author === user
           && commentElement.children === 0
           && commentElement.active_votes.length === 0) {
           line += `<a class = "removeButton" onclick = "deleteComment('${commentElement.author}','${commentElement.permlink}')">    remove</a>`;
         }
-        body += '</h3>';
+        body += '</div>';
         document.getElementsByClassName(divID)[0].innerHTML += line;
         getCommentStatus(commentElement.author, commentElement.permlink, `ratio-${commentElement.permlink}`).then((ratio) => {
           // eslint-disable-next-line prefer-destructuring
@@ -537,7 +540,6 @@ function writeCommentList(commentList) {
       body += writeCommentBox('comment');
     }
     for (let i = 0; i < commentCount; i += 1) {
-      if (i !== 0) { body += '<hr>'; }
       let removeButton = '';
       if (user === commentList[i].author
         && commentList[i].children === 0
@@ -545,7 +547,7 @@ function writeCommentList(commentList) {
         removeButton = `<a class = "removeButton" onclick = "deleteComment('${commentList[i].author}','${commentList[i].permlink}')">    remove</a>`;
       }
       const commentContent = converter.makeHtml(parseHtml(commentList[i].body));
-      body += `<div class = "comment" id = de-${commentList[i].permlink}><strong>${commentList[i].author}:</strong><div style="margin-left: 10px;">${commentContent}${removeButton}</div></div>`;
+      body += `<div class = "comment argumentCard" style="padding:20px;"id="de-${commentList[i].permlink}"><strong>${commentList[i].author}:</strong><div style="margin-left: 10px;">${commentContent}${removeButton}</div></div>`;
     }
   } else {
     body += '<button class="collapsibleButton comments" onclick="commentsDropDown(this)">There are no comments on this statement</button>';
@@ -621,13 +623,13 @@ function writeDropDown(author, perm) {
       const metaList = document.getElementsByTagName('meta');
       metaList[0].setAttribute('content', info.description);
       const discussionBody = document.getElementById('discussionBody');
-      body += '<div id = \'trianglePlaceholder\' style=\'display: inline-block\' ></div>'; // placeholder for upvote triangle
-      body += `<h1 style ="display: inline-block">${info.title}`;
+      body += `<h1 style ="display: inline-block"><i id="upvoteButton" class="fas fa-chevron-circle-up"></i> ${info.title}`;
       if (isHot(post)) { body += ' <i class="fas fa-fire-alt" title="Hot!" style="color:rgb(121, 6, 2);"></i>'; }
-      body += '</h1><br>';
+      body += '</h1>';
       if (info.author === user) {
         body += `<a class = "editlink" href='/html/create?p=${activePost.permlink}'>edit</a>`;
       }
+      body += '<br>';
       for (let i = 0; i < info.tags.length; i += 1) {
         if (info.tags[i] !== 'debato-discussion') { body += `<a class = "tag" href="/index?tag=${info.tags[i]}">${info.tags[i]}</a>`; }
       }
@@ -646,14 +648,14 @@ function writeDropDown(author, perm) {
         backPlaceholder.innerHTML = `<button class="backButton" onclick="writeDropDown('${parentResult[1]}','${parentResult[2]}')">back</button>`;
       }
       if (user !== '' && user !== undefined) {
-        let upvoteButtonBody = '';
         getVoteStatus(post).then((values) => {
           if (values.voteStatus) {
-            upvoteButtonBody += `<div class='triangle activated' onclick="removeVote(this, '${activePost.author}','${activePost.permlink}')"></div>`;
+            document.getElementById('upvoteButton').className += ' activated';
+            document.getElementById('upvoteButton').setAttribute('onclick', `removeVote(this, '${activePost.author}','${activePost.permlink}')`);
           } else {
-            upvoteButtonBody += `<div class='triangle' onclick="upvote(this, '${activePost.author}','${activePost.permlink}')"></div>`;
+            document.getElementById('upvoteButton').className.replace(' activated', '');
+            document.getElementById('upvoteButton').setAttribute('onclick', `upvote(this, '${activePost.author}','${activePost.permlink}')`);
           }
-          document.getElementById('trianglePlaceholder').innerHTML = upvoteButtonBody;
         });
       }
       writeArgumentList(ArgDict.pro, 'pro');
