@@ -14,7 +14,7 @@ if ('access_token' in URLvars) {
   expiresIn = URLvars.expires_in;
   user = URLvars.username;
   const expiresOn = new Date();
-  const weightSlider = document.getElementById('voteSlider');
+  const weightSlider = document.getElementsByClassName('voteSlider')[0];
   expiresOn.setSeconds(expiresOn.getSeconds() + parseInt(expiresIn, 10));
   document.cookie = `username=${user};expires=${expiresOn}; path=/;`;
   document.cookie = `accessToken=${accessToken};expires=${expiresOn}; path=/;`;

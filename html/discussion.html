@@ -1,6 +1,7 @@
 <html> 
     <head> 
         <title>Debato - Discussion</title>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
         <meta name="description" content="Read the debato discussion here."> 
         <link rel="stylesheet" type="text/css" href="/css/layout.css"> 
         <link rel="stylesheet" type="text/css" href="/css/discussion.css"> 
@@ -11,7 +12,6 @@
         <link rel="manifest" href="/imgs/favicon/site.webmanifest">
         <link rel="mask-icon" href="/imgs/favicon/safari-pinned-tab.svg" color="#5bbad5">
         <link rel="shortcut icon" href="/imgs/favicon/favicon.ico">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
         <meta name="msapplication-TileColor" content="#00aba9">
         <meta name="msapplication-config" content="/imgs/favicon/browserconfig.xml">
         <meta name="theme-color" content="#ffffff">
@@ -19,21 +19,37 @@
     </head>     
     <body style="font-family: Aleo;">  
         <center style="width: 100%; max-width: 100%;">
-            <header style="width: 90%;">
-                <a class="homelink blackLink" href="/index">DEBATO</a>
-                <a id = "createAccount" class="blackLink" href = 'https://signup.steemit.com/?ref=debato'>Sign up</a>
-                <div id="accountBox" onclick="toggleMenu();" onmouseover="toggleMenu(true);" onmouseleave="toggleMenu(false);">
-                    <div id = "accountLogin"><a id ="SteemConnect" class="blackLink" href="https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=https://www.debato.org&scope=vote,comment,delete_comment">
-                        Log in
-                    </a></div>
-                    <div id="accountMenu">
-                    	<div><input id = "voteSlider" type = "range" min = "1" max = "10000" value = "10000"><p id = "voteIndicator">100% upvotes</p></div>
-                        <a class="blackLink" href="/html/create">Start discussion</a>
-                        <a class="blackLink" id="profileLink" href="/html/profile">My profile</a>
-                    	<a class="blackLink" onclick = "logout()">Log out</a>
+                <header>
+                        <i class="fas fa-bars mobile_menu" onclick="document.getElementById('mainMenu').style.display = 'block'"></i>
+                        <nav id="mainMenu">
+                        <span id="fade"  onclick="document.getElementById('mainMenu').style.display = 'none'"></span>
+                        <ul>
+                            <i class="fas fa-times exit_btn" onclick="document.getElementById('mainMenu').style.display = 'none'"></i>
+                            <li class="show_logged_in"><div id="profilePreview"></div></li>
+                            <br>
+                            <li class="hide_logged_in"><a href = 'https://signup.steemit.com/?ref=debato'>Sign up</a></li>
+                            <li class="hide_logged_in"><a href="https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=https://www.debato.org&scope=vote,comment,delete_comment">Log in</a></li>
+                            <li class="show_logged_in"><div><input class = "voteSlider" type = "range" min = "1" max = "10000" value = "10000"><p class = "voteIndicator">100% upvotes</p></div></li>
+                            <li><a href="/">Browse discussions</a></li>
+                            <li class="show_logged_in"><a href="/html/create">Start discussion</a></li>
+                            <li class="show_logged_in"><a class="profileLink" href="/html/profile">My profile</a></li>
+                            <li class="show_logged_in"><a onclick = "logout()">Log out</a></li>
+                        </ul>
+                    </nav
+                    ><a class="homelink blackLink" href="/index">DEBATO</a>
+                    <a id = "createAccount" class="blackLink hide_logged_in hide_on_mobile" href = 'https://signup.steemit.com/?ref=debato'>Sign up</a>
+                    <div id="accountBox" onclick="toggleMenu();" onmouseover="toggleMenu(true);" onmouseleave="toggleMenu(false);">
+                        <div id = "accountLogin"><a id ="SteemConnect" class="blackLink" href="https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=https://www.debato.org&scope=vote,comment,delete_comment">
+                            Log in
+                        </a></div>
+                        <div id="accountMenu">
+                            <div><input class = "voteSlider" type = "range" min = "1" max = "10000" value = "10000"><p class = "voteIndicator">100% upvotes</p></div>
+                            <a class="blackLink" href="/html/create">Start discussion</a>
+                            <a class="blackLink profileLink" href="/html/profile">My profile</a>
+                            <a class="blackLink" onclick = "logout()">Log out</a>
+                        </div>
                     </div>
-                </div>
-            </header>
+                </header>
             <div id = "discussion">
                 <div class="thumbnail" style="width: 90%; height: 300px;"></div>
                 <div id="discussionBody"></div>

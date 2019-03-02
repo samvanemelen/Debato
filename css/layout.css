@@ -11,6 +11,10 @@ a {
 a:hover {
   color: #3b9954
 }
+.blackLink{
+  color: black;
+  text-decoration: none;
+}
 input {
   width: 100%;
   padding-top: 5;
@@ -18,12 +22,10 @@ input {
   vertical-align: middle;
 }
 textarea {
-  margin-left: 1%;
-  margin-right: 1%;
   padding: 5;
   height: 100px;
-  width: 98%;
-  max-width: 98%;
+  width: 100%;
+  max-width: 100%;
 }
 header {
   background-color: white;
@@ -31,11 +33,62 @@ header {
   flex-wrap: wrap;
   justify-content: space-between;
   max-height: 60px;
+  width: 90%
+}
+#fade {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.5;
+  z-index: 5;
+}
+nav {
+  display: none;
+}
+nav ul {
+  position: fixed;
+  margin-block-start: 0;
+  padding-inline-start: 0;
+  width: 60%;
+  top: 0;
+  left: 0;
+  text-align: left;
+  background: rgb(36,41,44);
+  height: 100%;
+  z-index: 10;
+  padding-top: 3em;
+  color: white;
+}
+nav ul li {
+  list-style-type: none;
+  background-color: rgb(52,59,63);
+}
+nav ul li div {
+  padding: 1em 2em;
+}
+nav ul li a {
+  box-sizing: border-box;
+  color: white;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  padding: 1em 2em;
+}
+.exit_btn {
+  display: block;
+  text-align: right;
+  font-size: 1.5em;
+  margin: -1em 1.2em 1em 1.2em;
+  cursor: pointer;
+}
+.show_logged_in{
+  display: none;
 }
 #createAccount {
   margin: auto;
   margin-right: 10px;
-  display: none;
 }
 #createAccount:hover {
   opacity: 0.5;
@@ -108,7 +161,7 @@ button:disabled {
 .homelink {
   font-weight: bold;
   font-size: 2em;
-  padding-left: 20px;
+  padding: 0 20px 0 20px;
   margin: 15px 0;
   height: 1em;
 }
@@ -251,9 +304,15 @@ button:disabled {
   margin: 7px;
   font-size: 1.2em;
 }
-.blackLink{
-  color: black;
-  text-decoration: none;
+#profilePreview {
+  text-align: center;
+}
+#profilePreview div {
+  padding: 1em;
+  margin-right: 1em;
+}
+#profilePreview #accountUsername {
+  font-size: 1.5em;
 }
 #profileImage {
   height: 25px;
@@ -305,33 +364,52 @@ button:disabled {
   cursor: pointer;
   background-color: #ddd;
 }
-#voteSlider{
+.voteSlider{
   -webkit-appearance: none;
   width: 100%;
-  height: 3px;
+  height: 1px;
   background-color: #d3d3d3;
   outline: none;
   opacity: 0.7;
   -webkit-transition: .2s;
   transition: opacity .2s;
 }
-#voteSlider:hover{
+.voteSlider:hover{
   opacity: 1;
 }
-#voteSlider::-webkit-slider-thumb {
+.voteSlider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: #005551;
   cursor: pointer;
 }
-#voteSlider::-moz-range-thumb {
+.voteSlider::-moz-range-thumb {
   width: 10px;
   height: 10px;
   background: #005551;
   cursor: pointer;
+}
+.voteIndicator {
+  margin-bottom: 0;
+}
+.mobile_menu {
+  display: none;
+}
+.mobile_menu:hover {
+  cursor: pointer;
+}
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 2px;
 }
 @media screen and (max-width: 600px) {
   .argumentRow > .argumentColumn {
@@ -356,17 +434,22 @@ button:disabled {
     padding: 5px;
     margin: 5px;
   }
+  header {
+    width: 100%;
+  }
+  .mobile_menu {
+    display: inline-block;
+    font-size: 2em;
+    margin: auto 0 auto 10px;
+  }
+  #accountBox {
+    display: none;
+  }
+  .hide_on_mobile {
+    display: none;
+  }
 }
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  border-radius: 2px;
-}
-::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 2px;
-}
+
 @keyframes upvoteRotation{
   0%{
       transform: rotate(10deg);

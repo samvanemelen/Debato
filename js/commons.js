@@ -1,12 +1,24 @@
 /* eslint-disable no-unused-vars */
 user = ''; accessToken = ''; expiresIn = ''; weight = 10000;
-const weightSlider = document.getElementById('voteSlider');
+const weightSlider1 = document.getElementsByClassName('voteSlider')[0];
+const weightSlider2 = document.getElementsByClassName('voteSlider')[1];
 const converter = new showdown.Converter({ simplifiedAutoLink: true });
 // eslint-disable-next-line func-names
-weightSlider.oninput = function () {
+weightSlider1.oninput = function () {
   // When the weight slider changes, change the cookie and change the indicator
   weight = this.value;
-  document.getElementById('voteIndicator').innerHTML = `${this.value / 100}% upvotes`;
+  document.getElementsByClassName('voteSlider')[1].value = this.value;
+  document.getElementsByClassName('voteSlider')[0].nextElementSibling.innerHTML = `${this.value / 100}% upvotes`;
+  document.getElementsByClassName('voteSlider')[1].nextElementSibling.innerHTML = `${this.value / 100}% upvotes`;
+  document.cookie = `weight=${weight}; path=/`;
+};
+// eslint-disable-next-line func-names
+weightSlider2.oninput = function () {
+  // When the weight slider changes, change the cookie and change the indicator
+  weight = this.value;
+  document.getElementsByClassName('voteSlider')[0].value = this.value;
+  document.getElementsByClassName('voteSlider')[0].nextElementSibling.innerHTML = `${this.value / 100}% upvotes`;
+  document.getElementsByClassName('voteSlider')[1].nextElementSibling.innerHTML = `${this.value / 100}% upvotes`;
   document.cookie = `weight=${weight}; path=/`;
 };
 function showError(message) {
@@ -93,8 +105,8 @@ function updateLoginStatus() {
     if ('accessToken' in cookieDict) { accessToken = cookieDict.accessToken; }
     if (weight in cookieDict) {
       weight = parseInt(cookieDict.weight, 10);
-      weightSlider.value = weight;
-      document.getElementById('voteIndicator').innerHTML = `${weightSlider.value / 100}% upvotes`;
+      weightSlider1.value = weight;
+      document.getElementById('voteIndicator').innerHTML = `${weightSlider1.value / 100}% upvotes`;
     }
   } catch (error) { accessToken = ''; }
   if (accessToken !== '') {
@@ -104,8 +116,20 @@ function updateLoginStatus() {
       if (profileImage === undefined) { profileImage = ''; }
       const body = `<div id = "profileImage" style="background-image:url(${profileImage});"></div><p id = "accountUsername">${name}</p>`;
       document.getElementById('accountLogin').innerHTML = body;
-      if (document.getElementById('feed')) { document.getElementById('feed').style.display = ''; }
-      document.getElementById('profileLink').href = `/html/profile?u=${user}`;
+      document.getElementById('profilePreview').innerHTML = body;
+      const displayItems = document.getElementsByClassName('show_logged_in');
+      for (let i = 0; i < displayItems.length; i += 1) {
+        const item = displayItems[i];
+        item.style.display = 'block';
+      }
+      const hideItems = document.getElementsByClassName('hide_logged_in');
+      for (let i = 0; i < hideItems.length; i += 1) {
+        const item = hideItems[i];
+        item.style.display = 'none';
+      }
+      if (document.getElementById('feed')) { document.getElementById('feed').style.display = 'inline-block'; }
+      document.getElementsByClassName('profileLink')[0].href = `/html/profile?u=${user}`;
+      document.getElementsByClassName('profileLink')[1].href = `/html/profile?u=${user}`;
       api = sc2.Initialize({
         app: 'debato-app',
         callbackURL: 'http://www.debato.org',
@@ -117,7 +141,6 @@ function updateLoginStatus() {
     const redirURL = window.location.href.split('/').slice(0, 3).join('/');
     const link = `<a id = "SteemConnect" class="blackLink" href = "https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=${redirURL}&scope=vote,comment,delete_comment">Log in</a>`;
     document.getElementById('accountLogin').innerHTML = link;
-    document.getElementById('createAccount').style.display = 'block';
   }
 }
 function getUrlVars() {
@@ -664,11 +687,13 @@ function writeDropDown(author, perm) {
       history.pushState(info.title, info.title, `discussion?a=${author}&p=${perm}`);
 
       // Adding an event listener to the comment box which updates the comment preview
-      document.getElementsByClassName('commentBox')[0].getElementsByTagName('textarea')[0].addEventListener('keyup', () => {
-        const previewElement = document.getElementsByClassName('previewElement')[0];
-        const contextValue = document.getElementsByClassName('commentBox')[0].getElementsByTagName('textarea')[0].value;
-        previewElement.innerHTML = converter.makeHtml(parseHtml(contextValue));
-      });
+      if (document.getElementsByClassName('commentBox')[0]) {
+        document.getElementsByClassName('commentBox')[0].getElementsByTagName('textarea')[0].addEventListener('keyup', () => {
+          const previewElement = document.getElementsByClassName('previewElement')[0];
+          const contextValue = document.getElementsByClassName('commentBox')[0].getElementsByTagName('textarea')[0].value;
+          previewElement.innerHTML = converter.makeHtml(parseHtml(contextValue));
+        });
+      }
     });
   });
 }

@@ -25,3 +25,12 @@
     width: 90%;
     margin-bottom: 5px;
   }
+  @media screen and (max-width: 600px) {
+    .frontimage{
+      content: url("/imgs/banner_small.svg");
+      width: 100%;
+    }
+    #body{
+      width: 100%;
+    }
+  }
