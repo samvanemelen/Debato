@@ -283,7 +283,7 @@ function commentsDropDown(obj) {
   if ((content.style.maxHeight === (`${content.scrollHeight}px`) || content.style.maxHeight === '500px')) {
     content.style.maxHeight = null;
     content.style.borderStyle = 'none';
-  } else if (content.scrollHeight > 500) { content.style.maxHeight = '500px'; content.style.overflow = 'scroll'; } else { content.style.maxHeight = `${content.scrollHeight}px`; }
+  } else { content.style.maxHeight = '500px'; content.style.overflow = 'scroll'; }
 }
 function showCommentBox(buttonObj) {
   // Displays the text area for typing a new comment
@@ -524,7 +524,7 @@ function writeArgumentList(comments, divID) {
           attributes = 'activated';
         }
         line += `<div class="argumentCard"  id = de-${commentElement.permlink} style="display: flex;justify-content: space-between">`;
-        line += '<span style=" line-height:100%; padding:5px;"><center>';
+        line += '<span style=" line-height:100%; padding:5px;margin:auto 0 auto 0;"><center>';
         line += `<p class='voteCounter'>${values[i].net_votes}</p><br>`;
         if (user !== '' && user !== undefined) {
           line += `<i class="fas fa-chevron-circle-up relevantButton ${attributes}" onclick="${voteType}(this,'${commentElement.author}','${commentElement.permlink}')"></i>`;
@@ -533,14 +533,34 @@ function writeArgumentList(comments, divID) {
         line += '<span style="width:100%;padding: 5px;margin:auto 0 auto 0;">';
         line += `<a class="commentLink blackLink" style="font-size:1.2em;" onclick="writeDropDown('${commentElement.author}','${commentElement.permlink}')"> `;
         line += `${parseHtml(commentElement.body)}</a></span>`;
-        line += `<span style="padding: 5px;margin:auto 0 auto 0;"><p class='ratio' id='ratio-${commentElement.permlink}'></p></span>`;
-        if (commentElement.author === user
-          && commentElement.children === 0
-          && commentElement.active_votes.length === 0) {
-          line += `<a class = "removeButton" onclick = "deleteComment('${commentElement.author}','${commentElement.permlink}')">    remove</a>`;
+        line += '<span style="padding: 5px;margin:auto 0 auto 0;text-align: -webkit-center;">';
+        line += `<p class='ratio' id='ratio-${commentElement.permlink}'></p>`;
+        if (commentElement.author === user // Original author of the comment
+          && commentElement.children === 0 // No received comments
+          && commentElement.active_votes.length === 0 // No received votes
+          && (new Date() - new Date(commentElement.created)) / 86400000 > 7) { // < 7 days
+          line += `<i id="more-${commentElement.permlink}" class="far fa-caret-square-down moreIcon">`;
+          line += `<ul><li><a class="removeButton" onclick="deleteComment('${commentElement.author}','${commentElement.permlink}')">remove</a></li></ul></i>`;
         }
-        body += '</div>';
+        line += '</span>';
+        line += '</div>';
         document.getElementsByClassName(divID)[0].innerHTML += line;
+        if (document.getElementById(`more-${commentElement.permlink}`)) {
+          document.getElementById(`more-${commentElement.permlink}`).addEventListener('click', (event) => {
+            // If the list is clicked, nothing should happen
+            if (!event.target.getElementsByTagName('ul')[0]) { return; }
+            const options = event.target.getElementsByTagName('ul')[0];
+            if (options.style.display !== 'block') {
+              options.style.display = 'block';
+              // If anywhere is clicked in the document that is not the list, it shoud close again
+              document.addEventListener('click', (evt) => {
+                if (evt.target !== event.target.getElementsByTagName('ul')[0] && evt.target !== event.target) {
+                  options.style.display = 'none';
+                }
+              });
+            } else { options.style.display = 'none'; }
+          });
+        }
         getCommentStatus(commentElement.author, commentElement.permlink, `ratio-${commentElement.permlink}`).then((ratio) => {
           // eslint-disable-next-line prefer-destructuring
           document.getElementById(ratio[1]).innerHTML = ratio[0];
@@ -647,12 +667,18 @@ function writeDropDown(author, perm) {
       metaList[0].setAttribute('content', info.description);
       const discussionBody = document.getElementById('discussionBody');
       body += `<h1 style ="display: inline-block"><i id="upvoteButton" class="fas fa-chevron-circle-up"></i> ${info.title}`;
-      if (isHot(post)) { body += ' <i class="fas fa-fire-alt" title="Hot!" style="color:rgb(121, 6, 2);"></i>'; }
-      body += '</h1>';
       if (info.author === user) {
-        body += `<a class = "editlink" href='/html/create?p=${activePost.permlink}'>edit</a>`;
+        body += ` <i id="more-${activePost.permlink}" class="far fa-caret-square-down moreIcon" style="font-size:0.7em;">`;
+        body += `<ul style="font-size:0.6em;"><li><a class = "editlink" href='/html/create?p=${activePost.permlink}'>edit</a></li></ul>`;
+        if (activePost.children === 0 // No received comments
+          && activePost.active_votes.length === 0 // No received votes
+          && (new Date() - new Date(activePost.created)) / 86400000 > 7) { // < 7 days
+          body += `<ul><li><a class="removeButton" onclick="deleteComment('${activePost.author}','${activePost.permlink}')">remove</a></li></ul></i>`;
+        }
+        body += '</i>';
       }
-      body += '<br>';
+      if (isHot(post)) { body += ' <i class="fas fa-fire-alt" title="Hot!" style="color:rgb(121, 6, 2);"></i>'; }
+      body += '</h1><br>';
       for (let i = 0; i < info.tags.length; i += 1) {
         if (info.tags[i] !== 'debato-discussion') { body += `<a class = "tag" href="/index?tag=${info.tags[i]}">${info.tags[i]}</a>`; }
       }
@@ -665,6 +691,21 @@ function writeDropDown(author, perm) {
       body += '</div><div class="con argumentColumn"><center>CON</center>';
       body += '</div></div>';
       discussionBody.innerHTML = body;
+      // Add event listener for when the more-button of the main discussion is clicked
+      if (document.getElementById(`more-${activePost.permlink}`)) {
+        document.getElementById(`more-${activePost.permlink}`).addEventListener('click', (event) => {
+          // If the list is clicked (has no sub element of 'ul'), nothing should happen
+          if (!event.target.getElementsByTagName('ul')[0]) { return; }
+          const options = event.target.getElementsByTagName('ul')[0];
+          if (options.style.display !== 'block') {
+            options.style.display = 'block';
+            // If anywhere is clicked in the document that is not the list, it shoud close again
+            document.addEventListener('click', (evt) => {
+              if (evt.target !== event.target.getElementsByTagName('ul')[0] && evt.target !== event.target) { options.style.display = 'none'; }
+            });
+          } else { options.style.display = 'none'; }
+        });
+      }
       const parentResult = checkForParent(post);
       if (parentResult[0]) {
         const backPlaceholder = document.getElementById('backPlaceholder');

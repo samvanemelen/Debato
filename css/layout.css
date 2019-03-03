@@ -83,6 +83,26 @@ nav ul li a {
   margin: -1em 1.2em 1em 1.2em;
   cursor: pointer;
 }
+.moreIcon {
+  color: rgb(83, 83, 83);
+}
+.moreIcon:hover {
+  scale: 1.2;
+  cursor: pointer;
+}
+.moreIcon ul {
+  display: none;
+  position: absolute;
+  margin-block-start: 0;
+  padding-inline-start: 0;
+  list-style-type: none;
+  background-color: white;
+  border: 1px solid rgb(209, 209, 209);
+  padding: 5px 1em 5px 1em;
+}
+.moreIcon ul li a {
+  text-decoration: none;
+}
 .show_logged_in{
   display: none;
 }
@@ -200,13 +220,12 @@ button:disabled {
   justify-content: space-around;
 }
 .discussionObj {
-  min-width: 200px;
+  min-width: 250px;
   flex-basis: 220px;
   max-width: 300px;
   flex-grow: 1;
   background-color: white;
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15);
-  padding: 5px;
   margin: 20px;
 }
 .ObjLink {
@@ -216,6 +235,7 @@ button:disabled {
   cursor: pointer;
   padding: 0;
   transition: 0.3s;
+  width: 100%;
 }
 .ObjLink:hover {
   opacity: 0.5;
@@ -248,9 +268,9 @@ button:disabled {
   background-color: rgba(255, 255, 255, 0.7);
 }
 .thumbnail {
+  display: block;
   margin: auto;
   height: 150px;
-  min-width: 200px;
   width: 100%;
   background-image: none;
   background-position: center;
@@ -259,6 +279,7 @@ button:disabled {
 .cardTitle{
   display: inline-block;
   font-size: 1.2em;
+  margin: 0.7em 5px 0.7em 5px;
   font-weight: bold;
 }
 .argumentCard{
@@ -266,6 +287,7 @@ button:disabled {
   padding: 5px;
   margin: 5px 0 5px 0;
   text-align: left;
+  flex-shrink: 0;
 }
 .argumentCard p{
   margin: 5px;
@@ -431,8 +453,7 @@ button:disabled {
   .discussionObj {
     max-width: 90%;
     background-color: white;
-    padding: 5px;
-    margin: 5px;
+    margin: 10px;
   }
   header {
     width: 100%;
