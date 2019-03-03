@@ -538,7 +538,7 @@ function writeArgumentList(comments, divID) {
         if (commentElement.author === user // Original author of the comment
           && commentElement.children === 0 // No received comments
           && commentElement.active_votes.length === 0 // No received votes
-          && (new Date() - new Date(commentElement.created)) / 86400000 > 7) { // < 7 days
+          && (new Date() - new Date(commentElement.created)) / 86400000 < 7) { // < 7 days
           line += `<i id="more-${commentElement.permlink}" class="far fa-caret-square-down moreIcon">`;
           line += `<ul><li><a class="removeButton" onclick="deleteComment('${commentElement.author}','${commentElement.permlink}')">remove</a></li></ul></i>`;
         }
@@ -672,7 +672,7 @@ function writeDropDown(author, perm) {
         body += `<ul style="font-size:0.6em;"><li><a class = "editlink" href='/html/create?p=${activePost.permlink}'>edit</a></li></ul>`;
         if (activePost.children === 0 // No received comments
           && activePost.active_votes.length === 0 // No received votes
-          && (new Date() - new Date(activePost.created)) / 86400000 > 7) { // < 7 days
+          && (new Date() - new Date(activePost.created)) / 86400000 < 7) { // < 7 days
           body += `<ul><li><a class="removeButton" onclick="deleteComment('${activePost.author}','${activePost.permlink}')">remove</a></li></ul></i>`;
         }
         body += '</i>';
