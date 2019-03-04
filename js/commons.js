@@ -21,6 +21,7 @@ weightSlider2.oninput = function () {
   document.getElementsByClassName('voteSlider')[1].nextElementSibling.innerHTML = `${this.value / 100}% upvotes`;
   document.cookie = `weight=${weight}; path=/`;
 };
+
 function showError(message) {
   /*
   Custom alternative to "alert" function
@@ -31,6 +32,9 @@ function showError(message) {
   const errortext = errorbox.getElementsByClassName('boxcontent')[0];
   errortext.innerHTML = message;
   errorbox.style.display = 'initial';
+  setTimeout(() => {
+    errorbox.getElementsByClassName('timeBar')[0].classList.toggle('started');
+  }, 1);
   setTimeout(() => {
     if (errorbox.style.display !== 'none') { errorbox.style.display = 'none'; }
   }, 7000);
@@ -46,6 +50,9 @@ function showWarning(message) {
   warningtext.innerHTML = message;
   warningbox.style.display = 'initial';
   setTimeout(() => {
+    warningbox.getElementsByClassName('timeBar')[0].classList.toggle('started');
+  }, 1);
+  setTimeout(() => {
     if (warningbox.style.display !== 'none') { warningbox.style.display = 'none'; }
   }, 7000);
 }
@@ -59,6 +66,9 @@ function showSuccess(message) {
   const successtext = successbox.getElementsByClassName('boxcontent')[0];
   successtext.innerHTML = message;
   successbox.style.display = 'initial';
+  setTimeout(() => {
+    successbox.getElementsByClassName('timeBar')[0].classList.toggle('started');
+  }, 1);
   setTimeout(() => {
     if (successbox.style.display !== 'none') { successbox.style.display = 'none'; }
   }, 7000);
