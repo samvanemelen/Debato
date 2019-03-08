@@ -183,7 +183,9 @@ function timeSince(UTCstring) {
   Will display age in years, months, days, hours, minutes or seconds depending
   on the age. (at least 2 of the longer time unit to switch to that unit)
   */
-  const AgeSeconds = Math.floor((new Date() - new Date(UTCstring)) / 1000);
+  const now = new Date();
+  const nowUCT = now.getTime() + (now.getTimezoneOffset() * 60000); // Convert current date to UCT
+  const AgeSeconds = Math.floor((nowUCT - new Date(UTCstring)) / 1000);
   let interval = Math.floor(AgeSeconds / 31536000);
   if (interval > 1) {
     return `${interval} years`;
@@ -211,6 +213,7 @@ function parseHtml(string) {
   parsedString = parsedString.replace(/</g, '&lt;');
   parsedString = parsedString.replace(/>/g, '&gt;');
   parsedString = parsedString.replace(/"/g, '&quot;');
+  parsedString = parsedString.replace(/(\\n)/g, '\n');
   /*
   If a username is detected
   ('@' followed by a letter, followed by any character, ending with a letter or number)

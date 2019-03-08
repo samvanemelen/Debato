@@ -26,6 +26,7 @@
   }
   #coverPreview {
     width: 100%;
+    object-fit: cover;
   }
   .previewElement {
     border: 1px solid #ddd;
@@ -40,6 +41,15 @@
     padding: 15px;
     margin: 20px;
     box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
+  }
+  #tagWarning {
+    display: none;
+    opacity: 0.8;
+    color: #724e01;
+    background-color: #ebd382;
+    padding: 5px;
+    border: 1px solid #724e01;
+    border-radius: 5px;
   }
   @media screen and (max-width: 600px) {
     .discussionForm {

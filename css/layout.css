@@ -380,7 +380,7 @@ button:disabled {
   position: relative;
   font-size: 0.9em;
   max-height: 0;
-  transition: max-height 0.4s ease-out;
+  transition: max-height 0.2s ease-out;
   background-color: #f1f1f1;
   width: 100%;
   z-index: 1;

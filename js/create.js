@@ -13,9 +13,9 @@ if ('p' in getUrlVars()) {
     document.getElementById('discussionContext').value = info.description;
     // eslint-disable-next-line prefer-destructuring
     perm = info.perm;
-    // const tags = document.getElementById('discussionTags').value;
     document.getElementById('coverImage').value = info.thumbnail;
     document.getElementById('coverPreview').src = info.thumbnail;
+    document.getElementById('discussionTags').value = info.tags.slice(1, info.tags.length).join(' ');
   });
 }
 // Update a preview of what the context will look like after parsing Markdown
@@ -23,6 +23,17 @@ document.getElementById('discussionContext').addEventListener('keyup', () => {
   const previewElement = document.getElementsByClassName('previewElement')[0];
   const contextValue = document.getElementById('discussionContext').value;
   previewElement.innerHTML = converter.makeHtml(parseHtml(contextValue));
+});
+// Display a warning when a user types an unsupported character in the tags section
+document.getElementById('discussionTags').addEventListener('keyup', (event) => {
+  const tags = event.target.value;
+  for (let i = 0; i < tags.length; i += 1) {
+    if (!'abcdefghijklmnopqrstuvwxyz- '.includes(tags.charAt(i))) {
+      document.getElementById('tagWarning').style.display = 'block';
+      return;
+    }
+  }
+  document.getElementById('tagWarning').style.display = 'none';
 });
 // eslint-disable-next-line no-unused-vars
 function publish() {
@@ -89,7 +100,8 @@ function publish() {
   The body of the post will be used to redirect readers from other platforms
   to debato where the discussions structure can be found.
   */
-  tagsMeta += `], "context":"${parsedContext}"`;
+  const JsonParsedContext = parsedContext.replace(/(\r\n|\n|\r)/gm, '\\n'); // Remove line breaks for storing in JSON
+  tagsMeta += `], "context":"${JsonParsedContext}"`;
   tagsMeta += '}';
   let body = '<center><p>To display the structured discussion or engage in the debate, view the topic on ';
   body += `<a href='debato.org/html/discussion?a=${user}&p=${perm}'>https://debato.org/html/discussion?a=${user}&p=${perm}</a></p>`;
