@@ -347,16 +347,56 @@ function comment(textbox, commenttype) {
       contentBox.removeChild(contentBox.getElementsByClassName('blank')[0]);
     }
     if (commenttype === 'com') {
-      newArg = `<p id = de-${newPerm}><strong>${user}</strong> - ${parseHtml(body)}`;
-      newArg += `<a class = "removeButton" onclick = "deleteComment('${user}','${newPerm}')">    remove</a></p>`;
+      let moreMenu = `<i id="more-${newPerm}" class="far fa-caret-square-down moreIcon"  style='position: relative;'>`;
+      moreMenu += `<ul style='position: absolute;'><li><a class="editButton" onclick="editComment('${newPerm}','${body}','${commenttype}')">edit</a></li>`;
+      moreMenu += `<li><a class="removeButton" onclick="deleteComment('${user}','${newPerm}')">remove</a></li>`;
+      moreMenu += '</ul></i>';
+      newArg = `<div class = "comment argumentCard" style="padding:20px;"id="de-${newPerm}">${moreMenu} <strong>${user}:</strong><div style="margin-left: 10px;">${converter.makeHtml(parseHtml(body))}</div></div>`;
+      contentBox.innerHTML += newArg;
+      document.getElementById(`more-${newPerm}`).addEventListener('click', (event) => {
+        // If the list is clicked (has no sub element of 'ul'), nothing should happen
+        if (!event.target.getElementsByTagName('ul')[0]) { return; }
+        const options = event.target.getElementsByTagName('ul')[0];
+        if (options.style.display !== 'block') {
+          options.style.display = 'block';
+          // If anywhere is clicked in the document that is not the list, it shoud close again
+          document.addEventListener('click', (evt) => {
+            if (evt.target !== event.target.getElementsByTagName('ul')[0] && evt.target !== event.target) { options.style.display = 'none'; }
+          });
+        } else { options.style.display = 'none'; }
+      });
     } else {
-      newArg = `<h3 id = de-${newPerm}><p class='voteCounter'>0</p>`;
-      newArg += `<div class = "relevantButton" onclick="upvote(this, '${user}','${newPerm}')"><div></div></div>`;
-      newArg += `<a class="commentLink blackLink" onclick="writeDropDown('${user}', '${newPerm}')"> ${body}</a>`;
-      newArg += `<a class = "removeButton" onclick = "deleteComment('${user}','${newPerm}')">    remove</a>`;
+      newArg += `<div class="argumentCard"  id = de-${newPerm} style="display: flex;justify-content: space-between">`;
+      newArg += '<span style=" line-height:100%; padding:5px;margin:auto 0 auto 0;"><center>';
+      newArg += '<p class=\'voteCounter\'>0</p><br>';
+      newArg += `<i class="fas fa-chevron-circle-up relevantButton" onclick="${commenttype}(this,'${user}','${newPerm}')"></i>`;
+      newArg += '</center></span>';
+      newArg += '<span style="width:100%;padding: 5px;margin:auto 0 auto 0;">';
+      newArg += `<a class="commentLink blackLink" style="font-size:1.2em;" onclick="writeDiscussionContent('${user}','${newPerm}')"> `;
+      newArg += `${parseHtml(body)}</a></span>`;
+      newArg += '<span style="padding: 5px;margin:auto 0 auto 0;text-align: -webkit-center;">';
+      newArg += `<p class='ratio' id='ratio-${newPerm}'>0|0</p>`;
+      newArg += `<i id="more-${newPerm}" class="far fa-caret-square-down moreIcon">`;
+      newArg += `<ul><li><a class="editButton" onclick="editComment('${newPerm}','${parseHtml(body)}','${commenttype}')">edit</a></li>`;
+      newArg += `<li><a class="removeButton" onclick="deleteComment('${user}','${newPerm}')">remove</a></li>`;
+      newArg += '</ul></i>';
       showSuccess('Successfully commented on the discussion!');
+      contentBox.innerHTML += newArg;
+      document.getElementById(`more-${newPerm}`).addEventListener('click', (event) => {
+        // If the list is clicked, nothing should happen
+        if (!event.target.getElementsByTagName('ul')[0]) { return; }
+        const options = event.target.getElementsByTagName('ul')[0];
+        if (options.style.display !== 'block') {
+          options.style.display = 'block';
+          // If anywhere is clicked in the document that is not the list, it shoud close again
+          document.addEventListener('click', (evt) => {
+            if (evt.target !== event.target.getElementsByTagName('ul')[0] && evt.target !== event.target) {
+              options.style.display = 'none';
+            }
+          });
+        } else { options.style.display = 'none'; }
+      });
     }
-    contentBox.innerHTML += newArg;
     showCommentBox(contentBox.getElementsByClassName('collapsibleButton')[0]);
   });
 }
@@ -543,7 +583,7 @@ function writeArgumentList(comments, divID) {
           line += '</center></span>';
         }
         line += '<span style="width:100%;padding: 5px;margin:auto 0 auto 0;">';
-        line += `<a class="commentLink blackLink" style="font-size:1.2em;" onclick="writeDropDown('${commentElement.author}','${commentElement.permlink}')"> `;
+        line += `<a class="commentLink blackLink" style="font-size:1.2em;" onclick="writeDiscussionContent('${commentElement.author}','${commentElement.permlink}')"> `;
         line += `${parseHtml(commentElement.body)}</a></span>`;
         line += '<span style="padding: 5px;margin:auto 0 auto 0;text-align: -webkit-center;">';
         line += `<p class='ratio' id='ratio-${commentElement.permlink}'></p>`;
@@ -584,7 +624,7 @@ function writeArgumentList(comments, divID) {
       }
     });
   } else {
-    body += '<p class = "blank">No arguments on this point</p>';
+    body += '<p class = "blank">Be the first to post an argument on this discussion!</p>';
     document.getElementsByClassName(divID)[0].innerHTML = body;
   }
 }
@@ -635,9 +675,11 @@ function writeCommentList(commentList) {
     }
   } else {
     let body = '<button class="collapsibleButton comments" onclick="commentsDropDown(this)">There are no comments on this statement</button>';
+    body += '<div class="commentList com">';
     if (user !== '' && user !== undefined) {
       body += writeCommentBox('comment');
     }
+    body += '</div>';
     commentCard.innerHTML = body;
   }
 }
@@ -687,7 +729,7 @@ function createDiscussionCard(post) {
   body += '</div>';
   return body;
 }
-function writeDropDown(author, perm) {
+function writeDiscussionContent(author, perm) {
   /*
   Displays the entire discussion structure for a new comment (perm)
   First checks if there is a parent post. If there is none, it should
@@ -748,7 +790,7 @@ function writeDropDown(author, perm) {
       const parentResult = checkForParent(post);
       if (parentResult[0]) {
         const backPlaceholder = document.getElementById('backPlaceholder');
-        backPlaceholder.innerHTML = `<button class="backButton" onclick="writeDropDown('${parentResult[1]}','${parentResult[2]}')">back</button>`;
+        backPlaceholder.innerHTML = `<button class="backButton" onclick="writeDiscussionContent('${parentResult[1]}','${parentResult[2]}')">back</button>`;
       }
       if (user !== '' && user !== undefined) {
         getVoteStatus(post).then((values) => {

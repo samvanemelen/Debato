@@ -1,10 +1,10 @@
-/* global updateLoginStatus getUrlVars writeDropDown parseHtml
+/* global updateLoginStatus getUrlVars writeDiscussionContent parseHtml
 showError showSuccess:true */
 
 /*
 First permlink and author are retrieved from the URL
 If not available, user is sent to index page
-Then the code is similar to the writeDropDown function
+Then the code is similar to the writeDiscussionContent function
 but modified to fit the new page since there is no
 button to drop down from
 */
@@ -15,7 +15,7 @@ if (!('p' in URLvars) || !('a' in URLvars)) {
 }
 const perm = URLvars.p;
 const author = URLvars.a;
-writeDropDown(author, perm);
+writeDiscussionContent(author, perm);
 
 // eslint-disable-next-line no-unused-vars
 function edit(permlink) {
