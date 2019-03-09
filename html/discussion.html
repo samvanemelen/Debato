@@ -54,6 +54,21 @@
                 <div class="thumbnail" style="width: 90%; height: 300px;"></div>
                 <div id="discussionBody"></div>
             </div>
+            <div id = "editFade" style="display: none;">
+                <div id = "editBox">
+                    <p>Edit your comment</p>
+                    <div class="inputZone" style="display: block;">
+                        <textarea name="comment" rows="3"></textarea>
+                        <br>
+                        <form action="" style='display: inline-block;'>
+                            <label style='display: inline-block;'><input type="radio" name="type" value="pro"> Pro</label>
+                            <label style='display: inline-block;'><input type="radio" name="type" value="con"> Con</label>
+                            <label style='display: inline-block;'><input type="radio" name="type" value="com" checked> Comment</label>
+                        </form>
+                        <button class="postButton" onclick="" style="margin-bottom: 0;">Edit</button>
+                    </div>
+                </div>
+            </div>
         </center>   
         <div id="errorbox" class = "popupbox">
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>

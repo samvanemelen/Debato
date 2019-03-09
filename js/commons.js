@@ -21,7 +21,6 @@ weightSlider2.oninput = function () {
   document.getElementsByClassName('voteSlider')[1].nextElementSibling.innerHTML = `${this.value / 100}% upvotes`;
   document.cookie = `weight=${weight}; path=/`;
 };
-
 function showError(message) {
   /*
   Custom alternative to "alert" function
@@ -219,7 +218,7 @@ function parseHtml(string) {
   ('@' followed by a letter, followed by any character, ending with a letter or number)
   it will replace it with a link to that user's profile page
   */
-  parsedString = parsedString.replace(/@([a-zA-Z]+[a-zA-Z1-9-.]+[a-zA-Z1-9]+)/g, '<a href = "/html/profile?u=$1">@$1</a>');
+  parsedString = parsedString.replace(/\s@([a-zA-Z]+[a-zA-Z1-9-.]+[a-zA-Z1-9]+)/g, ' <a href = "/html/profile?u=$1">@$1</a>');
   return parsedString;
 }
 function isHot(post) {
@@ -548,12 +547,16 @@ function writeArgumentList(comments, divID) {
         line += `${parseHtml(commentElement.body)}</a></span>`;
         line += '<span style="padding: 5px;margin:auto 0 auto 0;text-align: -webkit-center;">';
         line += `<p class='ratio' id='ratio-${commentElement.permlink}'></p>`;
-        if (commentElement.author === user // Original author of the comment
-          && commentElement.children === 0 // No received comments
+        if (commentElement.author === user) { // Original author of the comment
+          line += `<i id="more-${commentElement.permlink}" class="far fa-caret-square-down moreIcon">`;
+          // eslint-disable-next-line prefer-destructuring
+          line += `<ul><li><a class="editButton" onclick="editComment('${commentElement.permlink}','${commentElement.body}','${JSON.parse(commentElement.json_metadata).type}')">edit</a></li>`;
+          if (commentElement.children === 0 // No received comments
           && commentElement.active_votes.length === 0 // No received votes
           && (new Date() - new Date(commentElement.created)) / 86400000 < 7) { // < 7 days
-          line += `<i id="more-${commentElement.permlink}" class="far fa-caret-square-down moreIcon">`;
-          line += `<ul><li><a class="removeButton" onclick="deleteComment('${commentElement.author}','${commentElement.permlink}')">remove</a></li></ul></i>`;
+            line += `<li><a class="removeButton" onclick="deleteComment('${commentElement.author}','${commentElement.permlink}')">remove</a></li>`;
+          }
+          line += '</ul></i>';
         }
         line += '</span>';
         line += '</div>';
@@ -588,32 +591,55 @@ function writeArgumentList(comments, divID) {
 function writeCommentList(commentList) {
   // Retrieves all comments and puts then in a html usable string
   const commentCount = commentList.length;
-  let body = '<div class="comment-card">';
+  const commentCard = document.getElementsByClassName('comment-card')[0];
   if (commentCount > 0) {
-    body += `<button class="collapsibleButton comments" onclick="commentsDropDown(this)">View comments on this statement (${commentCount})</button>`;
+    let body = `<button class="collapsibleButton comments" onclick="commentsDropDown(this)">View comments on this statement (${commentCount})</button>`;
     body += '<div class="commentList com">';
     if (user !== '' && user !== undefined) {
       body += writeCommentBox('comment');
     }
+    body += '</div>';
+    commentCard.innerHTML = body;
+    const comListElement = document.getElementsByClassName('commentList')[0];
     for (let i = 0; i < commentCount; i += 1) {
-      let removeButton = '';
-      if (user === commentList[i].author
-        && commentList[i].children === 0
-        && commentList[i].active_votes.length === 0) {
-        removeButton = `<a class = "removeButton" onclick = "deleteComment('${commentList[i].author}','${commentList[i].permlink}')">    remove</a>`;
+      let commentItem = '';
+      let moreMenu = '';
+      if (commentList[i].author === user) { // Original author of the comment
+        moreMenu += `<i id="more-${commentList[i].permlink}" class="far fa-caret-square-down moreIcon"  style='position: relative;'>`;
+        // eslint-disable-next-line prefer-destructuring
+        moreMenu += `<ul style='position: absolute;'><li><a class="editButton" onclick="editComment('${commentList[i].permlink}','${commentList[i].body}','${JSON.parse(commentList[i].json_metadata).type}')">edit</a></li>`;
+        if (commentList[i].children === 0 // No received comments
+        && commentList[i].active_votes.length === 0 // No received votes
+        && (new Date() - new Date(commentList[i].created)) / 86400000 < 7) { // < 7 days
+          moreMenu += `<li><a class="removeButton" onclick="deleteComment('${commentList[i].author}','${commentList[i].permlink}')">remove</a></li>`;
+        }
+        moreMenu += '</ul></i>';
       }
       const commentContent = converter.makeHtml(parseHtml(commentList[i].body));
-      body += `<div class = "comment argumentCard" style="padding:20px;"id="de-${commentList[i].permlink}"><strong>${commentList[i].author}:</strong><div style="margin-left: 10px;">${commentContent}${removeButton}</div></div>`;
+      commentItem += `<div class = "comment argumentCard" style="padding:20px;"id="de-${commentList[i].permlink}">${moreMenu} <strong>${commentList[i].author}:</strong><div style="margin-left: 10px;">${commentContent}</div></div>`;
+      comListElement.innerHTML += commentItem;
+      if (document.getElementById(`more-${commentList[i].permlink}`)) {
+        document.getElementById(`more-${commentList[i].permlink}`).addEventListener('click', (event) => {
+          // If the list is clicked (has no sub element of 'ul'), nothing should happen
+          if (!event.target.getElementsByTagName('ul')[0]) { return; }
+          const options = event.target.getElementsByTagName('ul')[0];
+          if (options.style.display !== 'block') {
+            options.style.display = 'block';
+            // If anywhere is clicked in the document that is not the list, it shoud close again
+            document.addEventListener('click', (evt) => {
+              if (evt.target !== event.target.getElementsByTagName('ul')[0] && evt.target !== event.target) { options.style.display = 'none'; }
+            });
+          } else { options.style.display = 'none'; }
+        });
+      }
     }
   } else {
-    body += '<button class="collapsibleButton comments" onclick="commentsDropDown(this)">There are no comments on this statement</button>';
-    body += '<div class="commentList com">';
+    let body = '<button class="collapsibleButton comments" onclick="commentsDropDown(this)">There are no comments on this statement</button>';
     if (user !== '' && user !== undefined) {
       body += writeCommentBox('comment');
     }
+    commentCard.innerHTML = body;
   }
-  body += '</div></div>';
-  return body;
 }
 function getRootImage(post) {
   /*
@@ -699,7 +725,7 @@ function writeDropDown(author, perm) {
       body += `<p><strong>By: <a href="/html/profile?u=${info.author}">${info.author}</a></strong> - ${info.reward}</p>`;
       const parsedContext = converter.makeHtml(parseHtml(info.description));
       body += `<p>${parsedContext}</p>`;
-      body += writeCommentList(ArgDict.com);
+      body += '<div class="comment-card"></div>';
       body += '<div class="argumentRow"><div class="pro argumentColumn""><center>PRO</center>';
       body += '</div><div class="con argumentColumn"><center>CON</center>';
       body += '</div></div>';
@@ -735,6 +761,7 @@ function writeDropDown(author, perm) {
           }
         });
       }
+      writeCommentList(ArgDict.com);
       writeArgumentList(ArgDict.pro, 'pro');
       writeArgumentList(ArgDict.con, 'con');
       // eslint-disable-next-line no-restricted-globals
