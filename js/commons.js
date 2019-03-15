@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+/* global createCommentBox createArgumentCard createCommentCard :true */
+
 user = ''; accessToken = ''; expiresIn = ''; weight = 10000;
 const weightSlider1 = document.getElementsByClassName('voteSlider')[0];
 const weightSlider2 = document.getElementsByClassName('voteSlider')[1];
@@ -21,6 +23,70 @@ weightSlider2.oninput = function () {
   document.getElementsByClassName('voteSlider')[1].nextElementSibling.innerHTML = `${this.value / 100}% upvotes`;
   document.cookie = `weight=${weight}; path=/`;
 };
+function updateLoginStatus() {
+  /*
+  When the user logs in via steemconnect, information is stored in a cookie
+  to be used on other pages. When any other page loads, this function is called
+  to read the cookies and get the account information (username, token, weight)
+  If there is no data stored in the cookie (not logged in yet or expired)
+  the link to SteemConnect is shown
+  */
+  try {
+    const cookieresult = document.cookie.replace(/ /g, '');
+    const cookielist = cookieresult.split(';');
+    const cookieDict = {};
+    for (let i = 0; i < cookielist.length; i += 1) {
+      const pair = cookielist[i].split('=');
+      const key = pair[0];
+      const value = pair[1];
+      cookieDict[key] = value;
+    }
+    if ('username' in cookieDict) { user = cookieDict.username; }
+    // eslint-disable-next-line prefer-destructuring
+    if ('accessToken' in cookieDict) { accessToken = cookieDict.accessToken; }
+    if (weight in cookieDict) {
+      weight = parseInt(cookieDict.weight, 10);
+      weightSlider1.value = weight;
+      document.getElementById('voteIndicator').innerHTML = `${weightSlider1.value / 100}% upvotes`;
+    }
+  } catch (error) { accessToken = ''; }
+  if (accessToken !== '') {
+    steem.api.getAccounts([user], (err, result) => {
+      const name = user;
+      let profileImage = JSON.parse(result[0].json_metadata).profile.profile_image;
+      if (profileImage === undefined) { profileImage = ''; }
+      const body = `<div id = "profileImage" style="background-image:url(${profileImage});"></div><p id = "accountUsername">${name}</p>`;
+      document.getElementById('accountLogin').innerHTML = body;
+      document.getElementById('profilePreview').innerHTML = body;
+      const displayItems = document.getElementsByClassName('show_logged_in');
+      for (let i = 0; i < displayItems.length; i += 1) {
+        const item = displayItems[i];
+        item.style.display = 'block';
+      }
+      const hideItems = document.getElementsByClassName('hide_logged_in');
+      for (let i = 0; i < hideItems.length; i += 1) {
+        const item = hideItems[i];
+        item.style.display = 'none';
+      }
+      if (document.getElementById('feed')) { document.getElementById('feed').style.display = 'inline-block'; }
+      document.getElementsByClassName('profileLink')[0].href = `/html/profile?u=${user}`;
+      document.getElementsByClassName('profileLink')[1].href = `/html/profile?u=${user}`;
+      api = sc2.Initialize({
+        app: 'debato-app',
+        callbackURL: 'http://www.debato.org',
+        accessToken,
+        scope: ['vote', 'comment', 'delete_comment'],
+      });
+    });
+  } else {
+    const redirURL = window.location.href.split('/').slice(0, 3).join('/');
+    const link = `<a id = "SteemConnect" class="blackLink" href = "https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=${redirURL}&scope=vote,comment,delete_comment">Log in</a>`;
+    document.getElementById('accountLogin').innerHTML = link;
+  }
+}
+
+updateLoginStatus();
+
 function showError(message) {
   /*
   Custom alternative to "alert" function
@@ -89,67 +155,6 @@ function toggleMenu(show = null) {
         accountMenu.style.maxHeight = '200px';
       } else { accountMenu.style.maxHeight = '0'; }
     } else if (show) { accountMenu.style.maxHeight = '200px'; } else if (!show) { accountMenu.style.maxHeight = '0'; }
-  }
-}
-function updateLoginStatus() {
-  /*
-  When the user logs in via steemconnect, information is stored in a cookie
-  to be used on other pages. When any other page loads, this function is called
-  to read the cookies and get the account information (username, token, weight)
-  If there is no data stored in the cookie (not logged in yet or expired)
-  the link to SteemConnect is shown
-  */
-  try {
-    const cookieresult = document.cookie.replace(/ /g, '');
-    const cookielist = cookieresult.split(';');
-    const cookieDict = {};
-    for (let i = 0; i < cookielist.length; i += 1) {
-      const pair = cookielist[i].split('=');
-      const key = pair[0];
-      const value = pair[1];
-      cookieDict[key] = value;
-    }
-    if ('username' in cookieDict) { user = cookieDict.username; }
-    // eslint-disable-next-line prefer-destructuring
-    if ('accessToken' in cookieDict) { accessToken = cookieDict.accessToken; }
-    if (weight in cookieDict) {
-      weight = parseInt(cookieDict.weight, 10);
-      weightSlider1.value = weight;
-      document.getElementById('voteIndicator').innerHTML = `${weightSlider1.value / 100}% upvotes`;
-    }
-  } catch (error) { accessToken = ''; }
-  if (accessToken !== '') {
-    steem.api.getAccounts([user], (err, result) => {
-      const name = user;
-      let profileImage = JSON.parse(result[0].json_metadata).profile.profile_image;
-      if (profileImage === undefined) { profileImage = ''; }
-      const body = `<div id = "profileImage" style="background-image:url(${profileImage});"></div><p id = "accountUsername">${name}</p>`;
-      document.getElementById('accountLogin').innerHTML = body;
-      document.getElementById('profilePreview').innerHTML = body;
-      const displayItems = document.getElementsByClassName('show_logged_in');
-      for (let i = 0; i < displayItems.length; i += 1) {
-        const item = displayItems[i];
-        item.style.display = 'block';
-      }
-      const hideItems = document.getElementsByClassName('hide_logged_in');
-      for (let i = 0; i < hideItems.length; i += 1) {
-        const item = hideItems[i];
-        item.style.display = 'none';
-      }
-      if (document.getElementById('feed')) { document.getElementById('feed').style.display = 'inline-block'; }
-      document.getElementsByClassName('profileLink')[0].href = `/html/profile?u=${user}`;
-      document.getElementsByClassName('profileLink')[1].href = `/html/profile?u=${user}`;
-      api = sc2.Initialize({
-        app: 'debato-app',
-        callbackURL: 'http://www.debato.org',
-        accessToken,
-        scope: ['vote', 'comment', 'delete_comment'],
-      });
-    });
-  } else {
-    const redirURL = window.location.href.split('/').slice(0, 3).join('/');
-    const link = `<a id = "SteemConnect" class="blackLink" href = "https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=${redirURL}&scope=vote,comment,delete_comment">Log in</a>`;
-    document.getElementById('accountLogin').innerHTML = link;
   }
 }
 function getUrlVars() {
@@ -347,12 +352,16 @@ function comment(textbox, commenttype) {
       contentBox.removeChild(contentBox.getElementsByClassName('blank')[0]);
     }
     if (commenttype === 'com') {
-      let moreMenu = `<i id="more-${newPerm}" class="far fa-caret-square-down moreIcon"  style='position: relative;'>`;
-      moreMenu += `<ul style='position: absolute;'><li><a class="editButton" onclick="editComment('${newPerm}','${body}','${commenttype}')">edit</a></li>`;
-      moreMenu += `<li><a class="removeButton" onclick="deleteComment('${user}','${newPerm}')">remove</a></li>`;
-      moreMenu += '</ul></i>';
-      newArg = `<div class = "comment argumentCard" style="padding:20px;"id="de-${newPerm}">${moreMenu} <strong>${user}:</strong><div style="margin-left: 10px;">${converter.makeHtml(parseHtml(body))}</div></div>`;
-      contentBox.innerHTML += newArg;
+      contentBox.innerHTML += createCommentCard(
+        {
+          permlink: newPerm,
+          body,
+          created: new Date(),
+          author: user,
+          json_metadata: '{"type": "com"}',
+          active_votes: [],
+        },
+      );
       document.getElementById(`more-${newPerm}`).addEventListener('click', (event) => {
         // If the list is clicked (has no sub element of 'ul'), nothing should happen
         if (!event.target.getElementsByTagName('ul')[0]) { return; }
@@ -366,20 +375,19 @@ function comment(textbox, commenttype) {
         } else { options.style.display = 'none'; }
       });
     } else {
-      newArg += `<div class="argumentCard"  id = de-${newPerm} style="display: flex;justify-content: space-between">`;
-      newArg += '<span style=" line-height:100%; padding:5px;margin:auto 0 auto 0;"><center>';
-      newArg += '<p class=\'voteCounter\'>0</p><br>';
-      newArg += `<i class="fas fa-chevron-circle-up relevantButton" onclick="${commenttype}(this,'${user}','${newPerm}')"></i>`;
-      newArg += '</center></span>';
-      newArg += '<span style="width:100%;padding: 5px;margin:auto 0 auto 0;">';
-      newArg += `<a class="commentLink blackLink" style="font-size:1.2em;" onclick="writeDiscussionContent('${user}','${newPerm}')"> `;
-      newArg += `${parseHtml(body)}</a></span>`;
-      newArg += '<span style="padding: 5px;margin:auto 0 auto 0;text-align: -webkit-center;">';
-      newArg += `<p class='ratio' id='ratio-${newPerm}'>0|0</p>`;
-      newArg += `<i id="more-${newPerm}" class="far fa-caret-square-down moreIcon">`;
-      newArg += `<ul><li><a class="editButton" onclick="editComment('${newPerm}','${parseHtml(body)}','${commenttype}')">edit</a></li>`;
-      newArg += `<li><a class="removeButton" onclick="deleteComment('${user}','${newPerm}')">remove</a></li>`;
-      newArg += '</ul></i>';
+      newArg = createArgumentCard({
+        commentItem:
+          {
+            permlink: newPerm,
+            author: user,
+            active_votes: [],
+            json_metadata: `{"type": "${commenttype}"}`,
+            body,
+            created: new Date(),
+          },
+        net_votes: 0,
+        voteStatus: false,
+      });
       showSuccess('Successfully commented on the discussion!');
       contentBox.innerHTML += newArg;
       document.getElementById(`more-${newPerm}`).addEventListener('click', (event) => {
@@ -517,29 +525,6 @@ function getCommentStatus(author, perm, objId) {
     });
   }));
 }
-function writeCommentBox(action) {
-  /*
-  Write the input box & button for leaving a comment
-  Buttons for each action type require a specific action
-  */
-  let body = '';
-  if (action === 'statement pro') {
-    body = `<div class = "${action}Box"><button class = "collapsibleButton" onclick = "showCommentBox(this)">Add statement</button>`;
-    body += '<div class = "inputZone"><textarea name = "comment" rows = "3"></textarea><br>';
-    body += "<button class = 'postbutton' onclick = \"comment(this.previousElementSibling.previousElementSibling,'pro')\">post</button></div></div>";
-  }
-  if (action === 'statement con') {
-    body = `<div class = "${action}Box"><button class = "collapsibleButton" onclick = "showCommentBox(this)">Add statement</button>`;
-    body += '<div class = "inputZone"><textarea name = "comment" rows = "3"></textarea><br>';
-    body += "<button class = 'postbutton' onclick = \"comment(this.previousElementSibling.previousElementSibling,'con')\">post</button></div></div>";
-  }
-  if (action === 'comment') {
-    body = `<div class = "${action}Box"><button class = "collapsibleButton" onclick = "showCommentBox(this)">Add comment</button>`;
-    body += '<div class = "inputZone"><textarea name = "comment" rows = "3"></textarea><div class = "previewElement"></div>';
-    body += "<button class = 'postbutton' onclick = \"comment(this.previousElementSibling.previousElementSibling,'com')\">post</button></div></div>";
-  }
-  return body;
-}
 function writeArgumentList(comments, divID) {
   /*
   Retrieves the list of arguments (both pro and con) and returns a html usable string
@@ -555,11 +540,14 @@ function writeArgumentList(comments, divID) {
     });
     return sortedList;
   }
+
   let body = `<center>${divID.toUpperCase()}</center>`;
   if (user !== '' && user !== undefined) {
-    body += writeCommentBox(`statement ${divID}`);
+    body += createCommentBox(`statement ${divID}`);
   }
+
   document.getElementsByClassName(divID)[0].innerHTML = body;
+
   if (comments.length > 0) {
     for (let i = 0; i < comments.length; i += 1) {
       PromiseList.push(getVoteStatus(comments[i]));
@@ -567,57 +555,11 @@ function writeArgumentList(comments, divID) {
     Promise.all(PromiseList).then((unsortedArguments) => {
       const values = sortReplies(unsortedArguments);
       for (let i = 0; i < values.length; i += 1) {
-        let line = '';
-        let voteType = 'upvote';
-        const commentElement = values[i].commentItem;
-        let attributes = '';
-        if (values[i].voteStatus) {
-          voteType = 'removeVote';
-          attributes = 'activated';
-        }
-        line += `<div class="argumentCard"  id = de-${commentElement.permlink} style="display: flex;justify-content: space-between">`;
-        line += '<span style=" line-height:100%; padding:5px;margin:auto 0 auto 0;"><center>';
-        line += `<p class='voteCounter'>${values[i].net_votes}</p><br>`;
-        if (user !== '' && user !== undefined) {
-          line += `<i class="fas fa-chevron-circle-up relevantButton ${attributes}" onclick="${voteType}(this,'${commentElement.author}','${commentElement.permlink}')"></i>`;
-          line += '</center></span>';
-        }
-        line += '<span style="width:100%;padding: 5px;margin:auto 0 auto 0;">';
-        line += `<a class="commentLink blackLink" style="font-size:1.2em;" onclick="writeDiscussionContent('${commentElement.author}','${commentElement.permlink}')"> `;
-        line += `${parseHtml(commentElement.body)}</a></span>`;
-        line += '<span style="padding: 5px;margin:auto 0 auto 0;text-align: -webkit-center;">';
-        line += `<p class='ratio' id='ratio-${commentElement.permlink}'></p>`;
-        if (commentElement.author === user) { // Original author of the comment
-          line += `<i id="more-${commentElement.permlink}" class="far fa-caret-square-down moreIcon">`;
-          // eslint-disable-next-line prefer-destructuring
-          line += `<ul><li><a class="editButton" onclick="editComment('${commentElement.permlink}','${commentElement.body}','${JSON.parse(commentElement.json_metadata).type}')">edit</a></li>`;
-          if (commentElement.children === 0 // No received comments
-          && commentElement.active_votes.length === 0 // No received votes
-          && (new Date() - new Date(commentElement.created)) / 86400000 < 7) { // < 7 days
-            line += `<li><a class="removeButton" onclick="deleteComment('${commentElement.author}','${commentElement.permlink}')">remove</a></li>`;
-          }
-          line += '</ul></i>';
-        }
-        line += '</span>';
-        line += '</div>';
-        document.getElementsByClassName(divID)[0].innerHTML += line;
-        if (document.getElementById(`more-${commentElement.permlink}`)) {
-          document.getElementById(`more-${commentElement.permlink}`).addEventListener('click', (event) => {
-            // If the list is clicked, nothing should happen
-            if (!event.target.getElementsByTagName('ul')[0]) { return; }
-            const options = event.target.getElementsByTagName('ul')[0];
-            if (options.style.display !== 'block') {
-              options.style.display = 'block';
-              // If anywhere is clicked in the document that is not the list, it shoud close again
-              document.addEventListener('click', (evt) => {
-                if (evt.target !== event.target.getElementsByTagName('ul')[0] && evt.target !== event.target) {
-                  options.style.display = 'none';
-                }
-              });
-            } else { options.style.display = 'none'; }
-          });
-        }
-        getCommentStatus(commentElement.author, commentElement.permlink, `ratio-${commentElement.permlink}`).then((ratio) => {
+        const ArgumentPerm = values[i].commentItem.permlink;
+        const ArgumentAuthor = values[i].commentItem.author;
+        document.getElementsByClassName(divID)[0].innerHTML += createArgumentCard(values[i]);
+        // Updates the values of the ratio box (async)
+        getCommentStatus(ArgumentAuthor, ArgumentPerm, `ratio-${ArgumentPerm}`).then((ratio) => {
           // eslint-disable-next-line prefer-destructuring
           document.getElementById(ratio[1]).innerHTML = ratio[0];
         });
@@ -636,28 +578,13 @@ function writeCommentList(commentList) {
     let body = `<button class="collapsibleButton comments" onclick="commentsDropDown(this)">View comments on this statement (${commentCount})</button>`;
     body += '<div class="commentList com">';
     if (user !== '' && user !== undefined) {
-      body += writeCommentBox('comment');
+      body += createCommentBox('comment');
     }
     body += '</div>';
     commentCard.innerHTML = body;
     const comListElement = document.getElementsByClassName('commentList')[0];
     for (let i = 0; i < commentCount; i += 1) {
-      let commentItem = '';
-      let moreMenu = '';
-      if (commentList[i].author === user) { // Original author of the comment
-        moreMenu += `<i id="more-${commentList[i].permlink}" class="far fa-caret-square-down moreIcon"  style='position: relative;'>`;
-        // eslint-disable-next-line prefer-destructuring
-        moreMenu += `<ul style='position: absolute;'><li><a class="editButton" onclick="editComment('${commentList[i].permlink}','${commentList[i].body}','${JSON.parse(commentList[i].json_metadata).type}')">edit</a></li>`;
-        if (commentList[i].children === 0 // No received comments
-        && commentList[i].active_votes.length === 0 // No received votes
-        && (new Date() - new Date(commentList[i].created)) / 86400000 < 7) { // < 7 days
-          moreMenu += `<li><a class="removeButton" onclick="deleteComment('${commentList[i].author}','${commentList[i].permlink}')">remove</a></li>`;
-        }
-        moreMenu += '</ul></i>';
-      }
-      const commentContent = converter.makeHtml(parseHtml(commentList[i].body));
-      commentItem += `<div class = "comment argumentCard" style="padding:20px;"id="de-${commentList[i].permlink}">${moreMenu} <strong>${commentList[i].author}:</strong><div style="margin-left: 10px;">${commentContent}</div></div>`;
-      comListElement.innerHTML += commentItem;
+      comListElement.innerHTML += createCommentCard(commentList[i]);
       if (document.getElementById(`more-${commentList[i].permlink}`)) {
         document.getElementById(`more-${commentList[i].permlink}`).addEventListener('click', (event) => {
           // If the list is clicked (has no sub element of 'ul'), nothing should happen
@@ -677,7 +604,7 @@ function writeCommentList(commentList) {
     let body = '<button class="collapsibleButton comments" onclick="commentsDropDown(this)">There are no comments on this statement</button>';
     body += '<div class="commentList com">';
     if (user !== '' && user !== undefined) {
-      body += writeCommentBox('comment');
+      body += createCommentBox('comment');
     }
     body += '</div>';
     commentCard.innerHTML = body;
@@ -709,25 +636,6 @@ function getRootImage(post) {
       });
     }
   }));
-}
-function createDiscussionCard(post) {
-  let body = '';
-  const details = getPostData(post);
-  body += `<div class = "discussionObj" id = "${details.perm}">`;
-  body += `<button class="ObjLink" onclick="window.location.href='/html/discussion?a=${details.author}&p=${details.perm}'">`;
-  if (details.thumbnail === false || details.thumbnail === '') {
-    body += '<div class = "thumbnail" style = "background-image:none">';
-  } else {
-    body += `<div class = "thumbnail" style = "background-image:url('${details.thumbnail}')">`;
-  }
-  body += `<div title="${details.created}" class="ageBox">${timeSince(details.created)} ago</div>`;
-  body += `<div class="ratio box" id='ratio-${details.perm}'></div></div>`;
-  body += '<p class = "cardTitle">';
-  if (isHot(post)) { body += '<i class="fas fa-fire-alt" title="Hot!" style="color:rgb(121, 6, 2);"></i> '; }
-  body += `${details.title}</h2>`;
-  body += '<div id = "discussionBody"></div>';
-  body += '</div>';
-  return body;
 }
 function writeDiscussionContent(author, perm) {
   /*
@@ -806,8 +714,22 @@ function writeDiscussionContent(author, perm) {
       writeCommentList(ArgDict.com);
       writeArgumentList(ArgDict.pro, 'pro');
       writeArgumentList(ArgDict.con, 'con');
-      // eslint-disable-next-line no-restricted-globals
-      history.pushState(info.title, info.title, `discussion?a=${author}&p=${perm}`);
+      // Add eventlistener for showing the 'option' menu
+      document.addEventListener('click', (event) => {
+        if (event.target.id.substr(0, 4) === 'more') {
+          if (!event.target.getElementsByTagName('ul')[0]) { return; }
+          const options = event.target.getElementsByTagName('ul')[0];
+          if (options.style.display !== 'block') {
+            options.style.display = 'block';
+            // If anywhere is clicked in the document that is not the list, it shoud close again
+            document.addEventListener('click', (evt) => {
+              if (evt.target !== event.target.getElementsByTagName('ul')[0] && evt.target !== event.target) {
+                options.style.display = 'none';
+              }
+            });
+          } else { options.style.display = 'none'; }
+        }
+      });
 
       // Adding an event listener to the comment box which updates the comment preview
       if (document.getElementsByClassName('commentBox')[0]) {

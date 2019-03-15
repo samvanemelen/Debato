@@ -1,6 +1,5 @@
-/* global updateLoginStatus getUrlVars getPostData showWarning parseHtml showError:true */
+/* global getUrlVars getPostData showWarning parseHtml showError:true */
 let perm = '';
-updateLoginStatus();
 /*
 If a permlink is present in the URL it should set up the page for editing a post
 the post is fetched and the values are filled in in the input sections

@@ -10,7 +10,6 @@ it wil redirect you back to the index page
 if (!('u' in URLvars)) {
   window.location.href = '/'; // If there are no variables parsed in URL, go to index
 }
-updateLoginStatus();
 function openProfileTab(evt, tabName) {
   const event = evt;
   /*

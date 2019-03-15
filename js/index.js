@@ -1,4 +1,4 @@
-/* global updateLoginStatus getUrlVars getPostData
+/* global getUrlVars getPostData
 getCommentStatus createDiscussionCard :true */
 /* eslint-disable no-unused-vars */
 let activeTab = '';
@@ -20,7 +20,6 @@ if ('access_token' in URLvars) {
   document.cookie = `accessToken=${accessToken};expires=${expiresOn}; path=/;`;
   document.cookie = `weight=${weightSlider.value}; path=/;`;
 }
-updateLoginStatus();
 if (user !== '' && user !== undefined) {
   document.getElementById('Feed').style.display = '';
 }
