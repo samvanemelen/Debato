@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-/* global updateLoginStatus getUrlVars timeSince getPostData
-getCommentStatus createDiscussionCard showError :true */
+/* global updateLoginStatus getUrlVars timeSince getPostData createProfileArgumentCard
+getCommentStatus createDiscussionCard showError showSuccess:true */
 let activeTab = '';
 const URLvars = getUrlVars();
 let viewingUser = '';
@@ -10,12 +10,16 @@ let VestBalance = 0;
 let totalVests = 0;
 let totalSteem = 0;
 const delegatee = [];
+const followers = [];
 /*
 If there is no user parsed as variable to look up
 it wil redirect you back to the index page
 */
 if (!('u' in URLvars)) {
   window.location.href = '/'; // If there are no variables parsed in URL, go to index
+}
+if (user !== '' && user !== undefined) {
+  document.getElementById('walletOperations').style.display = 'table';
 }
 function openProfileTab(evt, tabName) {
   const event = evt;
@@ -185,6 +189,27 @@ function switchCurrency(element) {
     CurrButtonList[i].classList.toggle('active');
   }
 }
+function follow() {
+  document.getElementById('followButton').innerHTML = '<i class="spinner fas fa-spinner"></i>';
+  if (followers.includes(user)) {
+    api.unfollow(user, viewingUser, (err, res) => {
+      if (res) {
+        showError(`You stopped following ${viewingUser}`);
+        document.getElementById('followButton').innerHTML = 'follow';
+        followers.splice(followers.indexOf(user), 1);
+      }
+    });
+  } else {
+    api.follow(user, viewingUser, (err, res) => {
+      document.getElementById('followButton').innerHTML = '<i class="spinner fas fa-spinner"></i>';
+      if (res) {
+        showSuccess(`You are now following ${viewingUser}!`);
+        document.getElementById('followButton').innerHTML = 'unfollow';
+        followers.push(user);
+      }
+    });
+  }
+}
 document.getElementById('defaultOpen').click();
 const profileUsername = URLvars.u;
 
@@ -226,11 +251,17 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
   document.getElementById('activeFor').innerHTML = `Active for ${timeSince(profileUser.created)}`;
   document.getElementById('about').innerHTML = about;
 
+  steem.api.getFollowers(profileUsername, 0, null, 1000, (err, result) => {
+    for (let i = 0; i < result.length; i += 1) {
+      followers.push(result[i].follower);
+    }
+    if (followers.includes(user)) {
+      document.getElementById('followButton').innerHTML = 'Unfollow';
+    }
+  });
   steem.api.getFollowCount(profileUsername, (err, result) => {
-    const followers = result.follower_count;
-    const following = result.following_count;
-    document.getElementById('followers').innerHTML = `${followers} followers`;
-    document.getElementById('following').innerHTML = `${following} following`;
+    document.getElementById('followers').innerHTML = `${result.follower_count} followers`;
+    document.getElementById('following').innerHTML = `${result.following_count} following`;
   });
 
   // Wallet:
@@ -311,39 +342,47 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
         }
       }
       Promise.all(promiseList).then((argumentParents) => {
-        let discussionList = '';
         for (let i = 0; i < argumentParents.length; i += 1) {
           const postJSON = JSON.parse(comments[i].json_metadata);
           let postType = postJSON.type;
           if (postType === '') { postType = 'comment'; }
           const postDetails = getPostData(commentList[i]);
           // Creates a card that displays the comment, the parent title, reward and age
-          discussionList += createDiscussionCard(comments[i]);
+          document.getElementById('authorComments').innerHTML += createProfileArgumentCard({
+            postType,
+            parentAuthor: argumentParents[i].author,
+            parentPerm: argumentParents[i].perm,
+            parentTitle: argumentParents[i].title,
+            author: postDetails.author,
+            perm: postDetails.perm,
+            title: postDetails.title,
+            created: postDetails.created,
+            reward: postDetails.reward,
+          });
         }
-        document.getElementById('authorComments').innerHTML = discussionList;
+      });
+      // When you view an account, your delegatee list is loaded to check if the user is in it.
+      steem.api.getVestingDelegations('samve', '', 100, (er, result) => {
+        for (let i = 0; i < result.length; i += 1) {
+          delegatee.push(result[i].delegatee);
+        }
+
+        // Disable or enable certain wallet transactions when a user is not on his own profile
+        if (user === profileUser.name) {
+          const ownProfileOnlyList = document.getElementsByClassName('onOwnAccount');
+          for (let i = 0; i < ownProfileOnlyList.length; i += 1) {
+            ownProfileOnlyList[i].style.display = 'table-row';
+          }
+        } else {
+          const otherOnlyList = document.getElementsByClassName('onOtherAccount');
+          for (let i = 0; i < otherOnlyList.length; i += 1) {
+            otherOnlyList[i].style.display = 'table-row';
+          }
+          // If you haven't delegated to the user, the option to remove delegation should be hidden.
+          if (!delegatee.includes(profileUser.name)) {
+            document.getElementById('removeDelegation').style.display = 'none';
+          }
+        }
       });
     });
-  // When you view an account, your delegatee list is loaded to check if the user is in it.
-  steem.api.getVestingDelegations('samve', '', 100, (err, result) => {
-    for (let i = 0; i < result.length; i += 1) {
-      delegatee.push(result[i].delegatee);
-    }
-
-    // Disable or enable certain wallet transactions when a user is not on his own profile
-    if (user === profileUser.name) {
-      const ownProfileOnlyList = document.getElementsByClassName('onOwnAccount');
-      for (let i = 0; i < ownProfileOnlyList.length; i += 1) {
-        ownProfileOnlyList[i].style.display = 'table-row';
-      }
-    } else {
-      const otherOnlyList = document.getElementsByClassName('onOtherAccount');
-      for (let i = 0; i < otherOnlyList.length; i += 1) {
-        otherOnlyList[i].style.display = 'table-row';
-      }
-      // If you have not delegated to the account, the option to remove delegation should be hidden.
-      if (!delegatee.includes(profileUser.name)) {
-        document.getElementById('removeDelegation').style.display = 'none';
-      }
-    }
-  });
 });

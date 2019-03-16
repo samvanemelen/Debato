@@ -75,12 +75,12 @@ function updateLoginStatus() {
         app: 'debato-app',
         callbackURL: 'http://www.debato.org',
         accessToken,
-        scope: ['vote', 'comment', 'delete_comment'],
+        scope: ['vote', 'comment', 'delete_comment', 'custom_json'],
       });
     });
   } else {
     const redirURL = window.location.href.split('/').slice(0, 3).join('/');
-    const link = `<a id = "SteemConnect" class="blackLink" href = "https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=${redirURL}&scope=vote,comment,delete_comment">Log in</a>`;
+    const link = `<a id = "SteemConnect" class="blackLink" href = "https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=${redirURL}&scope=vote,comment,delete_comment,custom_json">Log in</a>`;
     document.getElementById('accountLogin').innerHTML = link;
   }
 }
@@ -217,13 +217,15 @@ function parseHtml(string) {
   parsedString = parsedString.replace(/</g, '&lt;');
   parsedString = parsedString.replace(/>/g, '&gt;');
   parsedString = parsedString.replace(/"/g, '&quot;');
+  parsedString = parsedString.replace(/'/g, '&#96;');
   parsedString = parsedString.replace(/(\\n)/g, '\n');
   /*
   If a username is detected
   ('@' followed by a letter, followed by any character, ending with a letter or number)
   it will replace it with a link to that user's profile page
   */
-  parsedString = parsedString.replace(/\s@([a-zA-Z]+[a-zA-Z1-9-.]+[a-zA-Z1-9]+)/g, ' <a href = "/html/profile?u=$1">@$1</a>');
+  parsedString = parsedString.replace(/\b@([a-zA-Z]+[a-zA-Z1-9-.]+[a-zA-Z1-9]+)/g, ' <a href = "/html/profile?u=$1">@$1</a>');
+  console.log(parsedString)
   return parsedString;
 }
 function isHot(post) {

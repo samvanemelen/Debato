@@ -103,6 +103,12 @@
     display: inline-block;
 }
 
+#WalletOperations {
+    display: none;
+    padding-left: 3%;
+    flex-grow: 1;
+}
+
 #walletOperations button {
     font-size: 1em;
     display: inline-block;
@@ -143,7 +149,7 @@
     z-index: 5;
 }
 
-#TransactionFade > div{
+#TransactionFade>div {
     box-sizing: border-box;
     background-color: white;
     width: 90%;
@@ -157,6 +163,7 @@
     text-align: left;
     margin: 1.5em 0 0.5em;
 }
+
 .TransactionInputZone input {
     padding: 5px;
 }
@@ -171,17 +178,21 @@
     padding: 3px 10px;
     transition: 0.1s;
 }
+
 .CurrButton:hover {
     background-color: #08857e;
     cursor: pointer;
 }
+
 .CurrButton.active {
     background-color: #06706b;
 }
+
 .CurrButton.active:hover {
     background-color: #08857e;
     cursor: pointer;
 }
+
 .confirm {
     background-color: #06706b;
     color: white;
@@ -197,12 +208,40 @@
     background-color: #0aa59d;
     cursor: pointer;
 }
+
 .balance:hover {
     cursor: pointer;
 }
+
 .onOwnAccount, .onOtherAccount {
     display: none;
 }
+
+#followButton {
+    color: white;
+    font-size: 1.1em;
+    width: calc(100% - 20px);
+    height: 2em;
+    background-color: #0aa59d;
+    border-radius: 2px;
+    border: none;
+    outline: none;
+    margin: 10px 0;
+    transition: 0.1s;
+}
+
+#followButton:hover {
+    background-color: #00645f;
+    cursor: pointer;
+}
+
+.spinner {
+    color: white;
+    font-size: 1.1em;
+    -webkit-animation: rotate 1s infinite 0s linear;
+            animation: rotate 1s infinite 0s linear;
+}
+
 @media screen and (max-width: 600px) {
     #profileCard {
         display: block;

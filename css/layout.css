@@ -176,7 +176,8 @@ button:disabled {
   margin: 0;
 }
 .postbutton {
-  background-color: #ddd;
+  background-color: #06706b;
+  color: white;
   border: none;
   outline: none;
   margin: 8px;
@@ -184,7 +185,7 @@ button:disabled {
   transition: 0.1s;
 }
 .postbutton:hover {
-  background-color: #ccc;
+  background-color: #0aa59d;
   cursor: pointer;
 }
 .inputZone {
@@ -500,6 +501,16 @@ button:disabled {
       }
   100%{
       transform: rotate(370deg);
+      transform-origin: 50% 50%;
+      }
+}
+@keyframes rotate{
+  0%{
+      transform: rotate(0deg);
+      transform-origin: 50% 50%;
+      }
+  100%{
+      transform: rotate(360deg);
       transform-origin: 50% 50%;
       }
 }

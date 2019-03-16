@@ -74,14 +74,17 @@
                     <div id="profileImageLarge"></div>
                     <p id="profileUsername"></p>
                     <p id="profileReputation"></p>
+                    <button class="onOtherAccount" id="followButton" onclick="follow()">Follow</button>
+
+                </span>
+                <hr>
+                <span>
                     <div id="powerBarContainer">
                         <div id="votePowerBar">
                         </div>
                     </div>
-                </span>
-                <hr>
-                <span>
                     <div style="text-align: left">
+
                         <p id="activeFor">Active for</p>
                         <p id="followers">Followers</p>
                         <p id="following">Following</p>
@@ -116,7 +119,11 @@
                                 <td class="leftcell">
                                     <i class="far fa-question-circle moreInfo" onclick="showInfo(this)">
                                         <span style="display: none;">
-                                            <p>Steem tokens are the <strong>main token</strong> of the Steem blockchain. it is a <strong>liquid currency</strong> that can be <strong>powered up</strong> into Steem Power, it can be <strong>transferred</strong> to other users or traded for SBD or fiat currencies. The price fluctuates like any other coin.</p>
+                                            <p>Steem tokens are the <strong>main token</strong> of the Steem blockchain.
+                                                it is a <strong>liquid currency</strong> that can be <strong>powered
+                                                    up</strong> into Steem Power, it can be <strong>transferred</strong>
+                                                to other users or traded for SBD or fiat currencies. The price
+                                                fluctuates like any other coin.</p>
                                         </span>
                                     </i>
                                     <p> Steem Tokens (STEEM)</p>
@@ -129,9 +136,18 @@
                                 <td class="leftcell">
                                     <i class="far fa-question-circle moreInfo" onclick="showInfo(this)">
                                         <span style="display: none;">
-                                            <p>Steem Power is a measurement of the <strong>influence you have in the Steem Network</strong>. The more power a user holds, the <strong>higher his upvotes</strong> are valued. It depends on the amount of VESTS a user has compared to the amount of VESTS present on the blockchain.</p>
-                                            <p>This measure is <strong>not liquid</strong>, you cannot trade this directly. You need to <strong>'power down</strong>' your Steem Power which converts it to liquid Steem over the course of 3 months.</p>
-                                            <p>You can however <strong>delegate Steem Power</strong> to other users. This allows the other user to have higher valued votes. You can remove delegations at any time and your SP is returned after a period of one week.</p>
+                                            <p>Steem Power is a measurement of the <strong>influence you have in the
+                                                    Steem Network</strong>. The more power a user holds, the
+                                                <strong>higher his upvotes</strong> are valued. It depends on the amount
+                                                of VESTS a user has compared to the amount of VESTS present on the
+                                                blockchain.</p>
+                                            <p>This measure is <strong>not liquid</strong>, you cannot trade this
+                                                directly. You need to <strong>'power down</strong>' your Steem Power
+                                                which converts it to liquid Steem over the course of 3 months.</p>
+                                            <p>You can however <strong>delegate Steem Power</strong> to other users.
+                                                This allows the other user to have higher valued votes. You can remove
+                                                delegations at any time and your SP is returned after a period of one
+                                                week.</p>
                                         </span>
                                     </i>
                                     <p> Steem Power (SP)</p>
@@ -144,7 +160,9 @@
                                 <td class="leftcell">
                                     <i class="far fa-question-circle moreInfo" onclick="showInfo(this)">
                                         <span style="display: none;">
-                                            <p>Steem Backed Dollars are a currency designed to be <strong>pegged to the US Dollar</strong>. it is, just as Steem a liquid token and can be used for trading.</p>
+                                            <p>Steem Backed Dollars are a currency designed to be <strong>pegged to the
+                                                    US Dollar</strong>. it is, just as Steem a liquid token and can be
+                                                used for trading.</p>
                                         </span>
                                     </i>
                                     <p> Steem Backed Dollars (SBD)</p>
@@ -157,7 +175,11 @@
                                 <td class="leftcell">
                                     <i class="far fa-question-circle moreInfo" onclick="showInfo(this)">
                                         <span style="display: none;">
-                                            <p>Savings are a way to protect your precious coins from hackers. Funds in the savings are subjected to a <strong>3-day waiting period</strong>. If someone else would gain access to your account, he would have to wait 3 days before those funds become available. This should give you enough time to change your passwords and lock out any unwanted access.</p>
+                                            <p>Savings are a way to protect your precious coins from hackers. Funds in
+                                                the savings are subjected to a <strong>3-day waiting period</strong>. If
+                                                someone else would gain access to your account, he would have to wait 3
+                                                days before those funds become available. This should give you enough
+                                                time to change your passwords and lock out any unwanted access.</p>
                                         </span>
                                     </i>
                                     <p> Savings</p>
@@ -168,9 +190,10 @@
                                 </td>
                             </tr>
                         </table>
-                        <table id="walletOperations" style="padding-left: 3%; flex-grow: 1;">
+                        <table id="walletOperations">
                             <tr>
-                                <td colspan="2"><button id="TransferButton" onclick="openTransfer()">Transfer funds</button></td>
+                                <td colspan="2"><button id="TransferButton" onclick="openTransfer()">Transfer
+                                        funds</button></td>
                             </tr>
                             <tr class="onOwnAccount">
                                 <td width="50%"><button onclick="openPowerUp()">Power up</button></td>
@@ -187,64 +210,84 @@
                 </div>
             </div>
         </div>
-        <div id = "TransactionFade" style="display: none;">
-                <div id = "TransferBox" style="display: none;">
-                    <h3>Transfer Funds</h3>
-                    <div class="TransactionInputZone">
-                        <p>Transfer to</p>
-                        <input id="recipient" type="text" placeholder="payment recipient">
-                        <p>Amount</p>
-                        <input id="transferAmount" type="number" min="0" placeholder="" value="0">
-                        <p style="display:inline-block; margin-right: 1em; font-size: 0.9em;">Your balance: <a class="balance" onclick="document.getElementById('transferAmount').value = this.innerHTML"></a></p>
-                        <button id="def_open" class="CurrButton active" onclick="switchCurrency(this)">SBD</button><button class="CurrButton" onclick="switchCurrency(this)">STEEM</button>
-                        <p>Memo</p>
-                        <input id="memo" type="text" placeholder="(optional) add a message to include in the transfer">
-                        <button class="confirm" onclick="Transfer(document.getElementById('recipient').value, document.getElementById('transferAmount').value, document.getElementById('memo').value, document.getElementsByClassName('CurrButton active')[0].innerHTML)">Transfer</button>
-                    </div>
-                    <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The 'Transfer' button will redirect you to SteemConnect where you can confirm the transaction.</p>
+        <div id="TransactionFade" style="display: none;">
+            <div id="TransferBox" style="display: none;">
+                <h3>Transfer Funds</h3>
+                <div class="TransactionInputZone">
+                    <p>Transfer to</p>
+                    <input id="recipient" type="text" placeholder="payment recipient">
+                    <p>Amount</p>
+                    <input id="transferAmount" type="number" min="0" placeholder="" value="0">
+                    <p style="display:inline-block; margin-right: 1em; font-size: 0.9em;">Your balance: <a
+                            class="balance"
+                            onclick="document.getElementById('transferAmount').value = this.innerHTML"></a></p>
+                    <button id="def_open" class="CurrButton active" onclick="switchCurrency(this)">SBD</button><button
+                        class="CurrButton" onclick="switchCurrency(this)">STEEM</button>
+                    <p>Memo</p>
+                    <input id="memo" type="text" placeholder="(optional) add a message to include in the transfer">
+                    <button class="confirm"
+                        onclick="Transfer(document.getElementById('recipient').value, document.getElementById('transferAmount').value, document.getElementById('memo').value, document.getElementsByClassName('CurrButton active')[0].innerHTML)">Transfer</button>
                 </div>
-                <div id = "powerupBox" style="display: none;">
-                    <h3>Power Up</h3>
-                    <div class="TransactionInputZone">
-                        <p>Amount</p>
-                        <input id="powerupAmount" type="number" min="0" placeholder="" value="0">
-                        <p style="font-size: 0.9em;">Your balance: <a class="balance" onclick="document.getElementById('powerupAmount').value = this.innerHTML"></a> STEEM</p>
-                        <button class="confirm" onclick="powerup(document.getElementById('powerupAmount').value)">Power up!</button>
-                    </div>
-                    <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The 'Power up' button will redirect you to SteemConnect where you can confirm the transaction.</p>
-                </div>
-                <div id = "powerdownBox" style="display: none;">
-                    <h3>Power Down</h3>
-                    <div class="TransactionInputZone">
-                        <p>Amount</p>
-                        <input id="powerdownAmount" type="number" min="0" placeholder="" value="0">
-                        <p style="font-size: 0.8em; color: rgb(88, 88, 88);">Attention! It is recommended to leave at least 50 SP in your account to ensure you can perform actions on the Steem blockchain!</p>
-                        <p style="font-size: 0.9em;">Your balance: <a class="balance" onclick="document.getElementById('powerdownAmount').value = this.innerHTML"></a> SP</p>
-                        <button class="confirm" onclick="powerdown(document.getElementById('powerdownAmount').value)">Power down</button>
-                    </div>
-                    <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The 'Power down' button will redirect you to SteemConnect where you can confirm the transaction.</p>
-                </div>
-                <div id = "delegateBox" style="display: none;">
-                    <h3>Delegate</h3>
-                    <div class="TransactionInputZone">
-                        <p style="font-size: 0.8em; color: rgb(88, 88, 88); margin: 0;">If you want to increase or decrease a certain delegation, type the final amount you want to delegate. <br> Example: if you want to increase your delegation from 100 SP to 150 SP, type 150.</p>
-                        <p>Amount</p>
-                        <input id="delegateAmount" type="number" min="0" placeholder="" value="0">
-                        <p style="font-size: 0.8em; color: rgb(88, 88, 88);">Attention! It is recommended to leave at least 50 SP in your account to ensure you can perform actions on the Steem blockchain</p>
-                        <p style="font-size: 0.9em;">Your balance: <a class="balance" onclick="document.getElementById('delegateAmount').value = this.innerHTML"></a> SP</p>
-                        <button class="confirm" onclick="delegate(document.getElementById('delegateAmount').value)">Delegate steem power!</button>
-                    </div>
-                    <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The 'Delegate steem power!' button will redirect you to SteemConnect where you can confirm the transaction.</p>
-                </div>
-                <div id = "removeDelegationBox" style="display: none;">
-                    <h3>Confirm removing delegation</h3>
-                    <div class="TransactionInputZone">
-                        <p style="font-size: 0.8em; color: rgb(88, 88, 88);">Removing a delegation is equal to delegating 0 SP. Your SP will be available to you after 7 days.</p>
-                        <button class="confirm" onclick="removedelegation()">Remove delegation</button>
-                    </div>
-                    <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The Remove delegation' button will redirect you to SteemConnect where you can confirm the transaction.</p>
-                </div>
+                <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The 'Transfer' button will redirect you to
+                    SteemConnect where you can confirm the transaction.</p>
             </div>
+            <div id="powerupBox" style="display: none;">
+                <h3>Power Up</h3>
+                <div class="TransactionInputZone">
+                    <p>Amount</p>
+                    <input id="powerupAmount" type="number" min="0" placeholder="" value="0">
+                    <p style="font-size: 0.9em;">Your balance: <a class="balance"
+                            onclick="document.getElementById('powerupAmount').value = this.innerHTML"></a> STEEM</p>
+                    <button class="confirm" onclick="powerup(document.getElementById('powerupAmount').value)">Power
+                        up!</button>
+                </div>
+                <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The 'Power up' button will redirect you to
+                    SteemConnect where you can confirm the transaction.</p>
+            </div>
+            <div id="powerdownBox" style="display: none;">
+                <h3>Power Down</h3>
+                <div class="TransactionInputZone">
+                    <p>Amount</p>
+                    <input id="powerdownAmount" type="number" min="0" placeholder="" value="0">
+                    <p style="font-size: 0.8em; color: rgb(88, 88, 88);">Attention! It is recommended to leave at least
+                        50 SP in your account to ensure you can perform actions on the Steem blockchain!</p>
+                    <p style="font-size: 0.9em;">Your balance: <a class="balance"
+                            onclick="document.getElementById('powerdownAmount').value = this.innerHTML"></a> SP</p>
+                    <button class="confirm" onclick="powerdown(document.getElementById('powerdownAmount').value)">Power
+                        down</button>
+                </div>
+                <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The 'Power down' button will redirect you to
+                    SteemConnect where you can confirm the transaction.</p>
+            </div>
+            <div id="delegateBox" style="display: none;">
+                <h3>Delegate</h3>
+                <div class="TransactionInputZone">
+                    <p style="font-size: 0.8em; color: rgb(88, 88, 88); margin: 0;">If you want to increase or decrease
+                        a certain delegation, type the final amount you want to delegate. <br> Example: if you want to
+                        increase your delegation from 100 SP to 150 SP, type 150.</p>
+                    <p>Amount</p>
+                    <input id="delegateAmount" type="number" min="0" placeholder="" value="0">
+                    <p style="font-size: 0.8em; color: rgb(88, 88, 88);">Attention! It is recommended to leave at least
+                        50 SP in your account to ensure you can perform actions on the Steem blockchain</p>
+                    <p style="font-size: 0.9em;">Your balance: <a class="balance"
+                            onclick="document.getElementById('delegateAmount').value = this.innerHTML"></a> SP</p>
+                    <button class="confirm" onclick="delegate(document.getElementById('delegateAmount').value)">Delegate
+                        steem power!</button>
+                </div>
+                <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The 'Delegate steem power!' button will redirect
+                    you to SteemConnect where you can confirm the transaction.</p>
+            </div>
+            <div id="removeDelegationBox" style="display: none;">
+                <h3>Confirm removing delegation</h3>
+                <div class="TransactionInputZone">
+                    <p style="font-size: 0.8em; color: rgb(88, 88, 88);">Removing a delegation is equal to delegating 0
+                        SP. Your SP will be available to you after 7 days.</p>
+                    <button class="confirm" onclick="removedelegation()">Remove delegation</button>
+                </div>
+                <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The Remove delegation' button will redirect you to
+                    SteemConnect where you can confirm the transaction.</p>
+            </div>
+        </div>
     </center>
     <div id="errorbox" class="popupbox">
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>

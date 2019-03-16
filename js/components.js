@@ -36,7 +36,7 @@ function createArgumentCard(values) {
   if (commentElement.author === user) { // Original author of the comment
     line += `<i id="more-${commentElement.permlink}" class="far fa-caret-square-down moreIcon">`;
     // eslint-disable-next-line prefer-destructuring
-    line += `<ul><li><a class="editButton" onclick="editComment('${commentElement.permlink}','${commentElement.body}','${JSON.parse(commentElement.json_metadata).type}')">edit</a></li>`;
+    line += `<ul><li><a class="editButton" onclick="editComment('${commentElement.permlink}','${parseHtml(commentElement.body)}','${JSON.parse(commentElement.json_metadata).type}')">edit</a></li>`;
     if (commentElement.children === 0 // No received comments
             && commentElement.active_votes.length === 0 // No received votes
             && (new Date() - new Date(commentElement.created)) / 86400000 < 7) { // < 7 days
@@ -104,7 +104,7 @@ function createCommentCard(comment) {
   if (comment.author === user) { // Original author of the comment
     moreMenu += `<i id="more-${comment.permlink}" class="far fa-caret-square-down moreIcon"  style='position: relative;'>`;
     // eslint-disable-next-line prefer-destructuring
-    moreMenu += `<ul style='position: absolute;'><li><a class="editButton" onclick="editComment('${comment.permlink}','${comment.body}','${JSON.parse(comment.json_metadata).type}')">edit</a></li>`;
+    moreMenu += `<ul style='position: absolute;'><li><a class="editButton" onclick="editComment('${comment.permlink}','${parseHtml(comment.body)}','${JSON.parse(comment.json_metadata).type}')">edit</a></li>`;
     if ((comment.children === 0) // No received comments
         && (comment.active_votes.length === 0) // No received votes
         && (new Date() - new Date(comment.created)) / 86400000 < 7) { // < 7 days
@@ -117,4 +117,26 @@ function createCommentCard(comment) {
   commentItem += `<a class="blackLink" href="/html/profile?u=${comment.author}">${comment.author}</a>:</strong>`;
   commentItem += `<div style="margin-left: 10px;">${commentContent}</div></div>`;
   return commentItem;
+}
+function createProfileArgumentCard(values) {
+  /*
+    the 'values' parameter is a dictionary with the following attributes:
+      - postType
+      - parentAuthor
+      - parentPerm
+      - parentTitle
+      - author
+      - perm
+      - title
+      - created
+      - reward
+  */
+  let body = '<div class="argumentCard">';
+  body += `<p style="font-size: 0.9em; color: ">Argumented (${values.postType}) on: `;
+  body += `<a href="/html/discussion?a=${values.parentAuthor}&p=${values.parentPerm}">${values.parentTitle}</a>`;
+  body += ` by <a href="/html/profile?u=${values.parentAuthor}">${values.parentAuthor}</a></p>`;
+  body += `<p style="font-size:1.2em;"><a class="blackLink" href = "/html/discussion?a=${values.author}&p=${values.perm}">${values.title}</a></p>`;
+  body += `<p title="${values.created}">${values.reward} - ${timeSince(values.created)} ago</p>`;
+  body += '</div>';
+  return body;
 }
