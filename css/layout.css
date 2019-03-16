@@ -97,7 +97,7 @@ nav ul li a {
   list-style-type: none;
   background-color: white;
   border: 1px solid rgb(209, 209, 209);
-  padding: 5px 1em 5px 1em;
+  padding: 5px 1em;
 }
 .moreIcon ul li a {
   text-decoration: none;
@@ -166,7 +166,7 @@ button:disabled {
   font-size: 22px;
   line-height: 20px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.1s;
 }
 .closebtn:hover {
   color: black;
@@ -181,7 +181,7 @@ button:disabled {
   outline: none;
   margin: 8px;
   padding: 5px 16px;
-  transition: 0.3s;
+  transition: 0.1s;
 }
 .postbutton:hover {
   background-color: #ccc;
@@ -217,7 +217,7 @@ button:disabled {
   outline: none;
   cursor: pointer;
   padding: 14px 16px;
-  transition: 0.3s;
+  transition: 0.1s;
 }
 .tab button:hover {
   background-color: #ddd;
@@ -466,7 +466,7 @@ button:disabled {
     border: none;
     outline: none;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.1s;
   }
   .discussionObj {
     max-width: 90%;

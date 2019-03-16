@@ -585,20 +585,6 @@ function writeCommentList(commentList) {
     const comListElement = document.getElementsByClassName('commentList')[0];
     for (let i = 0; i < commentCount; i += 1) {
       comListElement.innerHTML += createCommentCard(commentList[i]);
-      if (document.getElementById(`more-${commentList[i].permlink}`)) {
-        document.getElementById(`more-${commentList[i].permlink}`).addEventListener('click', (event) => {
-          // If the list is clicked (has no sub element of 'ul'), nothing should happen
-          if (!event.target.getElementsByTagName('ul')[0]) { return; }
-          const options = event.target.getElementsByTagName('ul')[0];
-          if (options.style.display !== 'block') {
-            options.style.display = 'block';
-            // If anywhere is clicked in the document that is not the list, it shoud close again
-            document.addEventListener('click', (evt) => {
-              if (evt.target !== event.target.getElementsByTagName('ul')[0] && evt.target !== event.target) { options.style.display = 'none'; }
-            });
-          } else { options.style.display = 'none'; }
-        });
-      }
     }
   } else {
     let body = '<button class="collapsibleButton comments" onclick="commentsDropDown(this)">There are no comments on this statement</button>';

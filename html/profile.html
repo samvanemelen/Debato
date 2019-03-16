@@ -1,120 +1,270 @@
-<html> 
-    <head> 
-        <meta charset="UTF-8"> 
-        <title>Debato - Profile</title>
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-        <meta name="description" content="Your Steem profile details"> 
-        <link rel="stylesheet" type="text/css" href="/css/layout.css"> 
-        <link rel="stylesheet" type="text/css" href="/css/profile.css"> 
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aleo">
-        <link rel="apple-touch-icon" sizes="180x180" href="/imgs/favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="/imgs/favicon/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/imgs/favicon/favicon-16x16.png">
-        <link rel="manifest" href="/imgs/favicon/site.webmanifest">
-        <link rel="mask-icon" href="/imgs/favicon/safari-pinned-tab.svg" color="#5bbad5">
-        <link rel="shortcut icon" href="/imgs/favicon/favicon.ico">
-        <meta name="msapplication-TileColor" content="#00aba9">
-        <meta name="msapplication-config" content="/imgs/favicon/browserconfig.xml">
-        <meta name="theme-color" content="#ffffff">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>     
-    <body style="font-family: Aleo;">  
-        <center style="width: 100%; max-width: 100%;">
-                <header>
-                        <i class="fas fa-bars mobile_menu" onclick="document.getElementById('mainMenu').style.display = 'block'"></i>
-                        <nav id="mainMenu">
-                        <span id="fade"  onclick="document.getElementById('mainMenu').style.display = 'none'"></span>
-                        <ul>
-                            <i class="fas fa-times exit_btn" onclick="document.getElementById('mainMenu').style.display = 'none'"></i>
-                            <li class="show_logged_in"><div id="profilePreview"></div></li>
-                            <br>
-                            <li class="hide_logged_in"><a href = 'https://signup.steemit.com/?ref=debato'>Sign up</a></li>
-                            <li class="hide_logged_in"><a href="https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=https://www.debato.org&scope=vote,comment,delete_comment">Log in</a></li>
-                            <li class="show_logged_in"><div><input class = "voteSlider" type = "range" min = "1" max = "10000" value = "10000"><p class = "voteIndicator">100% upvotes</p></div></li>
-                            <li><a href="/">Browse discussions</a></li>
-                            <li class="show_logged_in"><a href="/html/create">Start discussion</a></li>
-                            <li class="show_logged_in"><a class="profileLink" href="/html/profile">My profile</a></li>
-                            <li class="show_logged_in"><a onclick = "logout()">Log out</a></li>
-                        </ul>
-                    </nav
-                    ><a class="homelink blackLink" href="/index">DEBATO</a>
-                    <a id = "createAccount" class="blackLink hide_logged_in hide_on_mobile" href = 'https://signup.steemit.com/?ref=debato'>Sign up</a>
-                    <div id="accountBox" onclick="toggleMenu();" onmouseover="toggleMenu(true);" onmouseleave="toggleMenu(false);">
-                        <div id = "accountLogin"><a id ="SteemConnect" class="blackLink" href="https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=https://www.debato.org&scope=vote,comment,delete_comment">
-                            Log in
-                        </a></div>
-                        <div id="accountMenu">
-                            <div><input class = "voteSlider" type = "range" min = "1" max = "10000" value = "10000"><p class = "voteIndicator">100% upvotes</p></div>
-                            <a class="blackLink" href="/html/create">Start discussion</a>
-                            <a class="blackLink profileLink" href="/html/profile">My profile</a>
-                            <a class="blackLink" onclick = "logout()">Log out</a>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Debato - Profile</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <meta name="description" content="Your Steem profile details">
+    <link rel="stylesheet" type="text/css" href="/css/layout.css">
+    <link rel="stylesheet" type="text/css" href="/css/profile.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aleo">
+    <link rel="apple-touch-icon" sizes="180x180" href="/imgs/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/imgs/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/imgs/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/imgs/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/imgs/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/imgs/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#00aba9">
+    <meta name="msapplication-config" content="/imgs/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body style="font-family: Aleo;">
+    <center style="width: 100%; max-width: 100%;">
+        <header>
+            <i class="fas fa-bars mobile_menu"
+                onclick="document.getElementById('mainMenu').style.display = 'block'"></i>
+            <nav id="mainMenu">
+                <span id="fade" onclick="document.getElementById('mainMenu').style.display = 'none'"></span>
+                <ul>
+                    <i class="fas fa-times exit_btn"
+                        onclick="document.getElementById('mainMenu').style.display = 'none'"></i>
+                    <li class="show_logged_in">
+                        <div id="profilePreview"></div>
+                    </li>
+                    <br>
+                    <li class="hide_logged_in"><a href='https://signup.steemit.com/?ref=debato'>Sign up</a></li>
+                    <li class="hide_logged_in"><a
+                            href="https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=https://www.debato.org&scope=vote,comment,delete_comment">Log
+                            in</a></li>
+                    <li class="show_logged_in">
+                        <div><input class="voteSlider" type="range" min="1" max="10000" value="10000">
+                            <p class="voteIndicator">100% upvotes</p>
+                        </div>
+                    </li>
+                    <li><a href="/">Browse discussions</a></li>
+                    <li class="show_logged_in"><a href="/html/create">Start discussion</a></li>
+                    <li class="show_logged_in"><a class="profileLink" href="/html/profile">My profile</a></li>
+                    <li class="show_logged_in"><a onclick="logout()">Log out</a></li>
+                </ul>
+            </nav><a class="homelink blackLink" href="/index">DEBATO</a>
+            <a id="createAccount" class="blackLink hide_logged_in hide_on_mobile"
+                href='https://signup.steemit.com/?ref=debato'>Sign up</a>
+            <div id="accountBox" onclick="toggleMenu();" onmouseover="toggleMenu(true);"
+                onmouseleave="toggleMenu(false);">
+                <div id="accountLogin"><a id="SteemConnect" class="blackLink"
+                        href="https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=https://www.debato.org&scope=vote,comment,delete_comment">
+                        Log in
+                    </a></div>
+                <div id="accountMenu">
+                    <div><input class="voteSlider" type="range" min="1" max="10000" value="10000">
+                        <p class="voteIndicator">100% upvotes</p>
+                    </div>
+                    <a class="blackLink" href="/html/create">Start discussion</a>
+                    <a class="blackLink profileLink" href="/html/profile">My profile</a>
+                    <a class="blackLink" onclick="logout()">Log out</a>
+                </div>
+            </div>
+        </header>
+        <div id="profileCard">
+            <div id="profileInfo">
+                <span>
+                    <div id="profileImageLarge"></div>
+                    <p id="profileUsername"></p>
+                    <p id="profileReputation"></p>
+                    <div id="powerBarContainer">
+                        <div id="votePowerBar">
                         </div>
                     </div>
-                </header>
-                <div id="profileCard">
-                <div id="profileInfo">
-                    <span>
-                        <div id="profileImageLarge"></div>
-                        <p id="profileUsername"></p><p id="profileReputation"></p>
-                        <div id="powerBarContainer">
-                            <div id = "votePowerBar">
-                            </div>
-                        </div>
-                    </span>
-                    <hr>
-                    <span>
+                </span>
+                <hr>
+                <span>
                     <div style="text-align: left">
                         <p id="activeFor">Active for</p>
                         <p id="followers">Followers</p>
                         <p id="following">Following</p>
                     </div>
-                    </span>
-                        <hr  class='hide_on_mobile'>
-                        <span>
-                        <p id="about" class='hide_on_mobile' style="font-size: 0.8em;"></p>
-                    </span>
-                </div>
-                <div id="profileContent"> 
-                    <div class="tab"> 
-                        <button class="tablinks" id="defaultOpen" onclick="openProfileTab(event, 'Discussions')">Discussions</button>                     
-                        <button class="tablinks" onclick="openProfileTab(event, 'Arguments')">Arguments</button>
-                        <button class="tablinks" onclick="openProfileTab(event, 'Wallet')">Wallet</button>                     
-                    </div>
-                    <hr>                              
-                    <div id="Discussions" class="tabcontent"> 
-                        <h3>created discussions</h3>
-                        <div class="discussionList" id="authorDiscussions"></div>                
-                    </div>
-                    <div id="Arguments" class="tabcontent"> 
-                        <h3>arguments on other discussions</h3> 
-                        <div id="authorComments"></div>                   
-                    </div>
-                    <div id="Wallet" class="tabcontent"> 
-                        <h3>wallet</h3>                     
-                    </div>                      
-                </div>          
+                </span>
+                <hr class='hide_on_mobile'>
+                <span>
+                    <p id="about" class='hide_on_mobile' style="font-size: 0.8em;"></p>
+                </span>
             </div>
-
-
-        </center>   
-        <div id="errorbox" class = "popupbox">
-            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-            <p class="boxcontent">error</p>
-            <div class="timeBar"></div>
+            <div id="profileContent">
+                <div class="tab">
+                    <button class="tablinks" id="defaultOpen"
+                        onclick="openProfileTab(event, 'Discussions')">Discussions</button>
+                    <button class="tablinks" onclick="openProfileTab(event, 'Arguments')">Arguments</button>
+                    <button class="tablinks" onclick="openProfileTab(event, 'Wallet')">Wallet</button>
+                </div>
+                <hr>
+                <div id="Discussions" class="tabcontent">
+                    <h3>created discussions</h3>
+                    <div class="discussionList" id="authorDiscussions"></div>
+                </div>
+                <div id="Arguments" class="tabcontent">
+                    <h3>arguments on other discussions</h3>
+                    <div id="authorComments"></div>
+                </div>
+                <div id="Wallet" class="tabcontent">
+                    <h3>wallet</h3>
+                    <div style="display: flex; flex-wrap: wrap;justify-content: space-between">
+                        <table id="WalletContent" style="flex-grow: 3;">
+                            <tr>
+                                <td class="leftcell">
+                                    <i class="far fa-question-circle moreInfo" onclick="showInfo(this)">
+                                        <span style="display: none;">
+                                            <p>Steem tokens are the <strong>main token</strong> of the Steem blockchain. it is a <strong>liquid currency</strong> that can be <strong>powered up</strong> into Steem Power, it can be <strong>transferred</strong> to other users or traded for SBD or fiat currencies. The price fluctuates like any other coin.</p>
+                                        </span>
+                                    </i>
+                                    <p> Steem Tokens (STEEM)</p>
+                                </td>
+                                <td class="rightcell">
+                                    <p id="SteemTokens"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="leftcell">
+                                    <i class="far fa-question-circle moreInfo" onclick="showInfo(this)">
+                                        <span style="display: none;">
+                                            <p>Steem Power is a measurement of the <strong>influence you have in the Steem Network</strong>. The more power a user holds, the <strong>higher his upvotes</strong> are valued. It depends on the amount of VESTS a user has compared to the amount of VESTS present on the blockchain.</p>
+                                            <p>This measure is <strong>not liquid</strong>, you cannot trade this directly. You need to <strong>'power down</strong>' your Steem Power which converts it to liquid Steem over the course of 3 months.</p>
+                                            <p>You can however <strong>delegate Steem Power</strong> to other users. This allows the other user to have higher valued votes. You can remove delegations at any time and your SP is returned after a period of one week.</p>
+                                        </span>
+                                    </i>
+                                    <p> Steem Power (SP)</p>
+                                </td>
+                                <td class="rightcell">
+                                    <p id="SteemPower"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="leftcell">
+                                    <i class="far fa-question-circle moreInfo" onclick="showInfo(this)">
+                                        <span style="display: none;">
+                                            <p>Steem Backed Dollars are a currency designed to be <strong>pegged to the US Dollar</strong>. it is, just as Steem a liquid token and can be used for trading.</p>
+                                        </span>
+                                    </i>
+                                    <p> Steem Backed Dollars (SBD)</p>
+                                </td>
+                                <td class="rightcell">
+                                    <p id="SteemBackedDollars"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="leftcell">
+                                    <i class="far fa-question-circle moreInfo" onclick="showInfo(this)">
+                                        <span style="display: none;">
+                                            <p>Savings are a way to protect your precious coins from hackers. Funds in the savings are subjected to a <strong>3-day waiting period</strong>. If someone else would gain access to your account, he would have to wait 3 days before those funds become available. This should give you enough time to change your passwords and lock out any unwanted access.</p>
+                                        </span>
+                                    </i>
+                                    <p> Savings</p>
+                                </td>
+                                <td class="rightcell">
+                                    <p id="SavingsSteem"></p><br>
+                                    <p id="SavingsSBD" style="margin-top: 0"></p>
+                                </td>
+                            </tr>
+                        </table>
+                        <table id="walletOperations" style="padding-left: 3%; flex-grow: 1;">
+                            <tr>
+                                <td colspan="2"><button id="TransferButton" onclick="openTransfer()">Transfer funds</button></td>
+                            </tr>
+                            <tr class="onOwnAccount">
+                                <td width="50%"><button onclick="openPowerUp()">Power up</button></td>
+                                <td width="50%"><button onclick="openPowerDown()">Power down</button></td>
+                            </tr>
+                            <tr class="onOtherAccount">
+                                <td colspan="2"><button onclick="openDelegate()">Delegate to user</button></td>
+                            </tr>
+                            <tr id="removeDelegation" class="onOtherAccount">
+                                <td colspan="2"><button onclick="openRemoveDelegation()">Remove delegation</button></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="warningbox" class = "popupbox">
-            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-            <p class="boxcontent">warning</p>
-            <div class="timeBar"></div>
-        </div>
-        <div id="successbox" class = "popupbox">
-            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-            <p class="boxcontent">warning</p>
-            <div class="timeBar"></div>
-        </div>                
-    </body>     
-</html> 
-<script src="https://cdn.jsdelivr.net/npm/steemconnect@latest"></script> 
+        <div id = "TransactionFade" style="display: none;">
+                <div id = "TransferBox" style="display: none;">
+                    <h3>Transfer Funds</h3>
+                    <div class="TransactionInputZone">
+                        <p>Transfer to</p>
+                        <input id="recipient" type="text" placeholder="payment recipient">
+                        <p>Amount</p>
+                        <input id="transferAmount" type="number" min="0" placeholder="" value="0">
+                        <p style="display:inline-block; margin-right: 1em; font-size: 0.9em;">Your balance: <a class="balance" onclick="document.getElementById('transferAmount').value = this.innerHTML"></a></p>
+                        <button id="def_open" class="CurrButton active" onclick="switchCurrency(this)">SBD</button><button class="CurrButton" onclick="switchCurrency(this)">STEEM</button>
+                        <p>Memo</p>
+                        <input id="memo" type="text" placeholder="(optional) add a message to include in the transfer">
+                        <button class="confirm" onclick="Transfer(document.getElementById('recipient').value, document.getElementById('transferAmount').value, document.getElementById('memo').value, document.getElementsByClassName('CurrButton active')[0].innerHTML)">Transfer</button>
+                    </div>
+                    <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The 'Transfer' button will redirect you to SteemConnect where you can confirm the transaction.</p>
+                </div>
+                <div id = "powerupBox" style="display: none;">
+                    <h3>Power Up</h3>
+                    <div class="TransactionInputZone">
+                        <p>Amount</p>
+                        <input id="powerupAmount" type="number" min="0" placeholder="" value="0">
+                        <p style="font-size: 0.9em;">Your balance: <a class="balance" onclick="document.getElementById('powerupAmount').value = this.innerHTML"></a> STEEM</p>
+                        <button class="confirm" onclick="powerup(document.getElementById('powerupAmount').value)">Power up!</button>
+                    </div>
+                    <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The 'Power up' button will redirect you to SteemConnect where you can confirm the transaction.</p>
+                </div>
+                <div id = "powerdownBox" style="display: none;">
+                    <h3>Power Down</h3>
+                    <div class="TransactionInputZone">
+                        <p>Amount</p>
+                        <input id="powerdownAmount" type="number" min="0" placeholder="" value="0">
+                        <p style="font-size: 0.8em; color: rgb(88, 88, 88);">Attention! It is recommended to leave at least 50 SP in your account to ensure you can perform actions on the Steem blockchain!</p>
+                        <p style="font-size: 0.9em;">Your balance: <a class="balance" onclick="document.getElementById('powerdownAmount').value = this.innerHTML"></a> SP</p>
+                        <button class="confirm" onclick="powerdown(document.getElementById('powerdownAmount').value)">Power down</button>
+                    </div>
+                    <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The 'Power down' button will redirect you to SteemConnect where you can confirm the transaction.</p>
+                </div>
+                <div id = "delegateBox" style="display: none;">
+                    <h3>Delegate</h3>
+                    <div class="TransactionInputZone">
+                        <p style="font-size: 0.8em; color: rgb(88, 88, 88); margin: 0;">If you want to increase or decrease a certain delegation, type the final amount you want to delegate. <br> Example: if you want to increase your delegation from 100 SP to 150 SP, type 150.</p>
+                        <p>Amount</p>
+                        <input id="delegateAmount" type="number" min="0" placeholder="" value="0">
+                        <p style="font-size: 0.8em; color: rgb(88, 88, 88);">Attention! It is recommended to leave at least 50 SP in your account to ensure you can perform actions on the Steem blockchain</p>
+                        <p style="font-size: 0.9em;">Your balance: <a class="balance" onclick="document.getElementById('delegateAmount').value = this.innerHTML"></a> SP</p>
+                        <button class="confirm" onclick="delegate(document.getElementById('delegateAmount').value)">Delegate steem power!</button>
+                    </div>
+                    <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The 'Delegate steem power!' button will redirect you to SteemConnect where you can confirm the transaction.</p>
+                </div>
+                <div id = "removeDelegationBox" style="display: none;">
+                    <h3>Confirm removing delegation</h3>
+                    <div class="TransactionInputZone">
+                        <p style="font-size: 0.8em; color: rgb(88, 88, 88);">Removing a delegation is equal to delegating 0 SP. Your SP will be available to you after 7 days.</p>
+                        <button class="confirm" onclick="removedelegation()">Remove delegation</button>
+                    </div>
+                    <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The Remove delegation' button will redirect you to SteemConnect where you can confirm the transaction.</p>
+                </div>
+            </div>
+    </center>
+    <div id="errorbox" class="popupbox">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <p class="boxcontent">error</p>
+        <div class="timeBar"></div>
+    </div>
+    <div id="warningbox" class="popupbox">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <p class="boxcontent">warning</p>
+        <div class="timeBar"></div>
+    </div>
+    <div id="successbox" class="popupbox">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <p class="boxcontent">warning</p>
+        <div class="timeBar"></div>
+    </div>
+</body>
+
+</html>
+<script src="https://cdn.jsdelivr.net/npm/steemconnect@latest"></script>
 <script src="https://cdn.steemjs.com/lib/latest/steem.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/showdown@latest/dist/showdown.min.js"></script>
 <script src="/js/components.js"></script>
