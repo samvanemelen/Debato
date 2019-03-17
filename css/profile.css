@@ -126,6 +126,12 @@
     cursor: pointer;
 }
 
+#claimRewards ul, #claimRewards li {
+    margin-block-start: 0;
+    padding-inline-start: 10px;
+    list-style-type: none;
+}
+
 .moreInfo {
     cursor: pointer;
     display: inline-block;

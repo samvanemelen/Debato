@@ -75,12 +75,12 @@ function updateLoginStatus() {
         app: 'debato-app',
         callbackURL: 'http://www.debato.org',
         accessToken,
-        scope: ['vote', 'comment', 'delete_comment', 'custom_json'],
+        scope: ['vote', 'comment', 'delete_comment', 'custom_json', 'claim_reward_balance'],
       });
     });
   } else {
     const redirURL = window.location.href.split('/').slice(0, 3).join('/');
-    const link = `<a id = "SteemConnect" class="blackLink" href = "https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=${redirURL}&scope=vote,comment,delete_comment,custom_json">Log in</a>`;
+    const link = `<a id = "SteemConnect" class="blackLink" href = "https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=${redirURL}&scope=vote,comment,delete_comment,custom_json,claim_reward_balance">Log in</a>`;
     document.getElementById('accountLogin').innerHTML = link;
   }
 }
@@ -225,7 +225,6 @@ function parseHtml(string) {
   it will replace it with a link to that user's profile page
   */
   parsedString = parsedString.replace(/\b@([a-zA-Z]+[a-zA-Z1-9-.]+[a-zA-Z1-9]+)/g, ' <a href = "/html/profile?u=$1">@$1</a>');
-  console.log(parsedString)
   return parsedString;
 }
 function isHot(post) {

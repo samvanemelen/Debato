@@ -205,6 +205,25 @@
                             <tr id="removeDelegation" class="onOtherAccount">
                                 <td colspan="2"><button onclick="openRemoveDelegation()">Remove delegation</button></td>
                             </tr>
+                            <tr id="claimRewards" class="onOwnAccount">
+                                <td colspan="2">
+                                    <i class="far fa-question-circle moreInfo" onclick="showInfo(this)">
+                                        <span style="display: none; max-width: 20%;">
+                                            <p>You earn rewards when your discussions or arguments get upvoted by other
+                                                users, or by having one of the first upvotes on a post that became
+                                                popular. After the discussion or argument is 7 days old you can claim
+                                                your reward.</p>
+                                        </span>
+                                    </i>
+                                    <p style="display: inline-block"> Pending rewards</p>
+                                    <ul>
+                                        <li id="pendingSTEEM"></li>
+                                        <li id="pendingSBD"></li>
+                                        <li id="pendingSP"></li>
+                                    </ul>
+                                    <button id="claimRewardButton" onclick="claimrewards()">Claim rewards</button>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>

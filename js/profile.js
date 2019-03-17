@@ -9,6 +9,9 @@ let SBDBalance = 0;
 let VestBalance = 0;
 let totalVests = 0;
 let totalSteem = 0;
+let rewardSteem = 0;
+let rewardSBD = 0;
+let rewardVests = 0;
 const delegatee = [];
 const followers = [];
 /*
@@ -176,6 +179,18 @@ function removedelegation(amount) {
   const win = window.open(url, '_blank');
   win.focus();
 }
+function claimrewards() {
+  document.getElementById('claimRewardButton').innerHTML = '<i class="spinner fas fa-spinner"></i>';
+  api.claimRewardBalance(user, (err, res) => {
+    if (res) {
+      document.getElementById('claimRewards').style.display = 'none';
+      showSuccess('Successfully claimed rewards!');
+    } else {
+      showError(`Something went wrong: ${err}`);
+      document.getElementById('claimRewardButton').innerHTML = 'Claim rewards';
+    }
+  });
+}
 function switchCurrency(element) {
   const transferBox = document.getElementById('TransferBox');
   if (element.innerHTML === 'SBD') {
@@ -222,7 +237,6 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
   const wrongUserText = `<div style="margin: 20px auto 20px auto; font-size: 1.5em;">Could not find "${profileUsername}"</div>`;
   if (account.length === 0) { document.getElementById('profileCard').innerHTML = wrongUserText; return; }
   const profileUser = account[0];
-  console.log(profileUser);
   /*
   if the JSON does not containt information such as 'profile image' or 'about'
   it should skip the step until a default image is incorporated
@@ -281,6 +295,16 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
     const profileSP = totalSteem * (profileUser.vesting_shares.split(' ')[0] / totalVests);
     document.getElementById('SteemPower').innerHTML = `${profileSP.toFixed(3)} SP`;
   });
+  if (profileUser.reward_steem_balance.split(' ')[0] !== 0
+  || profileUser.reward_sbd_balance.split(' ')[0] !== 0
+  || profileUser.reward_vesting_steem.split(' ')[0] !== 0) {
+    [rewardSteem] = profileUser.reward_steem_balance.split(' ');
+    [rewardSBD] = profileUser.savings_sbd_balance.split(' ');
+    [rewardVests] = profileUser.reward_vesting_balance.split(' ');
+    document.getElementById('pendingSTEEM').innerHTML = profileUser.reward_steem_balance;
+    document.getElementById('pendingSBD').innerHTML = profileUser.savings_sbd_balance;
+    document.getElementById('pendingSP').innerHTML = profileUser.reward_vesting_steem.replace('STEEM', 'SP');
+  }
   /*
   To get the list of discussions posted by the author
   the maximum amount of posts are loaded (100) and filtered on the dag 'debato-discussion'
