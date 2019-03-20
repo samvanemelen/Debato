@@ -452,6 +452,13 @@ button:disabled {
   background: #ccc;
   border-radius: 2px;
 }
+.inlBck {
+  display: inline-block;
+}
+.subtext {
+  font-size: 0.8em;
+  color: rgb(88, 88, 88);
+}
 @media screen and (max-width: 600px) {
   .argumentRow > .argumentColumn {
     width: 100%;

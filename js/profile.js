@@ -12,7 +12,6 @@ let totalSteem = 0;
 let rewardSteem = 0;
 let rewardSBD = 0;
 let rewardVests = 0;
-const delegatee = [];
 const followers = [];
 /*
 If there is no user parsed as variable to look up
@@ -241,21 +240,38 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
   if the JSON does not containt information such as 'profile image' or 'about'
   it should skip the step until a default image is incorporated
   */
-  let profileImage = JSON.parse(account[0].json_metadata).profile.profile_image;
-  if (profileImage === undefined) { profileImage = ''; }
+  let profileImage;
+  try {
+    profileImage = JSON.parse(account[0].json_metadata).profile.profile_image;
+    if (profileImage === undefined) { profileImage = ''; }
+  } catch (err) {
+    profileImage = '';
+  }
+
   const rawReputation = profileUser.reputation;
   let simpleReputation = 0;
   /*
   A raw reputation score of 0 would give negative infinity in the conventional formula
   to calculate reputation score.
   */
-  if (rawReputation !== 0) { simpleReputation = (Math.log10(rawReputation) - 9) * 9 + 25; }
+  if (rawReputation !== 0) {
+    simpleReputation = (Math.log10(rawReputation) - 9) * 9 + 25;
+  } else {
+    simpleReputation = 25;
+  }
 
   let votingPower = 100;
   if (profileUser.voting_power !== 0) { votingPower = profileUser.voting_power / 100; }
   // eslint-disable-next-line prefer-destructuring
-  let about = JSON.parse(profileUser.json_metadata).profile.about;
-  if (about === undefined) { about = ''; }
+  let about;
+  try {
+    // eslint-disable-next-line prefer-destructuring
+    about = JSON.parse(profileUser.json_metadata).profile.about;
+    if (about === undefined) { about = ''; }
+  } catch (err) {
+    about = '';
+  }
+
   viewingUser = profileUser.name;
   document.getElementById('profileUsername').innerHTML = profileUser.name;
   document.getElementById('profileImageLarge').style.backgroundImage = `url(${profileImage})`;
@@ -290,10 +306,43 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
   steem.api.getDynamicGlobalProperties((err, result) => {
     [totalSteem] = result.total_vesting_fund_steem.split(' ');
     [totalVests] = result.total_vesting_shares.split(' ');
-    [VestBalance] = account[1].vesting_shares.split(' ');
+    if (account[1]) { [VestBalance] = account[1].vesting_shares.split(' '); }
 
     const profileSP = totalSteem * (profileUser.vesting_shares.split(' ')[0] / totalVests);
     document.getElementById('SteemPower').innerHTML = `${profileSP.toFixed(3)} SP`;
+
+    /*
+    When you view an account, your delegatee list is loaded to check if the user is in it.
+    This function can only be run when dynamic global properties are known. --> nested
+    */
+    steem.api.getVestingDelegations('samve', '', 100, (er, res) => {
+      for (let i = 0; i < res.length; i += 1) {
+        if (res[i].delegatee === viewingUser) {
+          // If you haven't delegated to the user, the option to remove delegation should be hidden.
+          document.getElementById('removeDelegation').style.display = 'table-row';
+          const SP = totalSteem * res[i].vesting_shares.split(' ')[0] / totalVests;
+          document.getElementById('delegationAmount').innerHTML = SP.toFixed(3);
+          document.getElementById('delegatee').innerHTML = viewingUser;
+          document.getElementById('alreadyDelegated').style.display = 'block';
+          document.getElementById('alreadyDelegated').innerHTML = `You are already delegating ${SP.toFixed(3)} SP to ${viewingUser}.`;
+          break;
+        } else {
+          document.getElementById('removeDelegation').style.display = 'none';
+        }
+      }
+      // Disable or enable certain wallet transactions when a user is not on his own profile
+      if (user === profileUser.name) {
+        const ownProfileOnlyList = document.getElementsByClassName('onOwnAccount');
+        for (let i = 0; i < ownProfileOnlyList.length; i += 1) {
+          ownProfileOnlyList[i].style.display = 'table-row';
+        }
+      } else {
+        const otherOnlyList = document.getElementsByClassName('onOtherAccount');
+        for (let i = 0; i < otherOnlyList.length; i += 1) {
+          otherOnlyList[i].style.display = 'table-row';
+        }
+      }
+    });
   });
   if (profileUser.reward_steem_balance.split(' ')[0] !== 0
   || profileUser.reward_sbd_balance.split(' ')[0] !== 0
@@ -383,29 +432,6 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
             created: postDetails.created,
             reward: postDetails.reward,
           });
-        }
-      });
-      // When you view an account, your delegatee list is loaded to check if the user is in it.
-      steem.api.getVestingDelegations('samve', '', 100, (er, result) => {
-        for (let i = 0; i < result.length; i += 1) {
-          delegatee.push(result[i].delegatee);
-        }
-
-        // Disable or enable certain wallet transactions when a user is not on his own profile
-        if (user === profileUser.name) {
-          const ownProfileOnlyList = document.getElementsByClassName('onOwnAccount');
-          for (let i = 0; i < ownProfileOnlyList.length; i += 1) {
-            ownProfileOnlyList[i].style.display = 'table-row';
-          }
-        } else {
-          const otherOnlyList = document.getElementsByClassName('onOtherAccount');
-          for (let i = 0; i < otherOnlyList.length; i += 1) {
-            otherOnlyList[i].style.display = 'table-row';
-          }
-          // If you haven't delegated to the user, the option to remove delegation should be hidden.
-          if (!delegatee.includes(profileUser.name)) {
-            document.getElementById('removeDelegation').style.display = 'none';
-          }
         }
       });
     });

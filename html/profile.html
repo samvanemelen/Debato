@@ -74,7 +74,7 @@
                     <div id="profileImageLarge"></div>
                     <p id="profileUsername"></p>
                     <p id="profileReputation"></p>
-                    <button class="onOtherAccount" id="followButton" onclick="follow()">Follow</button>
+                    <button class="onOtherAccount show_logged_in" id="followButton" onclick="follow()">Follow</button>
 
                 </span>
                 <hr>
@@ -202,7 +202,7 @@
                             <tr class="onOtherAccount">
                                 <td colspan="2"><button onclick="openDelegate()">Delegate to user</button></td>
                             </tr>
-                            <tr id="removeDelegation" class="onOtherAccount">
+                            <tr id="removeDelegation">
                                 <td colspan="2"><button onclick="openRemoveDelegation()">Remove delegation</button></td>
                             </tr>
                             <tr id="claimRewards" class="onOwnAccount">
@@ -247,7 +247,7 @@
                     <button class="confirm"
                         onclick="Transfer(document.getElementById('recipient').value, document.getElementById('transferAmount').value, document.getElementById('memo').value, document.getElementsByClassName('CurrButton active')[0].innerHTML)">Transfer</button>
                 </div>
-                <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The 'Transfer' button will redirect you to
+                <p class = "subtext" style="font-size: 0.9em;">The 'Transfer' button will redirect you to
                     SteemConnect where you can confirm the transaction.</p>
             </div>
             <div id="powerupBox" style="display: none;">
@@ -260,7 +260,7 @@
                     <button class="confirm" onclick="powerup(document.getElementById('powerupAmount').value)">Power
                         up!</button>
                 </div>
-                <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The 'Power up' button will redirect you to
+                <p class = "subtext" style="font-size: 0.9em;">The 'Power up' button will redirect you to
                     SteemConnect where you can confirm the transaction.</p>
             </div>
             <div id="powerdownBox" style="display: none;">
@@ -268,42 +268,44 @@
                 <div class="TransactionInputZone">
                     <p>Amount</p>
                     <input id="powerdownAmount" type="number" min="0" placeholder="" value="0">
-                    <p style="font-size: 0.8em; color: rgb(88, 88, 88);">Attention! It is recommended to leave at least
+                    <p class = "subtext">Attention! It is recommended to leave at least
                         50 SP in your account to ensure you can perform actions on the Steem blockchain!</p>
                     <p style="font-size: 0.9em;">Your balance: <a class="balance"
                             onclick="document.getElementById('powerdownAmount').value = this.innerHTML"></a> SP</p>
                     <button class="confirm" onclick="powerdown(document.getElementById('powerdownAmount').value)">Power
                         down</button>
                 </div>
-                <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The 'Power down' button will redirect you to
+                <p class = "subtext" style="font-size: 0.9em;">The 'Power down' button will redirect you to
                     SteemConnect where you can confirm the transaction.</p>
             </div>
             <div id="delegateBox" style="display: none;">
                 <h3>Delegate</h3>
                 <div class="TransactionInputZone">
-                    <p style="font-size: 0.8em; color: rgb(88, 88, 88); margin: 0;">If you want to increase or decrease
+                    <p class = "subtext">If you want to increase or decrease
                         a certain delegation, type the final amount you want to delegate. <br> Example: if you want to
                         increase your delegation from 100 SP to 150 SP, type 150.</p>
+                        <p class = "subtext" id="alreadyDelegated" style="display: none;"></p>
                     <p>Amount</p>
                     <input id="delegateAmount" type="number" min="0" placeholder="" value="0">
-                    <p style="font-size: 0.8em; color: rgb(88, 88, 88);">Attention! It is recommended to leave at least
+                    <p class = "subtext">Attention! It is recommended to leave at least
                         50 SP in your account to ensure you can perform actions on the Steem blockchain</p>
                     <p style="font-size: 0.9em;">Your balance: <a class="balance"
                             onclick="document.getElementById('delegateAmount').value = this.innerHTML"></a> SP</p>
                     <button class="confirm" onclick="delegate(document.getElementById('delegateAmount').value)">Delegate
                         steem power!</button>
                 </div>
-                <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The 'Delegate steem power!' button will redirect
+                <p class = "subtext" style="font-size: 0.9em;">The 'Delegate steem power!' button will redirect
                     you to SteemConnect where you can confirm the transaction.</p>
             </div>
             <div id="removeDelegationBox" style="display: none;">
                 <h3>Confirm removing delegation</h3>
                 <div class="TransactionInputZone">
-                    <p style="font-size: 0.8em; color: rgb(88, 88, 88);">Removing a delegation is equal to delegating 0
+                    <p class = "inlBck subtext">You have delegated <i id='delegationAmount'></i><i> SP </i>&nbsp;to <i id='delegatee'></i></p>
+                    <p class = "subtext">Removing a delegation is equal to delegating 0
                         SP. Your SP will be available to you after 7 days.</p>
                     <button class="confirm" onclick="removedelegation()">Remove delegation</button>
                 </div>
-                <p style="font-size: 0.9em; color: rgb(88, 88, 88);">The Remove delegation' button will redirect you to
+                <p  class = "subtext" style="font-size: 0.9em;">The Remove delegation' button will redirect you to
                     SteemConnect where you can confirm the transaction.</p>
             </div>
         </div>
