@@ -180,7 +180,13 @@ function removedelegation(amount) {
 }
 function claimrewards() {
   document.getElementById('claimRewardButton').innerHTML = '<i class="spinner fas fa-spinner"></i>';
-  api.claimRewardBalance(user, (err, res) => {
+  const params = {
+    account: user,
+    reward_steem: `${rewardSteem} STEEM`,
+    reward_sbd: `${rewardSBD} SBD`,
+    reward_vests: `${rewardVests} VESTS`,
+  };
+  api.broadcast([['claim_reward_balance', params]], (err, res) => {
     if (res) {
       document.getElementById('claimRewards').style.display = 'none';
       showSuccess('Successfully claimed rewards!');
@@ -336,7 +342,7 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
         for (let i = 0; i < ownProfileOnlyList.length; i += 1) {
           ownProfileOnlyList[i].style.display = 'table-row';
         }
-      } else {
+      } else if (user !== '' && user !== undefined) {
         const otherOnlyList = document.getElementsByClassName('onOtherAccount');
         for (let i = 0; i < otherOnlyList.length; i += 1) {
           otherOnlyList[i].style.display = 'table-row';
@@ -416,7 +422,7 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
       }
       Promise.all(promiseList).then((argumentParents) => {
         for (let i = 0; i < argumentParents.length; i += 1) {
-          const postJSON = JSON.parse(comments[i].json_metadata);
+          const postJSON = JSON.parse(commentList[i].json_metadata);
           let postType = postJSON.type;
           if (postType === '') { postType = 'comment'; }
           const postDetails = getPostData(commentList[i]);

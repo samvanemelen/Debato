@@ -26,8 +26,8 @@ function createArgumentCard(values) {
   line += `<p class='voteCounter'>${values.net_votes}</p><br>`;
   if (user !== '' && user !== undefined) {
     line += `<i class="fas fa-chevron-circle-up relevantButton ${attributes}" onclick="${voteType}(this,'${commentElement.author}','${commentElement.permlink}')"></i>`;
-    line += '</center></span>';
   }
+  line += '</center></span>';
   line += '<span style="width:100%;padding: 5px;margin:auto 0 auto 0;">';
   line += `<a class="commentLink blackLink" style="font-size:1.2em;" onclick="writeDiscussionContent('${commentElement.author}','${commentElement.permlink}')"> `;
   line += `${parseHtml(commentElement.body)}</a></span>`;
