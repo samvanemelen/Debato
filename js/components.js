@@ -53,7 +53,7 @@ function createDiscussionCard(post) {
   body += `<div class = "discussionObj" id = "${details.perm}">`;
   body += `<button class="ObjLink" onclick="window.location.href='/html/discussion?a=${details.author}&p=${details.perm}'">`;
   if (details.thumbnail === false || details.thumbnail === '') {
-    body += '<div class = "thumbnail" style = "background-image:none">';
+    body += '<div class = "thumbnail" style = "background-image:url(\'/imgs/placeholder.svg\')">';
   } else {
     body += `<div class = "thumbnail" style = "background-image:url('${details.thumbnail}')">`;
   }

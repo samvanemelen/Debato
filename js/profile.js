@@ -251,7 +251,7 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
     profileImage = JSON.parse(account[0].json_metadata).profile.profile_image;
     if (profileImage === undefined) { profileImage = ''; }
   } catch (err) {
-    profileImage = '';
+    profileImage = '/imgs/profilePlaceholder.svg';
   }
 
   const rawReputation = profileUser.reputation;

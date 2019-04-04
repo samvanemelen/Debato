@@ -23,6 +23,30 @@ weightSlider2.oninput = function () {
   document.getElementsByClassName('voteSlider')[1].nextElementSibling.innerHTML = `${this.value / 100}% upvotes`;
   document.cookie = `weight=${weight}; path=/`;
 };
+
+function getUrlVars() {
+  // Get the variables passed in the URL
+  const vars = {};
+  window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, (m, key, value) => {
+    vars[key] = value;
+  });
+  return vars;
+}
+
+const URLvars = getUrlVars();
+if ('access_token' in URLvars) {
+  let expiresIn = '';
+  accessToken = URLvars.access_token;
+  expiresIn = URLvars.expires_in;
+  user = URLvars.username;
+  const expiresOn = new Date();
+  const weightSlider = document.getElementsByClassName('voteSlider')[0];
+  expiresOn.setSeconds(expiresOn.getSeconds() + parseInt(expiresIn, 10));
+  document.cookie = `username=${user};expires=${expiresOn}; path=/;`;
+  document.cookie = `accessToken=${accessToken};expires=${expiresOn}; path=/;`;
+  document.cookie = `weight=${weightSlider.value}; path=/;`;
+}
+
 function updateLoginStatus() {
   /*
   When the user logs in via steemconnect, information is stored in a cookie
@@ -156,14 +180,6 @@ function toggleMenu(show = null) {
       } else { accountMenu.style.maxHeight = '0'; }
     } else if (show) { accountMenu.style.maxHeight = '200px'; } else if (!show) { accountMenu.style.maxHeight = '0'; }
   }
-}
-function getUrlVars() {
-  // Get the variables passed in the URL
-  const vars = {};
-  window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, (m, key, value) => {
-    vars[key] = value;
-  });
-  return vars;
 }
 function logout() {
   // Revokes the active token and return to the home page

@@ -3,23 +3,10 @@ getCommentStatus createDiscussionCard :true */
 /* eslint-disable no-unused-vars */
 let activeTab = '';
 let activeTag = '';
-let expiresIn = '';
 const taglist = ['sport', 'politics', 'science', 'ethics'];
 const PostPerLoad = 20;
 const currentURL = window.location.href;
-const URLvars = getUrlVars();
 
-if ('access_token' in URLvars) {
-  accessToken = URLvars.access_token;
-  expiresIn = URLvars.expires_in;
-  user = URLvars.username;
-  const expiresOn = new Date();
-  const weightSlider = document.getElementsByClassName('voteSlider')[0];
-  expiresOn.setSeconds(expiresOn.getSeconds() + parseInt(expiresIn, 10));
-  document.cookie = `username=${user};expires=${expiresOn}; path=/;`;
-  document.cookie = `accessToken=${accessToken};expires=${expiresOn}; path=/;`;
-  document.cookie = `weight=${weightSlider.value}; path=/;`;
-}
 if (user !== '' && user !== undefined) {
   document.getElementById('Feed').style.display = '';
 }
