@@ -1,4 +1,4 @@
-/* global getUrlVars writeDiscussionContent parseHtml
+/* global writeDiscussionContent parseHtml
 showError showSuccess:true */
 
 /*
@@ -8,7 +8,6 @@ Then the code is similar to the writeDiscussionContent function
 but modified to fit the new page since there is no
 button to drop down from
 */
-const URLvars = getUrlVars();
 if (!('p' in URLvars) || !('a' in URLvars)) {
   window.location.href = '/'; // If there are no variables parsed in URL, go to index
 }

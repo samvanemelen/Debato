@@ -1,4 +1,4 @@
-/* global getUrlVars getPostData
+/* global getPostData
 getCommentStatus createDiscussionCard :true */
 /* eslint-disable no-unused-vars */
 let activeTab = '';
@@ -149,6 +149,6 @@ function openTab(evt, tabName) {
   event.currentTarget.className += ' active';
   activeTab = tabName;
   // eslint-disable-next-line no-restricted-globals
-  if ('tag' in getUrlVars()) { activeTag = getUrlVars().tag; history.pushState({}, document.title, '/'); }
+  if ('tag' in URLvars) { activeTag = URLvars.tag; history.pushState({}, document.title, '/'); }
   loadDiscussions(tabName);
 }

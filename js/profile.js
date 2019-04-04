@@ -2,7 +2,6 @@
 /* global updateLoginStatus getUrlVars timeSince getPostData createProfileArgumentCard
 getCommentStatus createDiscussionCard showError showSuccess:true */
 let activeTab = '';
-const URLvars = getUrlVars();
 let viewingUser = '';
 let SteemBalance = 0;
 let SBDBalance = 0;

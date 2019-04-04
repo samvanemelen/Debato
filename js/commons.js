@@ -33,7 +33,7 @@ function getUrlVars() {
   return vars;
 }
 
-const URLvars = getUrlVars();
+URLvars = getUrlVars();
 if ('access_token' in URLvars) {
   let expiresIn = '';
   accessToken = URLvars.access_token;

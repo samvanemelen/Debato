@@ -13,6 +13,7 @@
         "weight": true,
         "steem": true,
         "sc2": true,
-        "activePost": true
+        "activePost": true,
+        "URLvars": true
     }
 }
