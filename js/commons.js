@@ -77,7 +77,7 @@ function updateLoginStatus() {
   if (accessToken !== '') {
     steem.api.getAccounts([user], (err, result) => {
       const name = user;
-      let profileImage = '/imgs/placeholder.svg';
+      let profileImage = '/imgs/placeholder_complex.svg';
       try {
         profileImage = JSON.parse(result[0].json_metadata).profile.profile_image;
       } catch (e) {
@@ -630,11 +630,11 @@ function getRootImage(post) {
   2.  if no error, resolve the found 'image'
   3.  if error, get parent comment and repeat the process.
   */
-  function imageExists(url) {
+  function imageExists(url, callback) {
     const img = new Image();
-    let exists = true;
-    img.onerror = function setExistFalse() { exists = false; };
-    return exists;
+    img.onload = function () { callback(true); };
+    img.onerror = function () { callback(false); };
+    img.src = url;
   }
 
   return new Promise(((resolve, reject) => {
@@ -643,8 +643,7 @@ function getRootImage(post) {
       const parsedJSON = JSON.parse(post.json_metadata);
       // eslint-disable-next-line prefer-destructuring
       image = parsedJSON.image[0];
-      if (imageExists(image)) { resolve(image); } else { resolve('/imgs/placeholder.svg'); }
-      resolve(image);
+      imageExists(image, (exists) => { console.log(exists); if (exists) { resolve(image); } else { resolve('/imgs/placeholder_complex.svg'); } });
     } catch (error) {
       steem.api.getContent(post.parent_author, post.parent_permlink, (err, parentpost) => {
         if (parentpost.author === '') { resolve('/imgs/placeholder.svg'); }
