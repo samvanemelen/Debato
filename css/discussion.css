@@ -1,189 +1,247 @@
 .argumentRow {
-    padding-top: 10px;
-  }
-  .argumentRow:after {
-    display: table;
-    clear: both;
-  }
-  .argumentColumn {
-    display: flex;
-    overflow: scroll;
-    flex-direction: column;
-    justify-content: flex-start;
-    box-sizing: border-box;
-    background-color: white;
-    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
-    border-style: solid;
-    border-width: thin;
-    float: left;
-    margin: 1%;
-    padding: 15px;
-    width: 49%;
-  }
-  .argumentColumn.pro {
-    margin-left: 0;
-    border-color: rgba(0,133,0,0.5);
-  }
-  .argumentColumn.con {
-    margin-right: 0;
-   border-color: rgba(158,0,0,0.5);
-  }
-  .argumentColumn h3 {
-    text-align: left;
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-  #discussionBody {
-    width: 90%;
-    overflow: hidden;
-  }
-  .commentBox {
-    margin-left: 5px;
-  }
-  .commentList {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.2s ease-out;
-  }
-  .commentList p {
-    text-align: left;
-  }
-  .comment-card {
-    width: 100%;
-    background-color: white;
-    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
-  }
-  .comment {
-    margin: 10px;
-    font-size: 0.9em;
-    text-align: left;
-  }
-  .editlink{
-    margin: 0 10px;
-    font-size: 1.2em;
-  }
-  .editlink:hover {
-    cursor: pointer;
-  }
-  .collapsibleButton {
-    padding: 8px;
-    margin: 5px;
-    background-color: #ddd;
-    cursor: pointer;
-    width: 60%;
-    border: none;
-    font-size: 15px;
-  }
-  .collapsible:hover {
-    background-color: #ccc;
-  }
-  .relevantButton {
+  padding-top: 10px;
+}
+
+.argumentRow:after {
+  display: table;
+  clear: both;
+}
+
+.argumentColumn {
+  display: flex;
+  overflow: scroll;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  background-color: white;
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
+  border-style: solid;
+  border-width: thin;
+  float: left;
+  margin: 1%;
+  padding: 15px;
+  width: 49%;
+}
+
+.argumentColumn.pro {
+  margin-left: 0;
+  border-color: rgba(0, 133, 0, 0.5);
+}
+
+.argumentColumn.con {
+  margin-right: 0;
+  border-color: rgba(158, 0, 0, 0.5);
+}
+
+.argumentColumn h3 {
+  text-align: left;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#discussionBody {
+  width: 90%;
+  overflow: hidden;
+}
+
+.commentBox {
+  margin-left: 5px;
+}
+
+.commentList {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.commentList p {
+  text-align: left;
+}
+
+.comment-card {
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.comment {
+  margin: 10px;
+  font-size: 0.9em;
+  text-align: left;
+}
+
+.editlink {
+  margin: 0 10px;
+  font-size: 1.2em;
+}
+
+.editlink:hover {
+  cursor: pointer;
+}
+
+.collapsibleButton {
+  padding: 8px;
+  margin: 5px;
+  background-color: #ddd;
+  cursor: pointer;
+  width: 60%;
+  border: none;
+  font-size: 15px;
+}
+
+.collapsible:hover {
+  background-color: #ccc;
+}
+
+.relevantButton {
   color: #ccc;
 }
+
 .relevantButton:hover {
   color: #73a07f;
   cursor: pointer;
 }
+
 .relevantButton.activated {
   color: #3b9954;
 }
+
 .relevantButton.activated:hover {
   color: #ba5925;
 }
+
 .relevantButton.rotate {
   -webkit-animation: upvoteRotation 1.5s infinite 0s ease-in-out;
-          animation: upvoteRotation 1.5s infinite 0s ease-in-out;
+  animation: upvoteRotation 1.5s infinite 0s ease-in-out;
   cursor: default;
 }
+
 .voteCounter {
-    display: inline-block;
-    font-size: 12px;
-    margin-right: 5px;
-    transform: translate(0, -4px);
-  }
+  position: relative;
+  display: inline-block;
+  font-size: 12px;
+  transform: translate(0, -4px);
+  cursor: pointer;
+}
+
+.voteCounter .voterList {
+  visibility: hidden;
+  min-width: 150px;
+  text-align: left;
+  background-color: rgb(43, 43, 43);
+  color: #fff;
+  font-weight: 200;
+  border-radius: 3px;
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+}
+
+.voteCounter:hover .voterList {
+  visibility: visible;
+}
+
 .relevantButton {
-    color: #ccc;
-  }
-  .relevantButton:hover {
-    color: #73a07f;
-    cursor: pointer;
-  }
-  .relevantButton.activated {
-    color: #3b9954;
-  }
-  .relevantButton.activated:hover {
-    color: #ba5925;
-  }
-  .relevantButton.rotate {
-    -webkit-animation: upvoteRotation 1.5s infinite 0s ease-in-out;
-            animation: upvoteRotation 1.5s infinite 0s ease-in-out;
-    cursor: default;
-  }
-  #upvoteButton {
-    color: #ccc;
-  }
-  #upvoteButton:hover {
-    color: #73a07f;
-    cursor: pointer;
-  }
-  #upvoteButton.rotate {
-    -webkit-animation: upvoteRotation 1.5s infinite 0s ease-in-out;
-            animation: upvoteRotation 1.5s infinite 0s ease-in-out;
-    cursor: default;
-  }
-  #upvoteButton.rotate:hover {
-    color: #ccc;
-  }
-  #upvoteButton.activated {
-    color: #3b9954;
-  }
-  #upvoteButton.activated:hover {
-    color: #ba5925;
-  }
-  .backButton {
-    background-color: #ddd;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    margin: 10px;
-    padding: 8px 16px;
-    transition: 0.3s;
-  }
-  .backButton:hover {
-    background-color: #ccc;
-  }
-  #blackBackGround {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: black;
-  }
-  #editFade {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 5;
-  }
-  #editBox {
-    display: inline-block;
-    box-sizing: border-box;
-    background-color: white;
-    width: auto;
-    max-width: 90%;
-    margin-top: 10%;
-    padding: 5px 30px 15px 30px;
-    border-radius: 4px;
-  }
-  #editBox p {
-    font-weight: bold;
-    margin: 8px;
-  }
-  input[type=radio] {
-    width: auto;
-    margin-bottom: 0.5em;
-  }
-  form {
-    margin: 0;
-  }
+  color: #ccc;
+}
+
+.relevantButton:hover {
+  color: #73a07f;
+  cursor: pointer;
+}
+
+.relevantButton.activated {
+  color: #3b9954;
+}
+
+.relevantButton.activated:hover {
+  color: #ba5925;
+}
+
+.relevantButton.rotate {
+  -webkit-animation: upvoteRotation 1.5s infinite 0s ease-in-out;
+  animation: upvoteRotation 1.5s infinite 0s ease-in-out;
+  cursor: default;
+}
+
+#upvoteButton {
+  color: #ccc;
+}
+
+#upvoteButton:hover {
+  color: #73a07f;
+  cursor: pointer;
+}
+
+#upvoteButton.rotate {
+  -webkit-animation: upvoteRotation 1.5s infinite 0s ease-in-out;
+  animation: upvoteRotation 1.5s infinite 0s ease-in-out;
+  cursor: default;
+}
+
+#upvoteButton.rotate:hover {
+  color: #ccc;
+}
+
+#upvoteButton.activated {
+  color: #3b9954;
+}
+
+#upvoteButton.activated:hover {
+  color: #ba5925;
+}
+
+.backButton {
+  background-color: #ddd;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin: 10px;
+  padding: 8px 16px;
+  transition: 0.3s;
+}
+
+.backButton:hover {
+  background-color: #ccc;
+}
+
+#blackBackGround {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+}
+
+#editFade {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5;
+}
+
+#editBox {
+  display: inline-block;
+  box-sizing: border-box;
+  background-color: white;
+  width: auto;
+  max-width: 90%;
+  margin-top: 10%;
+  padding: 5px 30px 15px 30px;
+  border-radius: 4px;
+}
+
+#editBox p {
+  font-weight: bold;
+  margin: 8px;
+}
+
+input[type=radio] {
+  width: auto;
+  margin-bottom: 0.5em;
+}
+
+form {
+  margin: 0;
+}

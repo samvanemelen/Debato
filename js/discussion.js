@@ -49,7 +49,6 @@ function edit(permlink) {
     }
   });
 }
-
 // eslint-disable-next-line no-unused-vars
 function editComment(permlink, body, type) {
   const fade = document.getElementById('editFade');

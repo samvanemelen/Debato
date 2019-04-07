@@ -12,6 +12,7 @@ function createArgumentCard(values) {
         * created
       - net_votes
       - voteStatus
+      - voteList
   */
   let line = '';
   let voteType = 'upvote';
@@ -23,7 +24,15 @@ function createArgumentCard(values) {
   }
   line += `<div class="argumentCard"  id = de-${commentElement.permlink} style="display: flex;justify-content: space-between">`;
   line += '<span style=" line-height:100%; padding:5px;margin:auto 0 auto 0;"><center>';
-  line += `<p class='voteCounter'>${values.net_votes}</p><br>`;
+  line += `<div class='voteCounter'>${values.net_votes}`;
+  if (values.net_votes > 0) {
+    line += '<span class="voterList">';
+    for (let i = 0; i < values.net_votes; i += 1) {
+      line += `<p>${values.voteList[i].voter} - ${values.voteList[i].percent / 100}%</p>`;
+    }
+    line += '</span>';
+  }
+  line += '</div><br>';
   if (user !== '' && user !== undefined) {
     line += `<i class="fas fa-chevron-circle-up relevantButton ${attributes}" onclick="${voteType}(this,'${commentElement.author}','${commentElement.permlink}')"></i>`;
   }
@@ -89,18 +98,29 @@ function createCommentBox(action) {
   }
   return body;
 }
-function createCommentCard(comment) {
+function createCommentCard(values) {
   /*
-    the 'comment' parameter is a dictionary with the following attributes:
-      - permlink
-      - body
-      - created
-      - author
-      - json_metadata: {"type":"com"}
-      - active_votes (list)
+    the 'values' parameter is a dictionary with the following attributes:
+      - commentElement
+        * permlink
+        * author
+        * active_votes (list)
+        * json_metadata: {"type":"..."}
+        * body
+        * created
+      - net_votes
+      - voteStatus
+      - voteList
   */
+  const comment = values.commentItem;
   let commentItem = '';
   let moreMenu = '';
+  let voteType = 'upvote';
+  let attributes = '';
+  if (values.voteStatus) {
+    voteType = 'removeVote';
+    attributes = 'activated';
+  }
   if (comment.author === user) { // Original author of the comment
     moreMenu += `<i id="more-${comment.permlink}" class="far fa-caret-square-down moreIcon"  style='position: relative;'>`;
     // eslint-disable-next-line prefer-destructuring
@@ -113,9 +133,23 @@ function createCommentCard(comment) {
     moreMenu += '</ul></i>';
   }
   const commentContent = converter.makeHtml(parseHtml(comment.body));
-  commentItem += `<div class = "comment argumentCard" style="padding:20px;"id="de-${comment.permlink}">${moreMenu} <strong>`;
-  commentItem += `<a class="blackLink" href="/html/profile?u=${comment.author}">${comment.author}</a>:</strong>`;
-  commentItem += `<div style="margin-left: 10px;">${commentContent}</div></div>`;
+  commentItem += `<div class = "comment argumentCard" style="padding:20px 20px 20px 10px; display: flex;"id="de-${comment.permlink}"><strong>`;
+  commentItem += '<div style=" line-height:100%; padding:5px;margin:auto 0 auto 0;"><center>';
+  commentItem += `<div class='voteCounter'>${values.net_votes}`;
+  if (values.net_votes > 0) {
+    commentItem += '<span class="voterList">';
+    for (let i = 0; i < values.net_votes; i += 1) {
+      commentItem += `<p>${values.voteList[i].voter} - ${values.voteList[i].percent / 100}%</p>`;
+    }
+    commentItem += '</span>';
+  }
+  commentItem += '</div><br>';
+  if (user !== '' && user !== undefined) {
+    commentItem += `<i class="fas fa-chevron-circle-up relevantButton ${attributes}" onclick="${voteType}(this,'${comment.author}','${comment.permlink}')"></i>`;
+  }
+  commentItem += '</center></div>';
+  commentItem += `<div style="padding-left: 10px;">${moreMenu} <a class="blackLink" href="/html/profile?u=${comment.author}">${comment.author}</a>:</strong>`;
+  commentItem += `<div style="margin-left: 10px;">${commentContent}</div></div></div>`;
   return commentItem;
 }
 function createProfileArgumentCard(values) {

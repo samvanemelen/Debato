@@ -32,8 +32,8 @@ function getUrlVars() {
   });
   return vars;
 }
-
 URLvars = getUrlVars();
+
 if ('access_token' in URLvars) {
   let expiresIn = '';
   accessToken = URLvars.access_token;
@@ -46,7 +46,6 @@ if ('access_token' in URLvars) {
   document.cookie = `accessToken=${accessToken};expires=${expiresOn}; path=/;`;
   document.cookie = `weight=${weightSlider.value}; path=/;`;
 }
-
 function updateLoginStatus() {
   /*
   When the user logs in via steemconnect, information is stored in a cookie
@@ -113,7 +112,6 @@ function updateLoginStatus() {
     document.getElementById('accountLogin').innerHTML = link;
   }
 }
-
 updateLoginStatus();
 
 function showError(message) {
@@ -522,7 +520,9 @@ function getVoteStatus(commentItem) {
             if (votes[j].voter === user) { selfVote = true; }
           }
         }
-      } resolve({ commentItem, net_votes: voteCount, voteStatus: selfVote });
+      } resolve({
+        commentItem, net_votes: voteCount, voteStatus: selfVote, voteList: votes,
+      });
     });
   }));
 }
@@ -547,6 +547,14 @@ function getCommentStatus(author, perm, objId) {
     });
   }));
 }
+function sortReplies(replyList) {
+  const sortedList = replyList.sort((a, b) => {
+    if (a.net_votes < b.net_votes) {
+      return 1;
+    } return -1;
+  });
+  return sortedList;
+}
 function writeArgumentList(comments, divID) {
   /*
   Retrieves the list of arguments (both pro and con) and returns a html usable string
@@ -554,14 +562,6 @@ function writeArgumentList(comments, divID) {
   'comments' is the list of all comments and 'divID' determines which category will be filtered
   */
   const PromiseList = [];
-  function sortReplies(replyList) {
-    const sortedList = replyList.sort((a, b) => {
-      if (a.net_votes < b.net_votes) {
-        return 1;
-      } return -1;
-    });
-    return sortedList;
-  }
 
   let body = `<center>${divID.toUpperCase()}</center>`;
   if (user !== '' && user !== undefined) {
@@ -596,6 +596,7 @@ function writeCommentList(commentList) {
   // Retrieves all comments and puts then in a html usable string
   const commentCount = commentList.length;
   const commentCard = document.getElementsByClassName('comment-card')[0];
+  const PromiseList = [];
   if (commentCount > 0) {
     let body = `<button class="collapsibleButton comments" onclick="commentsDropDown(this)">View comments on this statement (${commentCount})</button>`;
     body += '<div class="commentList com">';
@@ -605,9 +606,16 @@ function writeCommentList(commentList) {
     body += '</div>';
     commentCard.innerHTML = body;
     const comListElement = document.getElementsByClassName('commentList')[0];
-    for (let i = 0; i < commentCount; i += 1) {
-      comListElement.innerHTML += createCommentCard(commentList[i]);
+
+    for (let i = 0; i < commentList.length; i += 1) {
+      PromiseList.push(getVoteStatus(commentList[i]));
     }
+    Promise.all(PromiseList).then((unsortedArguments) => {
+      const values = sortReplies(unsortedArguments);
+      for (let i = 0; i < values.length; i += 1) {
+        comListElement.innerHTML += createCommentCard(values[i]);
+      }
+    });
   } else {
     let body = '<button class="collapsibleButton comments" onclick="commentsDropDown(this)">There are no comments on this statement</button>';
     body += '<div class="commentList com">';
@@ -632,8 +640,8 @@ function getRootImage(post) {
   */
   function imageExists(url, callback) {
     const img = new Image();
-    img.onload = function () { callback(true); };
-    img.onerror = function () { callback(false); };
+    img.onload = function existsTrue() { callback(true); };
+    img.onerror = function existsFalse() { callback(false); };
     img.src = url;
   }
 
@@ -643,7 +651,7 @@ function getRootImage(post) {
       const parsedJSON = JSON.parse(post.json_metadata);
       // eslint-disable-next-line prefer-destructuring
       image = parsedJSON.image[0];
-      imageExists(image, (exists) => { console.log(exists); if (exists) { resolve(image); } else { resolve('/imgs/placeholder_complex.svg'); } });
+      imageExists(image, (exists) => { if (exists) { resolve(image); } else { resolve('/imgs/placeholder_complex.svg'); } });
     } catch (error) {
       steem.api.getContent(post.parent_author, post.parent_permlink, (err, parentpost) => {
         if (parentpost.author === '') { resolve('/imgs/placeholder.svg'); }
