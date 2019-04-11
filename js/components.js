@@ -75,7 +75,7 @@ function createDiscussionCard(post) {
   body += '</div>';
   return body;
 }
-function createCommentBox(action) {
+function createCommentBox(action, author = '', perm = '') {
   /*
     Write the input box & button for leaving a comment
     Buttons for each action type require a specific action
@@ -93,15 +93,21 @@ function createCommentBox(action) {
   }
   if (action === 'comment') {
     body = `<div class = "${action}Box"><button class = "collapsibleButton" onclick = "showCommentBox(this)">Add comment</button>`;
-    body += '<div class = "inputZone"><textarea name = "comment" rows = "3"></textarea><div class = "previewElement"></div>';
+    body += '<div class = "inputZone"><textarea name = "comment" rows = "3"  onkeyup="updateTextPreview(this)"></textarea><div class = "previewElement"></div>';
     body += "<button class = 'postbutton' onclick = \"comment(this.previousElementSibling.previousElementSibling,'com')\">post</button></div></div>";
+  }
+  if (action === 'reply') {
+    body += '<div class="replyBox" style="margin-right:10px; display: none; max-width:100%;">';
+    body += '<textarea name = "comment" rows = "3" style="max-width:100%;"  onkeyup="updateTextPreview(this)"></textarea><div class = "previewElement"></div>';
+    body += `<button class = 'postbutton' onclick = "comment(this.previousElementSibling.previousElementSibling,'com', '${author}', '${perm}')">post</button>`;
+    body += '<a onclick="this.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(\'commentButton\')[0].click()" style="text-decoration:none; font-size:0.8em;">Cancel</a></div>';
   }
   return body;
 }
 function createCommentCard(values) {
   /*
     the 'values' parameter is a dictionary with the following attributes:
-      - commentElement
+      - commentItem
         * permlink
         * author
         * active_votes (list)
@@ -111,12 +117,19 @@ function createCommentCard(values) {
       - net_votes
       - voteStatus
       - voteList
+      - (mainComment) optionally when discussion is a reply of another comment
   */
   const comment = values.commentItem;
   let commentItem = '';
   let moreMenu = '';
   let voteType = 'upvote';
   let attributes = '';
+  let mainComment = true;
+  let commentPrefix = 'de';
+  if ('mainComment' in values) {
+    mainComment = false;
+    commentPrefix = 'do';
+  }
   if (values.voteStatus) {
     voteType = 'removeVote';
     attributes = 'activated';
@@ -124,7 +137,7 @@ function createCommentCard(values) {
   if (comment.author === user) { // Original author of the comment
     moreMenu += `<i id="more-${comment.permlink}" class="far fa-caret-square-down moreIcon"  style='position: relative;'>`;
     // eslint-disable-next-line prefer-destructuring
-    moreMenu += `<ul style='position: absolute;'><li><a class="editButton" onclick="editComment('${comment.permlink}','${parseHtml(comment.body)}','${JSON.parse(comment.json_metadata).type}')">edit</a></li>`;
+    moreMenu += `<ul><li><a class="editButton" onclick="editComment('${comment.permlink}','${parseHtml(comment.body)}','${JSON.parse(comment.json_metadata).type}')">edit</a></li>`;
     if ((comment.children === 0) // No received comments
         && (comment.active_votes.length === 0) // No received votes
         && (new Date() - new Date(comment.created)) / 86400000 < 7) { // < 7 days
@@ -133,8 +146,12 @@ function createCommentCard(values) {
     moreMenu += '</ul></i>';
   }
   const commentContent = converter.makeHtml(parseHtml(comment.body));
-  commentItem += `<div class = "comment argumentCard" style="padding:20px 20px 20px 10px; display: flex;"id="de-${comment.permlink}"><strong>`;
-  commentItem += '<div style=" line-height:100%; padding:5px;margin:auto 0 auto 0;"><center>';
+  if (!mainComment) {
+    commentItem += `<div class = "comment argumentCard" style="box-shadow:none; margin:0" id="${commentPrefix}-${comment.permlink}">`;
+  } else {
+    commentItem += `<div class = "comment argumentCard" id="${commentPrefix}-${comment.permlink}">`;
+  }
+  commentItem += '<div style=" line-height:100%; padding:5px 10px; margin-top: 20px;"><center>';
   commentItem += `<div class='voteCounter'>${values.net_votes}`;
   if (values.net_votes > 0) {
     commentItem += '<span class="voterList">';
@@ -146,10 +163,23 @@ function createCommentCard(values) {
   commentItem += '</div><br>';
   if (user !== '' && user !== undefined) {
     commentItem += `<i class="fas fa-chevron-circle-up relevantButton ${attributes}" onclick="${voteType}(this,'${comment.author}','${comment.permlink}')"></i>`;
+    if (!mainComment) {
+      commentItem += '<br><a><i class="far fa-comment commentButton" style="margin-top:0.3em;" onclick = "showReplyBox(this, true)"></i></a>';
+    }
   }
   commentItem += '</center></div>';
-  commentItem += `<div style="padding-left: 10px;">${moreMenu} <a class="blackLink" href="/html/profile?u=${comment.author}">${comment.author}</a>:</strong>`;
-  commentItem += `<div style="margin-left: 10px;">${commentContent}</div></div></div>`;
+  if (mainComment) {
+    commentItem += `<div style="margin: 20px 0; padding-left: 10px; max-width: 100%">${moreMenu} <strong><a class="blackLink" href="/html/profile?u=${comment.author}">${comment.author}</a>:</strong>`;
+    commentItem += ` <a style="margin-left: 2em; text-decoration: none; test-size:0.9em;" onclick="openComment('${comment.author}', '${comment.permlink}')">open ${comment.children} responses</a>`;
+  } else {
+    commentItem += `<div style="margin-top: 20px; padding-left: 10px; width: 100%; border-left: 1px solid rgba(0,85,81, 0.2)">${moreMenu} <strong><a class="blackLink" href="/html/profile?u=${comment.author}">${comment.author}</a>:</strong>`;
+  }
+  commentItem += `<div class="commentContext" style="margin: 10px 20px 0 10px;">${commentContent}</div>`;
+  if (!mainComment) {
+    commentItem += createCommentBox('reply', comment.author, comment.permlink);
+    commentItem += '<div class="repliesPlaceholder" style="max-width: 100%;"></div>';
+  }
+  commentItem += '</div></div>';
   return commentItem;
 }
 function createProfileArgumentCard(values) {

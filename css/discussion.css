@@ -66,7 +66,6 @@
 
 .comment {
   margin: 10px;
-  font-size: 0.9em;
   text-align: left;
 }
 
@@ -128,6 +127,7 @@
   visibility: hidden;
   min-width: 150px;
   text-align: left;
+  padding: 0 10px;
   background-color: rgb(43, 43, 43);
   color: #fff;
   font-weight: 200;
@@ -139,23 +139,6 @@
 
 .voteCounter:hover .voterList {
   visibility: visible;
-}
-
-.relevantButton {
-  color: #ccc;
-}
-
-.relevantButton:hover {
-  color: #73a07f;
-  cursor: pointer;
-}
-
-.relevantButton.activated {
-  color: #3b9954;
-}
-
-.relevantButton.activated:hover {
-  color: #ba5925;
 }
 
 .relevantButton.rotate {
@@ -212,23 +195,16 @@
   background-color: black;
 }
 
-#editFade {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 5;
-}
-
-#editBox {
+#editBox, #commentStructureBox {
   display: inline-block;
   box-sizing: border-box;
   background-color: white;
-  width: auto;
+  width: 90%;
   max-width: 90%;
-  margin-top: 10%;
-  padding: 5px 30px 15px 30px;
+  max-height: 90%;
+  margin: 5% auto;
+  overflow: scroll;
+  padding: 15px 30px 15px 30px;
   border-radius: 4px;
 }
 

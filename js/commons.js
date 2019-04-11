@@ -246,6 +246,14 @@ function parseHtml(string) {
   parsedString = parsedString.replace(/\b@([a-zA-Z]+[a-zA-Z1-9-.]+[a-zA-Z1-9]+)/g, ' <a href = "/html/profile?u=$1">@$1</a>');
   return parsedString;
 }
+function updateTextPreview(obj) {
+  // obj should be a text-area
+  const previewElement = obj.nextElementSibling;
+  const contextValue = obj.value;
+  if (previewElement.className === 'previewElement') {
+    previewElement.innerHTML = converter.makeHtml(parseHtml(contextValue));
+  }
+}
 function isHot(post) {
   /*
   This formula is derrived from the steem source code
@@ -300,7 +308,7 @@ function removeVote(obj, author, perm) {
         }
       }
     } else {
-      showError('Could not remove vote. Please refresh the page and try again');
+      showError(`Could not remove vote. Message: ${err}`);
     }
     obj.classList.remove('rotate');
   });
@@ -334,7 +342,7 @@ function showCommentBox(buttonObj) {
     commentsDropDown(buttonObj);
   }
 }
-function comment(textbox, commenttype) {
+function comment(textbox, commenttype, author = activePost.author, permlink = activePost.permlink) {
   /*
   This function is used for comments, arguments pro and arguments con
   comment and comment type (com, pro, con) are passed as variables
@@ -342,7 +350,7 @@ function comment(textbox, commenttype) {
   */
   const commentTextBox = textbox;
   commentTextBox.disabled = true;
-  commentTextBox.nextElementSibling.disabled = true;
+  commentTextBox.nextElementSibling.nextElementSibling.disabled = true;
   const body = textbox.value;
   let randomstr = '';
   const possible = '1234567890abcdefghijklmnopqrstuvwxyz-';
@@ -354,85 +362,86 @@ function comment(textbox, commenttype) {
   switch (commenttype) {
     case 'con': type = 'con'; break;
     case 'pro': type = 'pro'; break;
-    default: type = ''; break;
+    default: type = 'com'; break;
   }
   /*
   the comment type is added to the custom JSON so during the loading of arguments
   the comment can be placed in the correct discussion element on debato
   When commenting is successful, add new comments to the active discussion page
   */
-  api.comment(activePost.author, activePost.permlink, user, newPerm, '', body, JSON.parse(`{"type":"${type}"}`), (err, res) => {
+  api.comment(author, permlink, user, newPerm, '', body, JSON.parse(`{"type":"${type}"}`), (err, res) => {
     commentTextBox.disabled = false;
-    commentTextBox.nextElementSibling.disabled = false;
-    if (!res) { showError('Could not post your comment. Please refresh the page and try again'); return; }
+    commentTextBox.nextElementSibling.nextElementSibling.disabled = false;
+    if (!res) { showError(`Could not post your comment. Message: ${err}`); return; }
+    commentTextBox.parentElement.style.display = 'none';
     commentTextBox.value = '';
-    let newArg = '';
-    const contentBox = document.getElementsByClassName(commenttype)[0];
-    if (contentBox.getElementsByClassName('blank').length > 0) {
-      contentBox.removeChild(contentBox.getElementsByClassName('blank')[0]);
-    }
-    if (commenttype === 'com') {
-      contentBox.innerHTML += createCommentCard(
-        {
-          permlink: newPerm,
-          body,
-          created: new Date(),
-          author: user,
-          json_metadata: '{"type": "com"}',
-          active_votes: [],
-        },
-      );
-      document.getElementById(`more-${newPerm}`).addEventListener('click', (event) => {
-        // If the list is clicked (has no sub element of 'ul'), nothing should happen
-        if (!event.target.getElementsByTagName('ul')[0]) { return; }
-        const options = event.target.getElementsByTagName('ul')[0];
-        if (options.style.display !== 'block') {
-          options.style.display = 'block';
-          // If anywhere is clicked in the document that is not the list, it shoud close again
-          document.addEventListener('click', (evt) => {
-            if (evt.target !== event.target.getElementsByTagName('ul')[0] && evt.target !== event.target) { options.style.display = 'none'; }
-          });
-        } else { options.style.display = 'none'; }
-      });
-    } else {
-      newArg = createArgumentCard({
-        commentItem:
+    if (permlink === activePost.permlink) {
+      const contentBox = document.getElementsByClassName(commenttype)[0];
+      if (contentBox.getElementsByClassName('blank').length > 0) {
+        contentBox.removeChild(contentBox.getElementsByClassName('blank')[0]);
+      }
+      if (commenttype === 'com') {
+        contentBox.innerHTML += createCommentCard(
           {
+            commentItem: {
+              permlink: newPerm,
+              body,
+              created: new Date(),
+              author: user,
+              json_metadata: '{"type": "com"}',
+              active_votes: [],
+            },
+            net_votes: 0,
+            voteStatus: false,
+            voteList: [],
+            mainComment: false,
+          },
+        );
+      } else {
+        contentBox.innerHTML += createArgumentCard({
+          commentItem: {
             permlink: newPerm,
-            author: user,
-            active_votes: [],
-            json_metadata: `{"type": "${commenttype}"}`,
             body,
             created: new Date(),
+            author: user,
+            json_metadata: '{"type": "com"}',
+            active_votes: [],
           },
-        net_votes: 0,
-        voteStatus: false,
-      });
-      showSuccess('Successfully commented on the discussion!');
-      contentBox.innerHTML += newArg;
-      document.getElementById(`more-${newPerm}`).addEventListener('click', (event) => {
-        // If the list is clicked, nothing should happen
-        if (!event.target.getElementsByTagName('ul')[0]) { return; }
-        const options = event.target.getElementsByTagName('ul')[0];
-        if (options.style.display !== 'block') {
-          options.style.display = 'block';
-          // If anywhere is clicked in the document that is not the list, it shoud close again
-          document.addEventListener('click', (evt) => {
-            if (evt.target !== event.target.getElementsByTagName('ul')[0] && evt.target !== event.target) {
-              options.style.display = 'none';
-            }
-          });
-        } else { options.style.display = 'none'; }
-      });
+          net_votes: 0,
+          voteStatus: false,
+          voteList: [],
+          mainComment: false,
+        });
+      }
+      showCommentBox(contentBox.getElementsByClassName('collapsibleButton')[0]);
+    } else {
+      const contentBox = document.getElementById(`do-${permlink}`).getElementsByClassName('repliesPlaceholder')[0];
+      contentBox.innerHTML += createCommentCard(
+        {
+          commentItem: {
+            permlink: newPerm,
+            body,
+            created: new Date(),
+            author: user,
+            json_metadata: '{"type": "com"}',
+            active_votes: [],
+          },
+          net_votes: 0,
+          voteStatus: false,
+          voteList: [],
+          mainComment: false,
+        },
+      );
     }
-    showCommentBox(contentBox.getElementsByClassName('collapsibleButton')[0]);
+    showSuccess('Successfully commented on the discussion!');
   });
 }
 function deleteComment(author, perm) {
   // Remove a comment and take it out of the list
   api.deleteComment(author, perm, (err, res) => {
-    if (!res) { showError('Could not remove your comment. Please refresh the page and try again.'); return; }
-    document.getElementById(`de-${perm}`).style.display = 'none';
+    if (!res) { showError(`Could not remove your comment. Message: ${err}`); return; }
+    if (document.getElementById(`de-${perm}`)) { document.getElementById(`de-${perm}`).style.display = 'none'; }
+    if (document.getElementById(`do-${perm}`)) { document.getElementById(`do-${perm}`).style.display = 'none'; }
     showSuccess('Successfully removed comment.');
   });
 }
@@ -520,6 +529,7 @@ function getVoteStatus(commentItem) {
             if (votes[j].voter === user) { selfVote = true; }
           }
         }
+        console.log(commentItem)
       } resolve({
         commentItem, net_votes: voteCount, voteStatus: selfVote, voteList: votes,
       });
@@ -697,7 +707,7 @@ function writeDiscussionContent(author, perm) {
       body += '<div id = "backPlaceholder"></div>'; // placeholder for back button
       body += `<p><strong>By: <a href="/html/profile?u=${info.author}">${info.author}</a></strong> - ${info.reward}</p>`;
       const parsedContext = converter.makeHtml(parseHtml(info.description));
-      body += `<p>${parsedContext}</p>`;
+      body += `<div>${parsedContext}</div>`;
       body += '<div class="comment-card"></div>';
       body += '<div class="argumentRow"><div class="pro argumentColumn""><center>PRO</center>';
       body += '</div><div class="con argumentColumn"><center>CON</center>';
@@ -737,31 +747,27 @@ function writeDiscussionContent(author, perm) {
       writeCommentList(ArgDict.com);
       writeArgumentList(ArgDict.pro, 'pro');
       writeArgumentList(ArgDict.con, 'con');
-      // Add eventlistener for showing the 'option' menu
-      document.addEventListener('click', (event) => {
-        if (event.target.id.substr(0, 4) === 'more') {
-          if (!event.target.getElementsByTagName('ul')[0]) { return; }
-          const options = event.target.getElementsByTagName('ul')[0];
-          if (options.style.display !== 'block') {
-            options.style.display = 'block';
-            // If anywhere is clicked in the document that is not the list, it shoud close again
-            document.addEventListener('click', (evt) => {
-              if (evt.target !== event.target.getElementsByTagName('ul')[0] && evt.target !== event.target) {
-                options.style.display = 'none';
-              }
-            });
-          } else { options.style.display = 'none'; }
-        }
-      });
-
-      // Adding an event listener to the comment box which updates the comment preview
-      if (document.getElementsByClassName('commentBox')[0]) {
-        document.getElementsByClassName('commentBox')[0].getElementsByTagName('textarea')[0].addEventListener('keyup', () => {
-          const previewElement = document.getElementsByClassName('previewElement')[0];
-          const contextValue = document.getElementsByClassName('commentBox')[0].getElementsByTagName('textarea')[0].value;
-          previewElement.innerHTML = converter.makeHtml(parseHtml(contextValue));
-        });
-      }
     });
   });
 }
+// Add eventlistener for showing the 'option' menu
+let activeMenus = [];
+document.addEventListener('click', (event) => {
+  if (event.target.id.substr(0, 4) === 'more') {
+    if (!event.target.getElementsByTagName('ul')[0]) { return; }
+    const options = event.target.getElementsByTagName('ul')[0];
+    if (options.style.display !== 'block') {
+      activeMenus.push(event.target);
+      options.style.display = 'block';
+    } else { options.style.display = 'none'; activeMenus = []; }
+  }
+});
+// If anywhere is clicked in the document that is not the list, it shoud close again
+document.addEventListener('click', (event) => {
+  for (let i = 0; i < activeMenus.length; i += 1) {
+    if (event.target !== activeMenus[i].getElementsByTagName('ul')[0] && event.target !== activeMenus[i]) {
+      activeMenus[i].getElementsByTagName('ul')[0].style.display = 'none';
+      activeMenus = [];
+    }
+  }
+});

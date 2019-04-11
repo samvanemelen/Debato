@@ -17,12 +17,6 @@ if ('p' in getUrlVars()) {
     document.getElementById('discussionTags').value = info.tags.slice(1, info.tags.length).join(' ');
   });
 }
-// Update a preview of what the context will look like after parsing Markdown
-document.getElementById('discussionContext').addEventListener('keyup', () => {
-  const previewElement = document.getElementsByClassName('previewElement')[0];
-  const contextValue = document.getElementById('discussionContext').value;
-  previewElement.innerHTML = converter.makeHtml(parseHtml(contextValue));
-});
 // Display a warning when a user types an unsupported character in the tags section
 document.getElementById('discussionTags').addEventListener('keyup', (event) => {
   const tags = event.target.value;

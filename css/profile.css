@@ -241,13 +241,6 @@
     cursor: pointer;
 }
 
-.spinner {
-    color: white;
-    font-size: 1.1em;
-    -webkit-animation: rotate 1s infinite 0s linear;
-            animation: rotate 1s infinite 0s linear;
-}
-
 @media screen and (max-width: 600px) {
     #profileCard {
         display: block;

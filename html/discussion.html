@@ -55,11 +55,11 @@
                 <div class="thumbnail" style="width: 90%; height: 300px;"></div>
                 <div id="discussionBody"></div>
             </div>
-            <div id = "editFade" style="display: none;">
-                <div id = "editBox">
+            <div id = "ContentFade" style="display: none;">
+                <div id = "editBox" style="display: none;">
                     <p>Edit your comment</p>
                     <div class="inputZone" style="display: block;">
-                        <textarea name="comment" rows="3"></textarea>
+                        <textarea name="comment" rows="3" onkeyup="updateTextPreview(this)"></textarea>
                         <br>
                         <form action="" style='display: inline-block;'>
                             <label style='display: inline-block;'><input type="radio" name="type" value="pro"> Pro</label>
@@ -68,6 +68,9 @@
                         </form>
                         <button class="postButton" onclick="" style="margin-bottom: 0;">Edit</button>
                     </div>
+                </div>
+                <div id="commentStructureBox" style="display: none;">
+                    <p>Comment structure</p>
                 </div>
             </div>
         </center>   

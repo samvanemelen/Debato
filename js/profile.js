@@ -178,7 +178,7 @@ function removedelegation(amount) {
   win.focus();
 }
 function claimrewards() {
-  document.getElementById('claimRewardButton').innerHTML = '<i class="spinner fas fa-spinner"></i>';
+  document.getElementById('claimRewardButton').innerHTML = '<i class="spinner fas fa-spinner" style="color:white"></i>';
   const params = {
     account: user,
     reward_steem: `${rewardSteem} STEEM`,
@@ -209,7 +209,7 @@ function switchCurrency(element) {
   }
 }
 function follow() {
-  document.getElementById('followButton').innerHTML = '<i class="spinner fas fa-spinner"></i>';
+  document.getElementById('followButton').innerHTML = '<i class="spinner fas fa-spinner" style="color:white"></i>';
   if (followers.includes(user)) {
     api.unfollow(user, viewingUser, (err, res) => {
       if (res) {
@@ -220,7 +220,7 @@ function follow() {
     });
   } else {
     api.follow(user, viewingUser, (err, res) => {
-      document.getElementById('followButton').innerHTML = '<i class="spinner fas fa-spinner"></i>';
+      document.getElementById('followButton').innerHTML = '<i class="spinner fas fa-spinner" style="color:white"></i>';
       if (res) {
         showSuccess(`You are now following ${viewingUser}!`);
         document.getElementById('followButton').innerHTML = 'unfollow';
