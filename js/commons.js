@@ -375,6 +375,7 @@ function comment(textbox, commenttype, author = activePost.author, permlink = ac
     if (!res) { showError(`Could not post your comment. Message: ${err}`); return; }
     commentTextBox.parentElement.style.display = 'none';
     commentTextBox.value = '';
+    commentTextBox.nextElementSibling.innerHTML = '';
     if (permlink === activePost.permlink) {
       const contentBox = document.getElementsByClassName(commenttype)[0];
       if (contentBox.getElementsByClassName('blank').length > 0) {
@@ -455,10 +456,8 @@ function getPostData(postobj) {
   let tags = [];
   // eslint-disable-next-line prefer-destructuring
   if ('tags' in postJSON) { tags = postJSON.tags; }
-  try {
-    // eslint-disable-next-line prefer-destructuring
-    thumbnail = postJSON.image[0];
-  } catch (error) { thumbnail = false; }
+  // eslint-disable-next-line prefer-destructuring
+  if ('image' in postJSON) { thumbnail = postJSON.image[0]; } else { thumbnail = false; }
   // eslint-disable-next-line prefer-destructuring
   const author = postobj.author;
   // eslint-disable-next-line prefer-destructuring
@@ -529,7 +528,6 @@ function getVoteStatus(commentItem) {
             if (votes[j].voter === user) { selfVote = true; }
           }
         }
-        console.log(commentItem)
       } resolve({
         commentItem, net_votes: voteCount, voteStatus: selfVote, voteList: votes,
       });
@@ -702,7 +700,7 @@ function writeDiscussionContent(author, perm) {
       if (isHot(post)) { body += ' <i class="fas fa-fire-alt" title="Hot!" style="color:rgb(121, 6, 2);"></i>'; }
       body += '</h1><br>';
       for (let i = 0; i < info.tags.length; i += 1) {
-        if (info.tags[i] !== 'debato-discussion') { body += `<a class = "tag" href="/index?tag=${info.tags[i]}">${info.tags[i]}</a>`; }
+        if (info.tags[i] !== 'debato-discussion' && info.tags[i].length > 1) { body += `<a class = "tag" href="/index?tag=${info.tags[i]}">${info.tags[i]}</a>`; }
       }
       body += '<div id = "backPlaceholder"></div>'; // placeholder for back button
       body += `<p><strong>By: <a href="/html/profile?u=${info.author}">${info.author}</a></strong> - ${info.reward}</p>`;

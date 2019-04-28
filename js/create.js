@@ -85,8 +85,8 @@ function publish() {
   */
   let tagsMeta = `{"image":["${coverImage}"], "tags":["debato-discussion",`;
   for (let i = 0; i < taglist.length; i += 1) {
-    tagsMeta += `"${taglist[i]}"`;
-    if (i + 1 < taglist.length) { tagsMeta += ','; }
+    if (taglist[i] > 1) { tagsMeta += `"${taglist[i]}"`; }
+    if (i + 1 < taglist.length && taglist[i + 1].length > 1) { tagsMeta += ','; }
   }
   /*
   The discussion context is stored in the custom JSON metadata,
