@@ -233,6 +233,7 @@ document.getElementById('defaultOpen').click();
 const profileUsername = URLvars.u;
 
 steem.api.getAccounts([profileUsername, user], (error, account) => {
+  console.log(account)
   /*
   If the lenght of the account array is zero, no user was found with the given name
   In that case the profileCard will display 'could not find "user"'
@@ -353,10 +354,10 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
   || profileUser.reward_sbd_balance.split(' ')[0] !== 0
   || profileUser.reward_vesting_steem.split(' ')[0] !== 0) {
     [rewardSteem] = profileUser.reward_steem_balance.split(' ');
-    [rewardSBD] = profileUser.savings_sbd_balance.split(' ');
+    [rewardSBD] = profileUser.reward_sbd_balance.split(' ');
     [rewardVests] = profileUser.reward_vesting_balance.split(' ');
     document.getElementById('pendingSTEEM').innerHTML = profileUser.reward_steem_balance;
-    document.getElementById('pendingSBD').innerHTML = profileUser.savings_sbd_balance;
+    document.getElementById('pendingSBD').innerHTML = profileUser.reward_sbd_balance;
     document.getElementById('pendingSP').innerHTML = profileUser.reward_vesting_steem.replace('STEEM', 'SP');
   }
   /*
