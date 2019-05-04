@@ -321,30 +321,52 @@ button:disabled {
   padding: 5px;
   margin: 5px 0 5px 0;
   text-align: left;
-  flex-shrink: 0;
+}
+.comment.argumentCard{
   display: flex;
 }
 .argumentCard .commentLink:hover{
   opacity: 0.5;
   cursor: pointer;
 }
-.ratio {
+.childCount {
   margin-top: 0;
   margin-bottom: 0;
   display: inline-block;
   font-size: 16px;
   margin-left: 4px;
   margin-right: 4px;
+  font-weight: bold;
 }
-.ratio.box {
+.ratiobar {
+  width: 100%;
+  height: 4px;
+  background-color: #ccc;
+  padding: 0;
+  margin: 0;
+}
+.ratiobar .probar {
+  display: inline-block;
+  height: 100%;
+  background-color: rgba(0, 133, 0, 0.5);
+  margin: 0;
+}
+.ratiobar .conbar {
+  display: inline-block;
+  height: 100%;
+  background-color: rgba(158, 0, 0, 0.5);
+  margin: 0;
+}
+.children.box {
+  font-weight: bold;
+  display: inline-block;
   position: relative;
-  bottom: calc(45px - 100%);
+  font-size: 16px;
+  bottom: calc(40px - 100%);
   width: 100%;
   min-height: 1.1em;
-  margin: 0;
-  padding: 3px 0;
+  padding: 1px 0;
   background-color: white;
-  box-shadow: 0 0 1px 1px white;
   opacity: 0.7;
 }
 .ageBox {

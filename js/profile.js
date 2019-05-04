@@ -233,7 +233,6 @@ document.getElementById('defaultOpen').click();
 const profileUsername = URLvars.u;
 
 steem.api.getAccounts([profileUsername, user], (error, account) => {
-  console.log(account)
   /*
   If the lenght of the account array is zero, no user was found with the given name
   In that case the profileCard will display 'could not find "user"'

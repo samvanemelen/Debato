@@ -551,7 +551,7 @@ function getCommentStatus(author, perm, objId) {
           } catch (error) { /* Do nothing */ }
         }
       }
-      resolve([`${proCount}|${conCount}`, objId]);
+      resolve([proCount, conCount]);
     });
   }));
 }
@@ -576,7 +576,7 @@ function writeArgumentList(comments, divID) {
     body += createCommentBox(`statement ${divID}`);
   }
 
-  document.getElementsByClassName(divID)[0].innerHTML = body;
+  document.getElementsByClassName(`${divID} argumentColumn`)[0].innerHTML = body;
 
   if (comments.length > 0) {
     for (let i = 0; i < comments.length; i += 1) {
@@ -590,8 +590,15 @@ function writeArgumentList(comments, divID) {
         document.getElementsByClassName(divID)[0].innerHTML += createArgumentCard(values[i]);
         // Updates the values of the ratio box (async)
         getCommentStatus(ArgumentAuthor, ArgumentPerm, `ratio-${ArgumentPerm}`).then((ratio) => {
-          // eslint-disable-next-line prefer-destructuring
-          document.getElementById(ratio[1]).innerHTML = ratio[0];
+          const totalArgs = ratio[0] + ratio[1];
+          const bar = document.getElementById(`ratio-${ArgumentPerm}`);
+          if (totalArgs) {
+            bar.getElementsByClassName('probar')[0].style.width = `${ratio[0] / totalArgs * 100}%`;
+            bar.getElementsByClassName('conbar')[0].style.width = `${ratio[1] / totalArgs * 100}%`;
+          } else {
+            bar.getElementsByClassName('probar')[0].style.width = 0;
+            bar.getElementsByClassName('conbar')[0].style.width = 0;
+          }
         });
       }
     });

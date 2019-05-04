@@ -22,7 +22,7 @@ function createArgumentCard(values) {
     voteType = 'removeVote';
     attributes = 'activated';
   }
-  line += `<div class="argumentCard"  id = de-${commentElement.permlink} style="display: flex;justify-content: space-between">`;
+  line += `<div class="argumentCard"  id = de-${commentElement.permlink}><div style="display: flex;justify-content: space-between">`;
   line += '<span style=" line-height:100%; padding:5px;margin:auto 0 auto 0;"><center>';
   line += `<div class='voteCounter'>${values.net_votes}`;
   if (values.net_votes > 0) {
@@ -41,7 +41,7 @@ function createArgumentCard(values) {
   line += `<a class="commentLink blackLink" style="font-size:1.2em;" onclick="writeDiscussionContent('${commentElement.author}','${commentElement.permlink}')"> `;
   line += `${parseHtml(commentElement.body)}</a></span>`;
   line += '<span style="padding: 5px;margin:auto 0 auto 0;text-align: -webkit-center;">';
-  line += `<p class='ratio' id='ratio-${commentElement.permlink}'></p>`;
+  line += `<div class="childCount">${commentElement.children}</div>`;
   if (commentElement.author === user) { // Original author of the comment
     line += `<i id="more-${commentElement.permlink}" class="far fa-caret-square-down moreIcon">`;
     // eslint-disable-next-line prefer-destructuring
@@ -53,7 +53,8 @@ function createArgumentCard(values) {
     }
     line += '</ul></i>';
   }
-  line += '</span></div>';
+  line += `</span></div><div class="ratiobar" id="ratio-${commentElement.permlink}"><div class="probar"></div><div class="conbar"></div>`;
+  line += '</div>';
   return line;
 }
 function createDiscussionCard(post) {
@@ -67,7 +68,8 @@ function createDiscussionCard(post) {
     body += `<div class = "thumbnail" style = "background-image:url('${details.thumbnail}')">`;
   }
   body += `<div title="${details.created}" class="ageBox">${timeSince(details.created)} ago</div>`;
-  body += `<div class="ratio box" id='ratio-${details.perm}'></div></div>`;
+  body += `<div class="children box">${post.children} <i class="far fa-comment"></i></div></div>`;
+  body += `<div class="ratiobar" id="ratio-${details.perm}"><div class="probar"></div><div class="conbar"></div></div>`;
   body += '<p class = "cardTitle">';
   if (isHot(post)) { body += '<i class="fas fa-fire-alt" title="Hot!" style="color:rgb(121, 6, 2);"></i> '; }
   body += `${details.title}</h2>`;
@@ -179,7 +181,7 @@ function createCommentCard(values) {
     commentItem += createCommentBox('reply', comment.author, comment.permlink);
     commentItem += '<div class="repliesPlaceholder" style="max-width: 100%;"></div>';
   }
-  commentItem += '</div></div>';
+  commentItem += '</div></div></div>';
   return commentItem;
 }
 function createProfileArgumentCard(values) {
