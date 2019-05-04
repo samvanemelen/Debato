@@ -254,6 +254,10 @@ function updateTextPreview(obj) {
     previewElement.innerHTML = converter.makeHtml(parseHtml(contextValue));
   }
 }
+function updateCharCount(textbox) {
+  const countElement = textbox.previousElementSibling;
+  countElement.innerHTML = `${300 - textbox.value.length} characters remaining (leave longer stories or references in a comment on your argument)`;
+}
 function isHot(post) {
   /*
   This formula is derrived from the steem source code

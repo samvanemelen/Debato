@@ -18,7 +18,7 @@ if ('p' in getUrlVars()) {
   });
 }
 // Display a warning when a user types an unsupported character in the tags section
-document.getElementById('discussionTags').addEventListener('keyup', (event) => {
+document.getElementById('discussionTags').addEventListener('input', (event) => {
   const tags = event.target.value;
   for (let i = 0; i < tags.length; i += 1) {
     if (!'abcdefghijklmnopqrstuvwxyz- '.includes(tags.charAt(i))) {
@@ -28,6 +28,7 @@ document.getElementById('discussionTags').addEventListener('keyup', (event) => {
   }
   document.getElementById('tagWarning').style.display = 'none';
 });
+
 // eslint-disable-next-line no-unused-vars
 function publish() {
   if (user === '' || user === undefined) {

@@ -85,22 +85,22 @@ function createCommentBox(action, author = '', perm = '') {
   let body = '';
   if (action === 'statement pro') {
     body = `<div class = "${action}Box"><button class = "collapsibleButton" onclick = "showCommentBox(this)">Add statement</button>`;
-    body += '<div class = "inputZone"><textarea name = "comment" rows = "3"></textarea><br>';
+    body += '<div class = "inputZone"><p class="remainingChars">300 characters remaining (leave longer stories or references in a comment on your argument)</p><textarea name = "comment" rows = "3" maxlength="300" oninput="updateCharCount(this)"></textarea><br>';
     body += "<button class = 'postbutton' onclick = \"comment(this.previousElementSibling.previousElementSibling,'pro')\">post</button></div></div>";
   }
   if (action === 'statement con') {
     body = `<div class = "${action}Box"><button class = "collapsibleButton" onclick = "showCommentBox(this)">Add statement</button>`;
-    body += '<div class = "inputZone"><textarea name = "comment" rows = "3"></textarea><br>';
+    body += '<div class = "inputZone"><p class="remainingChars">300 characters remaining (leave longer stories or references in a comment on your argument)</p><textarea name = "comment" rows = "3" maxlength="300" oninput="updateCharCount(this)"></textarea><br>';
     body += "<button class = 'postbutton' onclick = \"comment(this.previousElementSibling.previousElementSibling,'con')\">post</button></div></div>";
   }
   if (action === 'comment') {
     body = `<div class = "${action}Box"><button class = "collapsibleButton" onclick = "showCommentBox(this)">Add comment</button>`;
-    body += '<div class = "inputZone"><textarea name = "comment" rows = "3"  onkeyup="updateTextPreview(this)"></textarea><div class = "previewElement"></div>';
+    body += '<div class = "inputZone"><textarea name = "comment" rows = "3"  oninput="updateTextPreview(this)"></textarea><div class = "previewElement"></div>';
     body += "<button class = 'postbutton' onclick = \"comment(this.previousElementSibling.previousElementSibling,'com')\">post</button></div></div>";
   }
   if (action === 'reply') {
     body += '<div class="replyBox" style="margin-right:10px; display: none; max-width:100%;">';
-    body += '<textarea name = "comment" rows = "3" style="max-width:100%;"  onkeyup="updateTextPreview(this)"></textarea><div class = "previewElement"></div>';
+    body += '<textarea name = "comment" rows = "3" style="max-width:100%;"  oninput="updateTextPreview(this)"></textarea><div class = "previewElement"></div>';
     body += `<button class = 'postbutton' onclick = "comment(this.previousElementSibling.previousElementSibling,'com', '${author}', '${perm}')">post</button>`;
     body += '<a onclick="this.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(\'commentButton\')[0].click()" style="text-decoration:none; font-size:0.8em;">Cancel</a></div>';
   }
