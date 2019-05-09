@@ -108,8 +108,10 @@ function updateLoginStatus() {
     });
   } else {
     const redirURL = window.location.href.split('/').slice(0, 3).join('/');
-    const link = `<a id = "SteemConnect" class="blackLink" href = "https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=${redirURL}&scope=vote,comment,delete_comment,custom_json,claim_reward_balance">Log in</a>`;
-    document.getElementById('accountLogin').innerHTML = link;
+    const SteemConnectLinks = document.getElementsByClassName('SClink');
+    for (let i = 0; i < SteemConnectLinks.length; i += 1) {
+      SteemConnectLinks[i].href = `https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=${redirURL}&scope=vote,comment,delete_comment,custom_json,claim_reward_balance`;
+    }
   }
 }
 updateLoginStatus();
@@ -456,19 +458,22 @@ function getPostData(postobj) {
   (thumbnail, author, title, description, rewards, permlink)
   */
   let thumbnail;
-  const postJSON = JSON.parse(postobj.json_metadata);
+  let description = '';
   let tags = [];
-  // eslint-disable-next-line prefer-destructuring
-  if ('tags' in postJSON) { tags = postJSON.tags; }
-  // eslint-disable-next-line prefer-destructuring
-  if ('image' in postJSON) { thumbnail = postJSON.image[0]; } else { thumbnail = false; }
+  if (postobj.json_metadata) {
+    const postJSON = JSON.parse(postobj.json_metadata);
+    // eslint-disable-next-line prefer-destructuring
+    if ('tags' in postJSON) { tags = postJSON.tags; }
+    // eslint-disable-next-line prefer-destructuring
+    if ('image' in postJSON) { thumbnail = postJSON.image[0]; } else { thumbnail = false; }
+    description = JSON.parse(postobj.json_metadata).context;
+    if (description === undefined) { description = ''; }
+  }
   // eslint-disable-next-line prefer-destructuring
   const author = postobj.author;
   // eslint-disable-next-line prefer-destructuring
   let title = postobj.title;
-  let description = '';
-  description = JSON.parse(postobj.json_metadata).context;
-  if (description === undefined) { description = ''; }
+
   if (title === '') {
     title = postobj.body;
     description = '';

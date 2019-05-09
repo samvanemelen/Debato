@@ -380,8 +380,15 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
       const details = getPostData(postlist[i]);
       document.getElementById('authorDiscussions').innerHTML += cardHTML;
       getCommentStatus(details.author, details.perm, `ratio-${details.perm}`).then((ratio) => {
-        const rat = `<strong>${ratio[0]}</strong>`;
-        document.getElementById(ratio[1]).innerHTML = rat;
+        const totalArgs = ratio[0] + ratio[1];
+        const bar = document.getElementById(`ratio-${details.perm}`);
+        if (totalArgs) {
+          bar.getElementsByClassName('probar')[0].style.width = `${ratio[0] / totalArgs * 100}%`;
+          bar.getElementsByClassName('conbar')[0].style.width = `${ratio[1] / totalArgs * 100}%`;
+        } else {
+          bar.getElementsByClassName('probar')[0].style.width = 0;
+          bar.getElementsByClassName('conbar')[0].style.width = 0;
+        }
       });
     }
   });
