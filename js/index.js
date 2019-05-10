@@ -1,9 +1,10 @@
 /* global getPostData
 getCommentStatus createDiscussionCard :true */
 /* eslint-disable no-unused-vars */
+
 let activeTab = '';
 let activeTag = '';
-const taglist = ['sport', 'politics', 'science', 'ethics'];
+const taglist = ['sport', 'politics', 'science', 'ethics']; // Suggested tags to show on the home page
 const PostPerLoad = 20;
 const currentURL = window.location.href;
 

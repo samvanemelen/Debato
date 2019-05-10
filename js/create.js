@@ -86,7 +86,7 @@ function publish() {
   */
   let tagsMeta = `{"image":["${coverImage}"], "tags":["debato-discussion",`;
   for (let i = 0; i < taglist.length; i += 1) {
-    if (taglist[i] > 1) { tagsMeta += `"${taglist[i]}"`; }
+    if (taglist[i].length > 1) { tagsMeta += `"${taglist[i]}"`; }
     if (i + 1 < taglist.length && taglist[i + 1].length > 1) { tagsMeta += ','; }
   }
   /*

@@ -58,6 +58,9 @@ function createArgumentCard(values) {
   return line;
 }
 function createDiscussionCard(post) {
+  /*
+  The post variable is a default post object as returned from the steemJS api
+  */
   let body = '';
   const details = getPostData(post);
   body += `<div class = "discussionObj" id = "${details.perm}">`;

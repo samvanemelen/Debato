@@ -5,18 +5,22 @@ user = ''; accessToken = ''; expiresIn = ''; weight = 10000;
 const weightSlider1 = document.getElementsByClassName('voteSlider')[0];
 const weightSlider2 = document.getElementsByClassName('voteSlider')[1];
 const converter = new showdown.Converter({ simplifiedAutoLink: true });
-// eslint-disable-next-line func-names
-weightSlider1.oninput = function () {
-  // When the weight slider changes, change the cookie and change the indicator
+
+/*
+Updating the position of the sliders that determine the voting percentage
+There are two sliders on the page, one for desktop users, and one in the
+navigation bar for mobile users. When one changes, the other should change
+as well. Also the cooky value should change to ensure the value is maintained
+in the next user session.
+*/
+weightSlider1.oninput = function update() {
   weight = this.value;
   document.getElementsByClassName('voteSlider')[1].value = this.value;
   document.getElementsByClassName('voteSlider')[0].nextElementSibling.innerHTML = `${this.value / 100}% upvotes`;
   document.getElementsByClassName('voteSlider')[1].nextElementSibling.innerHTML = `${this.value / 100}% upvotes`;
   document.cookie = `weight=${weight}; path=/`;
 };
-// eslint-disable-next-line func-names
-weightSlider2.oninput = function () {
-  // When the weight slider changes, change the cookie and change the indicator
+weightSlider2.oninput = function update() {
   weight = this.value;
   document.getElementsByClassName('voteSlider')[0].value = this.value;
   document.getElementsByClassName('voteSlider')[0].nextElementSibling.innerHTML = `${this.value / 100}% upvotes`;
@@ -25,7 +29,7 @@ weightSlider2.oninput = function () {
 };
 
 function getUrlVars() {
-  // Get the variables passed in the URL
+  // Get the variables that are passed in the URL and return a dictionary
   const vars = {};
   window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, (m, key, value) => {
     vars[key] = value;
@@ -108,6 +112,12 @@ function updateLoginStatus() {
     });
   } else {
     const redirURL = window.location.href.split('/').slice(0, 3).join('/');
+    /*
+    Many links are present across pages to redirect users to log in via SteemConnect
+    This link can change over time because of feature updates etc.
+    To ensure all links across all pages are always up to date, the items have a classname
+    and on pageload the same link is placed in all html objects.
+    */
     const SteemConnectLinks = document.getElementsByClassName('SClink');
     for (let i = 0; i < SteemConnectLinks.length; i += 1) {
       SteemConnectLinks[i].href = `https://steemconnect.com/oauth2/authorize?client_id=debato-app&redirect_uri=${redirURL}&scope=vote,comment,delete_comment,custom_json,claim_reward_balance`;
@@ -234,6 +244,11 @@ function timeSince(UTCstring) {
   return `${Math.floor(AgeSeconds)} seconds`;
 }
 function parseHtml(string) {
+  /*
+  Removes html characters from text such as comments, arguments, titles etc.
+  Implemented to reduce the risk of html injections and people creating custom
+  layout without restrictions, impacting the way debato looks.
+  */
   let parsedString = string.replace(/&/g, '&amp;');
   parsedString = parsedString.replace(/</g, '&lt;');
   parsedString = parsedString.replace(/>/g, '&gt;');
@@ -249,7 +264,11 @@ function parseHtml(string) {
   return parsedString;
 }
 function updateTextPreview(obj) {
-  // obj should be a text-area
+  /*
+  Updates the text preview to display what a comment/argument would look like
+  obj variable must be a textarea, in the html the preview element should be
+  immediatly after this textarea
+  */
   const previewElement = obj.nextElementSibling;
   const contextValue = obj.value;
   if (previewElement.className === 'previewElement') {
@@ -257,6 +276,12 @@ function updateTextPreview(obj) {
   }
 }
 function updateCharCount(textbox) {
+  /*
+  The amount of characters used in an argument is limited to 300.
+  Arguments are aimed to be short, clear statements, elaborate explanation or examples can be
+  added as a comment to that argument (or provided a framework in future updates)
+  This tool updates a counter that indicates how many characters are left.
+  */
   const countElement = textbox.previousElementSibling;
   countElement.innerHTML = `${300 - textbox.value.length} characters remaining (leave longer stories or references in a comment on your argument)`;
 }
@@ -544,7 +569,7 @@ function getVoteStatus(commentItem) {
   }));
 }
 function getCommentStatus(author, perm, objId) {
-  // Retrieves the comment ratio between pro|con
+  // Retrieves the amount of comments pro and the amount of comments against a post
   return new Promise(((resolve, reject) => {
     steem.api.getContentReplies(author, perm, (err, comments) => {
       let proCount = 0;
@@ -565,6 +590,7 @@ function getCommentStatus(author, perm, objId) {
   }));
 }
 function sortReplies(replyList) {
+  // Sorts replies based on net amount of votes
   const sortedList = replyList.sort((a, b) => {
     if (a.net_votes < b.net_votes) {
       return 1;
@@ -617,7 +643,7 @@ function writeArgumentList(comments, divID) {
   }
 }
 function writeCommentList(commentList) {
-  // Retrieves all comments and puts then in a html usable string
+  // Retrieves all comments and puts them in a html usable string
   const commentCount = commentList.length;
   const commentCard = document.getElementsByClassName('comment-card')[0];
   const PromiseList = [];

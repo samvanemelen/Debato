@@ -49,6 +49,9 @@ function showInfo(element) {
   }
 }
 function openTransfer() {
+  /*
+  This function will open a pop up window in which the user can transfer funds
+  */
   const fade = document.getElementById('TransactionFade');
   const transferBox = document.getElementById('TransferBox');
   fade.style.display = 'block';
@@ -66,6 +69,9 @@ function openTransfer() {
   });
 }
 function Transfer(recipient, amount, memo, currency) {
+  /*
+  Execute a transfer operation based on the openTransfer pop up window
+  */
   document.getElementById('TransactionFade').style.display = 'none';
   document.getElementById('TransferBox').style.display = 'none';
   const url = api.sign('transfer', {
@@ -78,6 +84,9 @@ function Transfer(recipient, amount, memo, currency) {
   win.focus();
 }
 function openPowerUp() {
+  /*
+  Opens a pop up window to perform power up operations
+  */
   const fade = document.getElementById('TransactionFade');
   const powerupBox = document.getElementById('powerupBox');
   fade.style.display = 'block';
@@ -91,6 +100,9 @@ function openPowerUp() {
   });
 }
 function powerup(amount) {
+  /*
+  Performs the power up transaction based on the openPowerUp window
+  */
   document.getElementById('TransactionFade').style.display = 'none';
   document.getElementById('powerupBox').style.display = 'none';
   const url = api.sign('transfer-to-vesting', {
@@ -102,6 +114,9 @@ function powerup(amount) {
   win.focus();
 }
 function openPowerDown() {
+  /*
+  Opens a pop up window to perform power down operations
+  */
   const fade = document.getElementById('TransactionFade');
   const powerdownBox = document.getElementById('powerdownBox');
   fade.style.display = 'block';
@@ -116,6 +131,9 @@ function openPowerDown() {
   });
 }
 function powerdown(amount) {
+  /*
+  Performs the power down transaction based on the openPowerDown window
+  */
   document.getElementById('TransactionFade').style.display = 'none';
   document.getElementById('powerdownBox').style.display = 'none';
   const vests = amount / totalSteem * totalVests;
@@ -127,6 +145,9 @@ function powerdown(amount) {
   win.focus();
 }
 function openDelegate() {
+  /*
+  Opens a pop up window to perform delegation operations
+  */
   const fade = document.getElementById('TransactionFade');
   const delegateBox = document.getElementById('delegateBox');
   fade.style.display = 'block';
@@ -141,6 +162,9 @@ function openDelegate() {
   });
 }
 function delegate(amount) {
+  /*
+  Performs the delegation transaction based on the openDelegate window
+  */
   document.getElementById('TransactionFade').style.display = 'none';
   document.getElementById('delegateBox').style.display = 'none';
   const vests = amount / totalSteem * totalVests;
@@ -153,6 +177,9 @@ function delegate(amount) {
   win.focus();
 }
 function openRemoveDelegation() {
+  /*
+  Opens a pop up window to remove a delegation
+  */
   const fade = document.getElementById('TransactionFade');
   const removeDelegationBox = document.getElementById('removeDelegationBox');
   fade.style.display = 'block';
@@ -166,6 +193,9 @@ function openRemoveDelegation() {
   });
 }
 function removedelegation(amount) {
+  /*
+  Performs the delegation removal based on the openRemoveDelegation window
+  */
   document.getElementById('TransactionFade').style.display = 'none';
   document.getElementById('delegateBox').style.display = 'none';
   const vests = amount / totalSteem * totalVests;
@@ -178,6 +208,9 @@ function removedelegation(amount) {
   win.focus();
 }
 function claimrewards() {
+  /*
+  Claims all rewards pending for a certain user.
+  */
   document.getElementById('claimRewardButton').innerHTML = '<i class="spinner fas fa-spinner" style="color:white"></i>';
   const params = {
     account: user,
@@ -196,6 +229,11 @@ function claimrewards() {
   });
 }
 function switchCurrency(element) {
+  /*
+  in the 'transfer funds' window one can choose between transferring Steem or SBD
+  There is also a shortcut to transfer all available funds. When the currency changes
+  This shortcut should also change to transfer the availabl amount.
+  */
   const transferBox = document.getElementById('TransferBox');
   if (element.innerHTML === 'SBD') {
     transferBox.getElementsByClassName('balance')[0].innerHTML = `${SBDBalance}`;
@@ -234,6 +272,10 @@ const profileUsername = URLvars.u;
 
 steem.api.getAccounts([profileUsername, user], (error, account) => {
   /*
+  To load a profile page, two accounts are requested, the data of the visited account
+  and the account information about the active user. This to determine whether one visits
+  his own account or that of a third party. This determines what buttons and functions are available
+
   If the lenght of the account array is zero, no user was found with the given name
   In that case the profileCard will display 'could not find "user"'
   and stop all other code from running
@@ -252,7 +294,6 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
   } catch (err) {
     profileImage = '/imgs/placeholder_complex.svg';
   }
-
   const rawReputation = profileUser.reputation;
   let simpleReputation = 0;
   /*
@@ -264,10 +305,8 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
   } else {
     simpleReputation = 25;
   }
-
   let votingPower = 100;
   if (profileUser.voting_power !== 0) { votingPower = profileUser.voting_power / 100; }
-  // eslint-disable-next-line prefer-destructuring
   let about;
   try {
     // eslint-disable-next-line prefer-destructuring
@@ -276,7 +315,7 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
   } catch (err) {
     about = '';
   }
-
+  // General profile information
   viewingUser = profileUser.name;
   document.getElementById('profileUsername').innerHTML = profileUser.name;
   document.getElementById('profileImageLarge').style.backgroundImage = `url(${profileImage})`;
@@ -299,7 +338,7 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
     document.getElementById('following').innerHTML = `${result.following_count} following`;
   });
 
-  // Wallet:
+  // Wallet information:
   document.getElementById('SteemTokens').innerHTML = profileUser.balance;
   document.getElementById('SteemBackedDollars').innerHTML = profileUser.sbd_balance;
   document.getElementById('SavingsSteem').innerHTML = profileUser.savings_balance;
