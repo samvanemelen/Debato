@@ -26,19 +26,21 @@ function writeDiscussionList(postlist, loadedAmount, previous) {
   // The first amount of posts is loaded or all possible items are loaded, so reset Listbox
   if (postlist.length < loadedAmount) { actualAmount = postlist.length; }
   for (let i = previous; i < actualAmount; i += 1) {
-    Listbox.innerHTML += createDiscussionCard(postlist[i]);
-    const details = getPostData(postlist[i]);
-    getCommentStatus(details.author, details.perm, `ratio-${details.perm}`).then((ratio) => {
-      const totalArgs = ratio[0] + ratio[1];
-      const bar = document.getElementById(`ratio-${details.perm}`);
-      if (totalArgs) {
-        bar.getElementsByClassName('probar')[0].style.width = `${ratio[0] / totalArgs * 100}%`;
-        bar.getElementsByClassName('conbar')[0].style.width = `${ratio[1] / totalArgs * 100}%`;
-      } else {
-        bar.getElementsByClassName('probar')[0].style.width = 0;
-        bar.getElementsByClassName('conbar')[0].style.width = 0;
-      }
-    });
+    if (postlist[i].title.length > 7) {
+      Listbox.innerHTML += createDiscussionCard(postlist[i]);
+      const details = getPostData(postlist[i]);
+      getCommentStatus(details.author, details.perm, `ratio-${details.perm}`).then((ratio) => {
+        const totalArgs = ratio[0] + ratio[1];
+        const bar = document.getElementById(`ratio-${details.perm}`);
+        if (totalArgs) {
+          bar.getElementsByClassName('probar')[0].style.width = `${ratio[0] / totalArgs * 100}%`;
+          bar.getElementsByClassName('conbar')[0].style.width = `${ratio[1] / totalArgs * 100}%`;
+        } else {
+          bar.getElementsByClassName('probar')[0].style.width = 0;
+          bar.getElementsByClassName('conbar')[0].style.width = 0;
+        }
+      });
+    }
   }
   if (postlist.length > loadedAmount) {
     const moreButton = `<button class = 'moreButton' onclick = "loadDiscussions('${activeTab}', ${loadedAmount + PostPerLoad}, ${loadedAmount});this.style.display = 'none'">Load more</button>`;

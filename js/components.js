@@ -10,6 +10,7 @@ function createArgumentCard(values) {
         * json_metadata: {"type":"..."}
         * body
         * created
+        * children
       - net_votes
       - voteStatus
       - voteList
