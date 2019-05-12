@@ -14,14 +14,14 @@ as well. Also the cooky value should change to ensure the value is maintained
 in the next user session.
 */
 weightSlider1.oninput = function update() {
-  weight = this.value;
+  weight = parseInt(this.value, 10);
   document.getElementsByClassName('voteSlider')[1].value = this.value;
   document.getElementsByClassName('voteSlider')[0].nextElementSibling.innerHTML = `${this.value / 100}% upvotes`;
   document.getElementsByClassName('voteSlider')[1].nextElementSibling.innerHTML = `${this.value / 100}% upvotes`;
   document.cookie = `weight=${weight}; path=/`;
 };
 weightSlider2.oninput = function update() {
-  weight = this.value;
+  weight = parseInt(this.value, 10);
   document.getElementsByClassName('voteSlider')[0].value = this.value;
   document.getElementsByClassName('voteSlider')[0].nextElementSibling.innerHTML = `${this.value / 100}% upvotes`;
   document.getElementsByClassName('voteSlider')[1].nextElementSibling.innerHTML = `${this.value / 100}% upvotes`;
@@ -71,10 +71,12 @@ function updateLoginStatus() {
     if ('username' in cookieDict) { user = cookieDict.username; }
     // eslint-disable-next-line prefer-destructuring
     if ('accessToken' in cookieDict) { accessToken = cookieDict.accessToken; }
-    if (weight in cookieDict) {
+    if ('weight' in cookieDict) {
       weight = parseInt(cookieDict.weight, 10);
       weightSlider1.value = weight;
-      document.getElementById('voteIndicator').innerHTML = `${weightSlider1.value / 100}% upvotes`;
+      weightSlider2.value = weight;
+      weightSlider1.nextElementSibling.innerHTML = `${weightSlider1.value / 100}% upvotes`;
+      weightSlider2.nextElementSibling.innerHTML = `${weightSlider1.value / 100}% upvotes`;
     }
   } catch (error) { accessToken = ''; }
   if (accessToken !== '') {
@@ -309,6 +311,7 @@ function isHot(post) {
 function upvote(obj, author, perm) {
   // Upvote a post and change the settings of the upvote button
   obj.classList.add('rotate');
+  console.log(typeof weight)
   api.vote(user, author, perm, weight, (err, res) => {
     if (res) {
       obj.setAttribute('onclick', `removeVote(this, '${author}', '${perm}')`);
@@ -317,6 +320,7 @@ function upvote(obj, author, perm) {
       if (prevElement) { prevElement.innerHTML = parseInt(prevElement.innerHTML, 10) + 1; }
     } else {
       showError('Could not broadcast vote. Please refresh the page and try again');
+      console.log(err)
     }
     obj.classList.remove('rotate');
   });
