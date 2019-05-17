@@ -311,7 +311,6 @@ function isHot(post) {
 function upvote(obj, author, perm) {
   // Upvote a post and change the settings of the upvote button
   obj.classList.add('rotate');
-  console.log(typeof weight)
   api.vote(user, author, perm, weight, (err, res) => {
     if (res) {
       obj.setAttribute('onclick', `removeVote(this, '${author}', '${perm}')`);
@@ -320,7 +319,6 @@ function upvote(obj, author, perm) {
       if (prevElement) { prevElement.innerHTML = parseInt(prevElement.innerHTML, 10) + 1; }
     } else {
       showError('Could not broadcast vote. Please refresh the page and try again');
-      console.log(err)
     }
     obj.classList.remove('rotate');
   });
@@ -440,7 +438,7 @@ function comment(textbox, commenttype, author = activePost.author, permlink = ac
             body,
             created: new Date(),
             author: user,
-            json_metadata: '',
+            json_metadata: `{"type":"${type}"}`,
             active_votes: [],
             children: 0,
           },
