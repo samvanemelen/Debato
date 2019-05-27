@@ -105,7 +105,7 @@ function updateLoginStatus() {
       if (document.getElementById('feed')) { document.getElementById('feed').style.display = 'inline-block'; }
       document.getElementsByClassName('profileLink')[0].href = `/html/profile?u=${user}`;
       document.getElementsByClassName('profileLink')[1].href = `/html/profile?u=${user}`;
-      api = sc2.Initialize({
+      api = new steemconnect.Client({
         app: 'debato-app',
         callbackURL: 'http://www.debato.org',
         accessToken,
@@ -195,7 +195,7 @@ function toggleMenu(show = null) {
       if (accountMenu.style.maxHeight === '' || accountMenu.style.maxHeight === '0px') {
         accountMenu.style.maxHeight = '200px';
       } else { accountMenu.style.maxHeight = '0'; }
-    } else if (show) { accountMenu.style.maxHeight = '200px'; } else if (!show) { accountMenu.style.maxHeight = '0'; }
+    } else if (show) { accountMenu.style.maxHeight = '260px'; } else if (!show) { accountMenu.style.maxHeight = '0'; }
   }
 }
 function logout() {

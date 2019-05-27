@@ -1,0 +1,319 @@
+<html> 
+    <head> 
+        <meta charset="UTF-8"> 
+        <title>Debato - About Debato</title>   
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">    
+        <meta name="description" content="Create a new discussion on debato.org.
+        The discussion will be visible to the more than 1 million users on the Steem blockchain">  
+        <link rel="stylesheet" type="text/css" href="/css/layout.css"> 
+        <link rel="stylesheet" type="text/css" href="/css/about.css">  
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aleo">
+        <link rel="apple-touch-icon" sizes="180x180" href="/imgs/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/imgs/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/imgs/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/imgs/favicon/site.webmanifest">
+        <link rel="mask-icon" href="/imgs/favicon/safari-pinned-tab.svg" color="#5bbad5">
+        <link rel="shortcut icon" href="/imgs/favicon/favicon.ico">
+        <meta name="msapplication-TileColor" content="#00aba9">
+        <meta name="msapplication-config" content="/imgs/favicon/browserconfig.xml">
+        <meta name="theme-color" content="#ffffff">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>     
+    <body style="font-family: Aleo;"> 
+        <center style="width: 100%; max-width: 100%;">
+                <header>
+                        <i class="fas fa-bars mobile_menu" onclick="document.getElementById('mainMenu').style.display = 'block'"></i>
+                        <nav id="mainMenu">
+                        <span id="fade"  onclick="document.getElementById('mainMenu').style.display = 'none'"></span>
+                        <ul>
+                            <i class="fas fa-times exit_btn" onclick="document.getElementById('mainMenu').style.display = 'none'"></i>
+                            <li class="show_logged_in"><div id="profilePreview"></div></li>
+                            <br>
+                            <li class="show_logged_in"><div><input class = "voteSlider" type = "range" min = "1" max = "10000" value = "10000"><p class = "voteIndicator">100% upvotes</p></div></li>
+                            <li><a href="/">Browse discussions</a></li>
+                            <li class="show_logged_in"><a href="/html/create">Start discussion</a></li>
+                            <li class="show_logged_in"><a class="profileLink" href="/html/profile">My profile</a></li>
+                            <br>
+                            <li class="hide_logged_in"><a href = 'https://signup.steemit.com/?ref=debato'>Sign up</a></li>
+                            <li class="hide_logged_in"><a class = "SClink">Log in</a></li>
+                            <br class="hide_logged_in">
+                            <li><a href="/html/about">About</a></li>
+                            <li class="show_logged_in"><a onclick = "logout()">Log out</a></li>
+                        </ul>
+                    </nav>
+                    <a class="homelink blackLink" href="/index">DEBATO</a>
+                    <a id = "createAccount" class="blackLink hide_logged_in hide_on_mobile" href = 'https://signup.steemit.com/?ref=debato'>Sign up</a>
+                    <div id="accountBox" onclick="toggleMenu();" onmouseover="toggleMenu(true);" onmouseleave="toggleMenu(false);">
+                        <div id = "accountLogin"><a id ="SteemConnect" class="blackLink SClink">
+                            Log in
+                        </a></div>
+                        <div id="accountMenu">
+                            <div><input class = "voteSlider" type = "range" min = "1" max = "10000" value = "10000"><p class = "voteIndicator">100% upvotes</p></div>
+                            <a class="blackLink" href="/html/create">Start discussion</a>
+                            <a class="blackLink profileLink" href="/html/profile">My profile</a>
+                            <br>
+                            <a class="blackLink" href="/html/about">About</a>
+                            <a class="blackLink" onclick = "logout()">Log out</a>
+                        </div>
+                    </div>
+                </header>
+                <div class = "MainCard">
+                    <div class="tab">
+                        <button id = "Debato" class="tablinks" onclick="openTab(event, 'DebatoBox')">About Debato</button>                     
+                        <button id = "Steem" class="tablinks" onclick="openTab(event, 'SteemBox')">About Steem</button>
+                        <button id = "Support" class="tablinks" onclick="openTab(event, 'SupportBox')">Support us</button>                     
+                    </div> 
+                    <div id = "DebatoBox" class = "tabcontent">
+                        <h2>About Debato</h2>
+                        <button class="openItem" onclick="toggleNext(this)"><i class="far fa-question-circle"></i>
+                            &ensp; What is Debato?</button>
+                        <div class="infoItem">
+                            <p>Debato is a platform dat accomodates online debates. We all are passionate about certain
+                                topics, but on the internet it can happen that a difference in opinion leads to an endless shouting pit.
+                                By filtering out qualitative arguments and structuring them in sub-discussions we accomodate thoughtfull debate
+                                That are pleasant to interact width.
+                            </p>
+                            <p>
+                                Because Debato is built on the Steem blockchain framework there is no centralized authority
+                                determining what debates are published or that can limit you from speaking your mind.
+                                On top of that, posting arguments and discussions on Debato can even earn you money!
+                            </p>
+                        </div>
+                        <button class="openItem" onclick="toggleNext(this)"><i class="far fa-question-circle"></i>
+                            &ensp; Why should you use Debato?</button>
+                        <div class="infoItem">
+                            <p>
+                                You should definitly use Debato if you are tired of the internet shouting factory and wish to engage
+                                In respectfull discussions with others.
+                            </p>
+                            <p>
+                                Because debato is built on the Steem blockchain, an account on Debato is an account on this blockhain.
+                                So with that account you also have access to a variety of other apps built on Steem such as
+                                <a href="https://d.tube/">D.tube</a>, <a href="https://steepshot.io/">Steepshot</a>, <a href="https://busy.org/">Busy.org</a>
+                                and many more! You can browse Steem Apss <a href = "https://steemprojects.com/">here</a>.
+                            </p>
+                            <p>
+                                The Steem blockhain on which Debato is built contains a diverse community of users all around the world
+                                so you will surely encounter different perspectives, opinions and ideas to broaden your perspective.
+                                Before you know it you have built your own engaging network with people from different places and cultures!
+                            </p>
+                            <p>
+                                On top of all this, Debato is unique in that its users are able to earn tokens by being an active member
+                                that can be traded and sold online. Also you are able to reward good discussions and arguments of others.
+                            </p>
+                        </div>
+                        <button class="openItem" onclick="toggleNext(this)"><i class="far fa-question-circle"></i>
+                            &ensp; How are we different from other debate platforms?</button>
+                        <div class="infoItem">
+                            <p>
+                                Debato is centralized and does not control what topics can be discussed or what arguments are allowed.
+                                Everything that is posted is moderated and rated by the users themselves.
+                            </p>
+                            <p>
+                                We are the only active debate platform that is able to let users earn rewards from their statements and discussions.
+                            </p>
+                        </div>
+                        <button class="openItem" onclick="toggleNext(this)"><i class="far fa-question-circle"></i>
+                            &ensp; How do I make an account?</button>
+                        <div class="infoItem">
+                            <p>Because Debato is built on a blockchain techonolgy with no central governance, having free account creation would
+                                result in thousands of fake accounts and bots ruining the experience of honest users. To combat this there is a
+                                small account creation fee in order to get started. The company of SteemIt, the founder of the blockchain is willing
+                                to pay that fee if they can verify that you are a human. To create an account with one of these two options you can go
+                                <a href="https://signup.steemit.com/?ref=debato">here</a>.
+                            </p>
+                        </div>
+                        <button class="openItem" onclick="toggleNext(this)"><i class="far fa-question-circle"></i>
+                            &ensp; How do I earn money by posting?</button>
+                        <div class="infoItem">
+                            <p>
+                                Accounts have a certain amount of voting power which is determined by the funds held by that account (Steem Power).
+                                When a user upvotes your argument or discussion, his voting power will determine how much that upvote 'is worth'.
+                                After 7 days, all rewards from upvotes of your post will be rewarded to you and you can claim them on your profile page.
+                                When the 7 days are over, upvotes on your arguments or discussions no longer lead to rewards.
+                            </p>
+                            <p>
+                                Your rewards will be paid out in 'Steem', 'Steem Backed Dollars' and 'Steem Power' into your wallet.
+                                More information about what these do can be found in the wallet section of your profile page.
+                                When you claimed these rewards and they are in your wallet, you can choose to invest them into your account which increases
+                                your voting power and increases the worth of your upvotes. You can also choose to hold the tokens in your wallet or to
+                                cash out and sell the tokens for Euros, Dollars, or any other currency you like.
+                            </p>
+                        </div>
+                        <button class="openItem" onclick="toggleNext(this)"><i class="far fa-question-circle"></i>
+                            &ensp; How do I cash out my rewards?</button>
+                        <div class="infoItem">
+                            <p>
+                                Several online exchanges allow you to sell or buy Steem and SBD tokens. <a href = "https://steem.com/buying-steem-tokens/">At Steem.com</a>
+                                you can find more information on how to buy and sell Steem tokens.
+                            </p>
+                        </div>
+                        <button class="openItem" onclick="toggleNext(this)"><i class="far fa-question-circle"></i>
+                            &ensp; Are my posts on Debato permanent?</button>
+                        <div class="infoItem">
+                            <p>
+                                Yes, posts on a blockchain are permanent. It is possible to delete and edit posts but the original is by definition
+                                stored on the blockchain forever as well.
+                                </p>
+                        </div>
+                        <button class="openItem" onclick="toggleNext(this)"><i class="far fa-question-circle"></i>
+                            &ensp; Is posting, commenting and voting free?</button>
+                        <div class="infoItem">
+                            <p>
+                                Posting, commenting, voting and other transactions on the Steem blockchain are completely free!
+                                But in order to reduce spam or endless upvoting there are limitations.
+                                Performing transactions on the blockchain requires resource credits. (you can check your credits at <a href = steemd.com>steemd.com</a>)
+                                The more steem power an account has, the more it is seen as a trusted account and the more transactions you can perform. 
+                            </p>
+                            <p>
+                                Because upvotes are worth actual money, there is a system to avoid spamming here as well.
+                                Each time you place a vote, your voting power is reduced by 2% (unless you do not vote at 100%).
+                                So the next vote would only be worth 98% of what your first vote was worth. After voting 25 times your upvote
+                                is only worth 50% of what your original vote was worth! You have to be carefull and only upvote posts that really deserve the extra reward.
+                                The voting power regenerates at a rate of 20% per 24 hours.
+                            </p>
+                        </div>
+                        <button class="openItem" onclick="toggleNext(this)"><i class="far fa-question-circle"></i>
+                            &ensp; How do I get more rewards on my discussions and arguments?</button>
+                        <div class="infoItem">
+                            <p>
+                                The rewards you earn from discussions and arguments are directly related to the quality of that post.
+                                You will need to make sure your posts are accessible to a broad public, that you have a clear discussion statement
+                                and an ellaborate context section to inform people before engaging in the discussion. These are all factors that determine
+                                whether a user will upvote your post.
+                            </p>
+                            <p>
+                                If you want people to engage with your discussions and arguments, make sure that you engage with other arguments and discussions
+                                as well. Engaging with others is the best way to expand your network, make people follow you and to meet people with different or the same opinions.
+                            </p>
+                        </div>
+                        <p style="float: left; margin-top: 50px; font-weight: bold">Still have an unanswered question? Ask it in our Discord server!</p>
+                        <iframe src="https://discordapp.com/widget?id=538320184138530817&theme=light" width="100%" height="300"  allowtransparency="true" frameborder="0"></iframe>
+                    </div>
+                    <div id = "SteemBox" class = "tabcontent">
+                        <h2>About the Steem blockchain</h2>
+                        <button class="openItem" onclick="toggleNext(this)"><i class="far fa-question-circle"></i>
+                            &ensp; What is the Steem blockchain?</button>
+                        <div class="infoItem">
+                            <p>
+                                Steem is a blockchain, but not in the way Bitcoin is a blockchain for example. Both of these examples are created with a specific function in mind.
+                                While Bitcoin was a blockchain designed to store transaction data and allow for peer to peer transactions, Steem was designed to store content and
+                                facilitate social media like systems such as upvoting, sharing, building networks and creating communities.
+                                So while bitcoin has transactions as 'send X bitcoin from Y to Z', Steem has transactions such as 'Post this text as an article', 'upvote this blogpost', 'follow this user' etc.
+                                On top of that, Steem has a system of creating unique coins to incentivize content creation and engagement.
+                            </p>
+                        </div>
+                        <button class="openItem" onclick="toggleNext(this)"><i class="far fa-question-circle"></i>
+                            &ensp; Where do my rewards come from?</button>
+                        <div class="infoItem">
+                            <p>
+                                Every 3 seconds, a block is added to the blockchain that contains all transactions performed on the network.
+                                Each block also a certain amount of new tokens are created (called the reward pool) and distributed amongst the content creators.
+                                The amount of tokens created each block is being phased down to reduce inflation.
+                                The amount of rewards you receive depend on the amount of upvotes your post received in the last 7 days and how much Steem Power
+                                your upvoters hold.
+                            </p>
+                        </div>
+                        <button class="openItem" onclick="toggleNext(this)"><i class="far fa-question-circle"></i>
+                            &ensp; Why is my upvote worth so little?</button>
+                        <div class="infoItem">
+                            <p>
+                                The worth of your upvote is directly dependant from your Steem Power and your Voting Power.
+                                You can increase your Steem Power by 'powering up', which converts the Steem token into Steem Power.
+                                You can obtain Steem tokens and Steem Power as rewards from posts or you can buy the tokens at exchanges, or with Steem Backed Dollars.
+                                Powering down would mean converting Steem Power into liquid Steem tokens but powering down happens over multiple weeks.
+                            </p>
+                            <p>
+                                Your Voting Power decreases with 2% each time you upvote a post (unless you do not vote at 100%).
+                                When your first vote is worth 100% of your potential value, the next vote would only be worth 98% of that. After voting 25 times your upvote
+                                is only worth 50% of what your original vote was worth! You have to be carefull and only upvote posts that really deserve the extra reward.
+                                The voting power regenerates at a rate of 20% per 24 hours.
+                            </p>
+                        </div>
+                        <button class="openItem" onclick="toggleNext(this)"><i class="far fa-question-circle"></i>
+                            &ensp; How often can I vote?</button>
+                        <div class="infoItem">
+                            <p>
+                                You can vote as much as you want. But each time you place an upvote, your Voting Power decreases with 2%  (unless you do not vote at 100%).
+                                When your first vote is worth 100% of your potential value, the next vote would only be worth 98% of that. After voting 25 times your upvote
+                                is only worth 50% of what your original vote was worth! You have to be carefull and only upvote posts that really deserve the extra reward.
+                                The voting power regenerates at a rate of 20% per 24 hours.
+                            </p>
+                        </div>
+                        <button class="openItem" onclick="toggleNext(this)"><i class="far fa-question-circle"></i>
+                            &ensp; What is SteemConnect?</button>
+                        <div class="infoItem">
+                            <p>
+                                Passwords on Steem are long. And they should be. A password in the wrong hands could lead to you account being jeopardized.
+                                But giving your private keys each time you want to use an application built on the blockchain increases the risk of someone getting access to
+                                your account. To limit this, an open source, trusted application was created called SteemConnect. Steemconnect is a tool so that you can login
+                                on a trusted platform (SteemConnect) without the site having access to your private keys.
+                            </p>
+                            <p>
+                                When you login to Debato for example, in no way do we have access to your keys. When you log in with SteemConnect your browser gets a
+                                token that allows it to perform a limited number of operations for a limited amount of time.
+                            </p>
+
+                        </div>
+                        <p style="float: left; margin-top: 50px; font-weight: bold">Still have an unanswered question? Ask it in our Discord server!</p>
+                        <iframe src="https://discordapp.com/widget?id=538320184138530817&theme=light" width="100%" height="300"  allowtransparency="true" frameborder="0"></iframe>
+                    </div>
+                    <div id = "SupportBox" class = "tabcontent">
+                        <h2>Support Us</h2>
+                        <p>Coming soon!</p>
+                    </div>
+                </div>
+                <footer>
+                        <span>
+                            <p class = "head">DISCUSS</p>
+                            <p><a onclick=" if (user === '' || user === undefined){showError('You need to log in before creating a new discussion')}
+                                            else{window.location.href='/html/create'}">
+                            Create discussion</a></p>
+                            <p><a href = "/index">Browse discussions</a></p>
+                            <p><a class = "SClink hide_logged_in">Log in</a></p>
+                            <p><a  class="hide_logged_in" href = 'https://signup.steemit.com/?ref=debato'>Create account</a></p>
+                            <p><a class="show_logged_in" onclick = 'logout()'>Log out</a></p>
+                        </span>
+                        <span>
+                            <p class = "head">DEBATO</p>
+                            <p><a href = "/html/about?t=Debato">About Debato</a></p>
+                            <p><a href = "/html/about?t=Steem">About Steem</a></p>
+                            <p><a href = "/html/about?t=Support">Support us</a></p>
+                            <p><a href = "https://twitter.com/debato_org">News</a></p>
+                        </span>
+                        <span>
+                            <p class = "head">LEARN (coming soon)</p>
+                            <p><a>How to use Debato</a></p>
+                            <p><a>Steem blockchain</a></p>
+        
+                        </span>
+                        <span>
+                            <p class = "head">CONNECT</p>
+                            <p><a style="font-size:1.2em;" href = "https://twitter.com/debato_org" target="_blank"><i class="fab fa-twitter-square"></i> Twitter</a></p>
+                            <p><a style="font-size:1.2em;" href = "https://discordapp.com/invite/YF3DAT" target="_blank"><i class="fab fa-discord"></i> Discord</a></p>
+                            <p><a style="font-size:1.2em;" href = "https://github.com/samvanemelen/debato" target="_blank"><i class="fab fa-github"></i> Github</a></p>
+                        </span>
+                    </footer>         
+        </center>
+        <div id="errorbox" class = "popupbox">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <p class="boxcontent">error</p>
+            <div class="timeBar"></div>
+        </div>
+        <div id="warningbox" class = "popupbox">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <p class="boxcontent">warning</p>
+            <div class="timeBar"></div>
+        </div>
+        <div id="successbox" class = "popupbox">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <p class="boxcontent">warning</p>
+            <div class="timeBar"></div>
+        </div>                   
+    </body>     
+</html> 
+<script src="https://cdn.jsdelivr.net/npm/steemconnect@latest"></script> 
+<script src="https://cdn.steemjs.com/lib/latest/steem.min.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/showdown@latest/dist/showdown.min.js"></script>
+<script src="/js/commons.js"></script>
+<script src="/js/about.js"></script>

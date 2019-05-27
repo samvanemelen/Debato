@@ -12,7 +12,7 @@
         "expiresIn": true,
         "weight": true,
         "steem": true,
-        "sc2": true,
+        "steemconnect": true,
         "activePost": true,
         "URLvars": true
     }
