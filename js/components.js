@@ -25,7 +25,7 @@ function createArgumentCard(values) {
   }
   line += `<div class="argumentCard"  id = de-${commentElement.permlink}><div style="display: flex;justify-content: space-between">`;
   line += '<span style=" line-height:100%; padding:5px;margin:auto 0 auto 0;"><center>';
-  line += `<div class='voteCounter'>${values.net_votes}`;
+  line += `<div class='voteCounter moreInfo'>${values.net_votes}`;
   if (values.net_votes > 0) {
     line += '<span class="voterList">';
     for (let i = 0; i < values.net_votes; i += 1) {

@@ -40,14 +40,6 @@ function openProfileTab(evt, tabName) {
   event.currentTarget.className += ' active';
   activeTab = tabName;
 }
-function showInfo(element) {
-  const infoBox = element.firstElementChild;
-  if (infoBox.style.display === 'none') {
-    infoBox.style.display = 'block';
-  } else {
-    infoBox.style.display = 'none';
-  }
-}
 function openTransfer() {
   /*
   This function will open a pop up window in which the user can transfer funds
