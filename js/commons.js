@@ -724,12 +724,15 @@ function writeDiscussionContent(author, perm) {
   steem.api.getContent(author, perm, (err, post) => {
     if (err) { showError(`Something went wrong. ${err.toString()}`); return; }
     activePost = post;
-    getRootImage(activePost).then((rootimage) => { document.getElementsByClassName('thumbnail')[0].style.backgroundImage = `url(${rootimage})`; });
+    let RI;
+    getRootImage(activePost).then((rootimage) => { RI = rootimage; document.getElementsByClassName('thumbnail')[0].style.backgroundImage = `url(${rootimage})`; });
     getPostArguments(author, perm).then((ArgDict) => {
       const info = getPostData(post);
       document.title = `Debato - ${info.title}`;
-      const metaList = document.getElementsByTagName('meta');
-      metaList[0].setAttribute('content', info.description);
+      document.getElementsByTagName('meta')['twitter:title'].content = info.title;
+      document.getElementsByTagName('meta')['twitter:description'].content = info.description;
+      document.getElementsByTagName('meta')['twitter:image'].content = RI;
+      document.getElementsByTagName('meta').description.content = info.description;
       const discussionBody = document.getElementById('discussionBody');
       body += `<h1 style ="display: inline-block"><i id="upvoteButton" class="fas fa-chevron-circle-up"></i> ${info.title}`;
       if (info.author === user) {
