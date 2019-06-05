@@ -66,12 +66,7 @@ function Transfer(recipient, amount, memo, currency) {
   */
   document.getElementById('TransactionFade').style.display = 'none';
   document.getElementById('TransferBox').style.display = 'none';
-  const url = api.sign('transfer', {
-    from: user,
-    to: recipient.replace('@', ''),
-    amount: `${amount} ${currency}`,
-    memo,
-  }, window.href);
+  const url = `https://app.steemconnect.com/sign/transfer?from=${user}&to=${recipient.replace('@', '')}&amount=${amount}%20${currency}&memo=${memo}`;
   const win = window.open(url, '_blank');
   win.focus();
 }
@@ -97,11 +92,7 @@ function powerup(amount) {
   */
   document.getElementById('TransactionFade').style.display = 'none';
   document.getElementById('powerupBox').style.display = 'none';
-  const url = api.sign('transfer-to-vesting', {
-    from: user,
-    to: user,
-    amount: `${amount} STEEM`,
-  }, window.href);
+  const url = `https://app.steemconnect.com/sign/transfer-to-vesting?from=${user}&to=${user}&amount=${amount}%20steem`;
   const win = window.open(url, '_blank');
   win.focus();
 }
@@ -129,10 +120,7 @@ function powerdown(amount) {
   document.getElementById('TransactionFade').style.display = 'none';
   document.getElementById('powerdownBox').style.display = 'none';
   const vests = amount / totalSteem * totalVests;
-  const url = api.sign('withdraw-vesting', {
-    to: user,
-    vesting_shares: `${vests} VESTS`,
-  }, window.href);
+  const url = `https://app.steemconnect.com/sign/withdraw-vesting?account=${user}&vesting_shares=${amount}%20steem`;
   const win = window.open(url, '_blank');
   win.focus();
 }
@@ -159,12 +147,7 @@ function delegate(amount) {
   */
   document.getElementById('TransactionFade').style.display = 'none';
   document.getElementById('delegateBox').style.display = 'none';
-  const vests = amount / totalSteem * totalVests;
-  const url = api.sign('delegate-vesting-shares', {
-    delegator: user,
-    delegatee: viewingUser,
-    vesting_shares: `${vests.toFixed(3)} VESTS`,
-  }, window.href);
+  const url = `https://app.steemconnect.com/sign/delegate-vesting-shares?delegator=${user}&delegatee=${viewingUser}&vesting_shares=${amount}%20SP`;
   const win = window.open(url, '_blank');
   win.focus();
 }
@@ -191,11 +174,8 @@ function removedelegation(amount) {
   document.getElementById('TransactionFade').style.display = 'none';
   document.getElementById('delegateBox').style.display = 'none';
   const vests = amount / totalSteem * totalVests;
-  const url = api.sign('delegate-vesting-shares', {
-    delegator: user,
-    delegatee: viewingUser,
-    vesting_shares: '0 VESTS',
-  }, window.href);
+  const url = `https://app.steemconnect.com/sign/delegate-vesting-shares?delegator=${user}&delegatee=${viewingUser}&vesting_shares=0%20SP`;
+
   const win = window.open(url, '_blank');
   win.focus();
 }
