@@ -731,7 +731,7 @@ function writeDiscussionContent(author, perm) {
       document.title = `Debato - ${info.title}`;
       document.getElementsByTagName('meta')['twitter:title'].content = info.title;
       document.getElementsByTagName('meta')['twitter:description'].content = info.description;
-      document.getElementsByTagName('meta')['twitter:image'].content = RI;
+      document.getElementsByTagName('meta')['twitter:image:src'].content = RI;
       document.getElementsByTagName('meta').description.content = info.description;
       const discussionBody = document.getElementById('discussionBody');
       body += `<h1 style ="display: inline-block"><i id="upvoteButton" class="fas fa-chevron-circle-up"></i> ${info.title}`;
