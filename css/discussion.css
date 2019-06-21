@@ -124,6 +124,8 @@
 }
 
 .voteCounter .voterList {
+  display: none;
+  position: absolute;
   min-width: 150px;
   text-align: left;
   padding: 0 10px;
@@ -132,10 +134,11 @@
   font-weight: 200;
   border-radius: 3px;
   top: 100%;
+  z-index: 10;
 }
 
 .voteCounter:hover .voterList {
-  visibility: visible;
+  display: block;
 }
 
 .relevantButton.rotate {

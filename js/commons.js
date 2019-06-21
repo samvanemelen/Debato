@@ -49,6 +49,7 @@ if ('access_token' in URLvars) {
   document.cookie = `username=${user};expires=${expiresOn}; path=/;`;
   document.cookie = `accessToken=${accessToken};expires=${expiresOn}; path=/;`;
   document.cookie = `weight=${weightSlider.value}; path=/;`;
+  window.location.href = '/';
 }
 function updateLoginStatus() {
   /*
