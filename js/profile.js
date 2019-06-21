@@ -278,7 +278,12 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
     simpleReputation = 25;
   }
   let votingPower = 100;
-  if (profileUser.voting_power !== 0) { votingPower = profileUser.voting_power / 100; }
+  if (profileUser.voting_power !== 0) {
+    const lastVoteAge = (new Date() - new Date(`${profileUser.last_vote_time}Z`)) / 1000; // In seconds
+    votingPower = profileUser.voting_power + (10000 * lastVoteAge / 432000);
+    votingPower = Math.min(votingPower / 100, 100).toFixed(2);
+  }
+  console.log(profileUser);
   let about;
   try {
     // eslint-disable-next-line prefer-destructuring
