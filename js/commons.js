@@ -1,11 +1,13 @@
 /* eslint-disable no-unused-vars */
-/* global createCommentBox createArgumentCard createCommentCard :true */
+/* global createCommentBox createArgumentCard createCommentCard header footer:true */
+
+document.getElementsByTagName('header')[0].innerHTML = header();
+document.getElementsByTagName('footer')[0].innerHTML = footer();
 
 user = ''; accessToken = ''; expiresIn = ''; weight = 10000;
 const weightSlider1 = document.getElementsByClassName('voteSlider')[0];
 const weightSlider2 = document.getElementsByClassName('voteSlider')[1];
 const converter = new showdown.Converter({ simplifiedAutoLink: true });
-
 /*
 Updating the position of the sliders that determine the voting percentage
 There are two sliders on the page, one for desktop users, and one in the
