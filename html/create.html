@@ -31,18 +31,18 @@
             <div class="discussionForm">
                 <h2 style="padding-bottom: 20;">Discussion details</h2>
                 <p>Brief discussion statement (title)</p>
-                <input id="discussionTitle">
+                <input id="discussionTitle" oninput="updateCardPreview()">
                 <p>Optionally further ellaborate on the statement with context, background information, relevance etc.</p>
                 <textarea id="discussionContext" oninput="updateTextPreview(this)"></textarea>
                 <div class = "previewElement"></div>
                 <p>Cover image URL</p>
-                <input id="coverImage" onchange="document.getElementById('coverPreview').src = this.value">
-                <div id = "coverPlaceholder">
-                    <img id = "coverPreview">
-                </div>
+                <input id="coverImage" oninput="updateCardPreview()">
                 <p>Tags to find the discussion</p>
                 <input id="discussionTags">
                 <p id="tagWarning">Your tags should be separated by spaces and consist only out of lowercase letters</p>
+                <p style="font-size: 1.1em; margin: 2em;">Preview of your discussion card.
+                    If the image does not change or is blank, there is an issue with the Cover image URL.</p>
+                <span id= "cardPreview"></span>
                 <button id="publishBtn" onclick="publish()">Publish</button>
             </div>
             <footer>

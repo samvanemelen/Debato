@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 /* eslint-disable no-unused-vars */
 /* global createCommentBox createArgumentCard createCommentCard header footer:true */
 
@@ -224,8 +225,8 @@ function timeSince(UTCstring) {
   on the age. (at least 2 of the longer time unit to switch to that unit)
   */
   const now = new Date();
-  const nowUCT = now.getTime() + (now.getTimezoneOffset() * 60000); // Convert current date to UCT
-  const AgeSeconds = Math.floor((nowUCT - new Date(UTCstring)) / 1000);
+  const nowUTC = now.getTime() + (now.getTimezoneOffset() * 60000); // Convert current date to UCT
+  const AgeSeconds = Math.floor((nowUTC - new Date(UTCstring)) / 1000);
   let interval = Math.floor(AgeSeconds / 31536000);
   if (interval > 1) {
     return `${interval} years`;
@@ -488,15 +489,22 @@ function getPostData(postobj) {
   Get modified data of a post for later use
   (thumbnail, author, title, description, rewards, permlink)
   */
+  const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+  const regex = new RegExp(expression);
+
   let thumbnail;
   let description = '';
   let tags = [];
+  console.log(postobj)
   if (postobj.json_metadata) {
     const postJSON = JSON.parse(postobj.json_metadata);
     // eslint-disable-next-line prefer-destructuring
     if ('tags' in postJSON) { tags = postJSON.tags; }
-    // eslint-disable-next-line prefer-destructuring
-    if ('image' in postJSON) { thumbnail = postJSON.image[0]; } else { thumbnail = false; }
+    thumbnail = false;
+    if ('image' in postJSON) {
+      // eslint-disable-next-line prefer-destructuring
+      if (postJSON.image[0].match(regex)) { thumbnail = postJSON.image[0]; }
+    }
     description = JSON.parse(postobj.json_metadata).context;
     if (description === undefined) { description = ''; }
   }

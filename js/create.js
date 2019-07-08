@@ -1,4 +1,5 @@
-/* global getUrlVars getPostData showWarning parseHtml showError:true */
+/* eslint-disable no-unused-vars */
+/* global getUrlVars getPostData showWarning parseHtml showError createDiscussionCard:true */
 let perm = '';
 /*
 If a permlink is present in the URL it should set up the page for editing a post
@@ -29,7 +30,6 @@ document.getElementById('discussionTags').addEventListener('input', (event) => {
   document.getElementById('tagWarning').style.display = 'none';
 });
 
-// eslint-disable-next-line no-unused-vars
 function publish() {
   if (user === '' || user === undefined) {
     // eslint-disable-next-line no-alert
@@ -113,3 +113,21 @@ function publish() {
     }
   });
 }
+function updateCardPreview() {
+  const now = new Date();
+  const nowUTC = new Date(now.getTime() + (now.getTimezoneOffset() * 60000));
+  let title = document.getElementById('discussionTitle').value;
+  if (title === '') { title = 'Here comes your title'; }
+  const progress = {
+    permlink: '#',
+    author: user,
+    pending_payout_value: '0.000 SBD',
+    title,
+    created: nowUTC.toUTCString(),
+    json_metadata: `{"image":["${document.getElementById('coverImage').value}"]}`,
+    children: 0,
+  };
+  document.getElementById('cardPreview').innerHTML = createDiscussionCard(progress);
+  document.getElementById('cardPreview').getElementsByClassName('ObjLink')[0].onclick = '';
+}
+updateCardPreview();

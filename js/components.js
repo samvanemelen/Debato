@@ -59,7 +59,13 @@ function createArgumentCard(values) {
 }
 function createDiscussionCard(post) {
   /*
-  The post variable is a default post object as returned from the steemJS api
+  The post variable is a default post object as returned from the steemJS api with at least:
+    json_metadata (with image)
+    author
+    title
+    pending_payout_value
+    permlink
+    created
   */
   let body = '';
   const details = getPostData(post);
