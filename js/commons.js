@@ -495,7 +495,6 @@ function getPostData(postobj) {
   let thumbnail;
   let description = '';
   let tags = [];
-  console.log(postobj)
   if (postobj.json_metadata) {
     const postJSON = JSON.parse(postobj.json_metadata);
     // eslint-disable-next-line prefer-destructuring
@@ -745,7 +744,7 @@ function writeDiscussionContent(author, perm) {
       document.getElementsByTagName('meta')['twitter:image:src'].content = RI;
       document.getElementsByTagName('meta').description.content = info.description;
       const discussionBody = document.getElementById('discussionBody');
-      body += `<h1 style ="display: inline-block"><i id="upvoteButton" class="fas fa-chevron-circle-up"></i> ${info.title}`;
+      body += `<h1 style ="display: inline-block; margin-top: 5px;"><i id="upvoteButton" class="fas fa-chevron-circle-up"></i> ${info.title}`;
       if (info.author === user) {
         body += ` <i id="more-${activePost.permlink}" class="far fa-caret-square-down moreIcon" style="font-size:0.7em;">`;
         body += `<ul style="font-size:0.6em;"><li><a class = "editlink" href='/html/create?p=${activePost.permlink}'>edit</a></li></ul>`;
@@ -764,7 +763,7 @@ function writeDiscussionContent(author, perm) {
       body += '<div id = "backPlaceholder"></div>'; // placeholder for back button
       body += `<p><strong>By: <a href="/html/profile?u=${info.author}">${info.author}</a></strong> - ${info.reward}</p>`;
       const parsedContext = converter.makeHtml(parseHtml(info.description));
-      body += `<div>${parsedContext}</div>`;
+      body += `<div style="padding: 0.5em; background-color: #fafafa">${parsedContext}</div>`;
       body += '<div class="comment-card"></div>';
       body += '<div class="argumentRow"><div class="pro argumentColumn""><center>PRO</center>';
       body += '</div><div class="con argumentColumn"><center>CON</center>';

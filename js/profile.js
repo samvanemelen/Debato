@@ -283,7 +283,7 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
     votingPower = profileUser.voting_power + (10000 * lastVoteAge / 432000);
     votingPower = Math.min(votingPower / 100, 100).toFixed(2);
   }
-  console.log(profileUser);
+
   let about;
   try {
     // eslint-disable-next-line prefer-destructuring

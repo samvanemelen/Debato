@@ -66,6 +66,7 @@ function createDiscussionCard(post) {
     pending_payout_value
     permlink
     created
+    children
   */
   let body = '';
   const details = getPostData(post);
@@ -278,7 +279,7 @@ function footer() {
   <span>
     <p class = "head">CONNECT</p>
     <p><a style="font-size:1.2em;" href = "https://twitter.com/debato_org" target="_blank"><i class="fab fa-twitter-square"></i> Twitter</a></p>
-    <p><a style="font-size:1.2em;" href = "https://discordapp.com/invite/YF3DAT" target="_blank"><i class="fab fa-discord"></i> Discord</a></p>
+    <p><a style="font-size:1.2em;" href = "https://discordapp.com/invite/VRpwMD9" target="_blank"><i class="fab fa-discord"></i> Discord</a></p>
     <p><a style="font-size:1.2em;" href = "https://github.com/samvanemelen/debato" target="_blank"><i class="fab fa-github"></i> Github</a></p>
   </span>`;
 }
