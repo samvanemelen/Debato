@@ -217,69 +217,69 @@ function createProfileArgumentCard(values) {
   </div>`;
 }
 function header() {
-  return `<i class="fas fa-bars mobile_menu" onclick="document.getElementById('mainMenu').style.display = 'block'"></i>${''}\
-    <nav id="mainMenu">\
-    <span id="fade"  onclick="document.getElementById('mainMenu').style.display = 'none'"></span>\
-    <ul>\
-        <i class="fas fa-times exit_btn" onclick="document.getElementById('mainMenu').style.display = 'none'"></i>\
-        <li class="show_logged_in"><div id="profilePreview"></div></li>\
-        <br>\
-        <li class="show_logged_in"><div><input class = "voteSlider" type = "range" min = "1" max = "10000" value = "10000"><p class = "voteIndicator">100% upvotes</p></div></li>\
-        <li><a href="/">Browse discussions</a></li>\
-        <li class="show_logged_in"><a href="/html/create">Start discussion</a></li>\
-        <li class="show_logged_in"><a class="profileLink" href="/html/profile">My profile</a></li>\
-        <br>\
-        <li class="hide_logged_in"><a href = 'https://signup.steemit.com/?ref=debato'>Sign up</a></li>\
-        <li class="hide_logged_in"><a class = "SClink">Log in</a></li>\
-        <br class="hide_logged_in">\
-        <li><a href="/html/about">About</a></li>\
-      <li class="show_logged_in"><a onclick = "logout()">Log out</a></li>\
-    </ul>\
-  </nav\
-  ><a class="homelink blackLink" href="/index">DEBATO <p style="display: inline-block; margin: 0; margin-left: 0.5em; font-size: 0.45em; font-weight: 100;">BETA</p></a>\
-  <a id = "createAccount" class="blackLink hide_logged_in hide_on_mobile" href = 'https://signup.steemit.com/?ref=debato'>Sign up</a>\
-  <div id="accountBox" onclick="toggleMenu();" onmouseover="toggleMenu(true);" onmouseleave="toggleMenu(false);">\
-    <div id = "accountLogin"><a id ="SteemConnect" class="blackLink SClink">\
-        Log in\
-    </a></div>\
-    <div id="accountMenu">\
-        <div><input class = "voteSlider" type = "range" min = "1" max = "10000" value = "10000"><p class = "voteIndicator">100% upvotes</p></div>\
-        <a class="blackLink" href="/html/create">Start discussion</a>\
-        <a class="blackLink profileLink" href="/html/profile">My profile</a>\
-        <br>\
-        <a class="blackLink" href="/html/about">About</a>\
-        <a class="blackLink" onclick = "logout()">Log out</a>\
-    </div>\
+  return `<i class="fas fa-bars mobile_menu" onclick="document.getElementById('mainMenu').style.display = 'block'"></i>
+    <nav id="mainMenu">
+    <span id="fade"  onclick="document.getElementById('mainMenu').style.display = 'none'"></span>
+    <ul>
+        <i class="fas fa-times exit_btn" onclick="document.getElementById('mainMenu').style.display = 'none'"></i>
+        <li class="show_logged_in"><div id="profilePreview"></div></li>
+        <br>
+        <li class="show_logged_in"><div><input class = "voteSlider" type = "range" min = "1" max = "10000" value = "10000"><p class = "voteIndicator">100% upvotes</p></div></li>
+        <li><a href="/">Browse discussions</a></li>
+        <li class="show_logged_in"><a href="/html/create">Start discussion</a></li>
+        <li class="show_logged_in"><a class="profileLink" href="/html/profile">My profile</a></li>
+        <br>
+        <li class="hide_logged_in"><a href = 'https://signup.steemit.com/?ref=debato'>Sign up</a></li>
+        <li class="hide_logged_in"><a class = "SClink">Log in</a></li>
+        <br class="hide_logged_in">
+        <li><a href="/html/about">About</a></li>
+      <li class="show_logged_in"><a onclick = "logout()">Log out</a></li>
+    </ul>
+  </nav
+  ><a class="homelink blackLink" href="/index">DEBATO <p style="display: inline-block; margin: 0; margin-left: 0.5em; font-size: 0.45em; font-weight: 100;">BETA</p></a>
+  <a id = "createAccount" class="blackLink hide_logged_in hide_on_mobile" href = 'https://signup.steemit.com/?ref=debato'>Sign up</a>
+  <div id="accountBox" onclick="toggleMenu();" onmouseover="toggleMenu(true);" onmouseleave="toggleMenu(false);">
+    <div id = "accountLogin"><a id ="SteemConnect" class="blackLink SClink">
+        Log in
+    </a></div>
+    <div id="accountMenu">
+        <div><input class = "voteSlider" type = "range" min = "1" max = "10000" value = "10000"><p class = "voteIndicator">100% upvotes</p></div>
+        <a class="blackLink" href="/html/create">Start discussion</a>
+        <a class="blackLink profileLink" href="/html/profile">My profile</a>
+        <br>
+        <a class="blackLink" href="/html/about">About</a>
+        <a class="blackLink" onclick = "logout()">Log out</a>
+    </div>
   </div>`;
 }
 function footer() {
-  return `<span>${''}\
-    <p class = "head">DISCUSS</p>\
-    <p><a onclick=" if (user === '' || user === undefined){showError('You need to log in before creating a new discussion')}\
-                    else{window.location.href='/html/create'}">\
-    Create discussion</a></p>\
-    <p><a href = "/index">Browse discussions</a></p>\
-    <p><a class = "SClink hide_logged_in">Log in</a></p>\
-    <p><a  class="hide_logged_in" href = 'https://signup.steemit.com/?ref=debato'>Create account</a></p>\
-    <p><a class="show_logged_in" onclick = 'logout()'>Log out</a></p>\
-  </span>\
-  <span>\
-    <p class = "head">DEBATO</p>\
-    <p><a href = "/html/about?t=Debato">About Debato</a></p>\
-    <p><a href = "/html/about?t=Steem">About Steem</a></p>\
-    <p><a href = "/html/about?t=Support">Support us</a></p>\
-    <p><a href = "https://twitter.com/debato_org">News</a></p>\
-  </span>\
-  <span>\
-    <p class = "head">LEARN (coming soon)</p>\
-    <p><a>How to use Debato</a></p>\
-    <p><a>Steem blockchain</a></p>\
-    \
-  </span>\
-  <span>\
-    <p class = "head">CONNECT</p>\
-    <p><a style="font-size:1.2em;" href = "https://twitter.com/debato_org" target="_blank"><i class="fab fa-twitter-square"></i> Twitter</a></p>\
-    <p><a style="font-size:1.2em;" href = "https://discordapp.com/invite/VRpwMD9" target="_blank"><i class="fab fa-discord"></i> Discord</a></p>\
-    <p><a style="font-size:1.2em;" href = "https://github.com/samvanemelen/debato" target="_blank"><i class="fab fa-github"></i> Github</a></p>\
+  return `<span>
+    <p class = "head">DISCUSS</p>
+    <p><a onclick=" if (user === '' || user === undefined){showError('You need to log in before creating a new discussion')}
+                    else{window.location.href='/html/create'}">
+    Create discussion</a></p>
+    <p><a href = "/index">Browse discussions</a></p>
+    <p><a class = "SClink hide_logged_in">Log in</a></p>
+    <p><a  class="hide_logged_in" href = 'https://signup.steemit.com/?ref=debato'>Create account</a></p>
+    <p><a class="show_logged_in" onclick = 'logout()'>Log out</a></p>
+  </span>
+  <span>
+    <p class = "head">DEBATO</p>
+    <p><a href = "/html/about?t=Debato">About Debato</a></p>
+    <p><a href = "/html/about?t=Steem">About Steem</a></p>
+    <p><a href = "/html/about?t=Support">Support us</a></p>
+    <p><a href = "https://twitter.com/debato_org">News</a></p>
+  </span>
+  <span>
+    <p class = "head">LEARN (coming soon)</p>
+    <p><a>How to use Debato</a></p>
+    <p><a>Steem blockchain</a></p>
+
+  </span>
+  <span>
+    <p class = "head">CONNECT</p>
+    <p><a style="font-size:1.2em;" href = "https://twitter.com/debato_org" target="_blank"><i class="fab fa-twitter-square"></i> Twitter</a></p>
+    <p><a style="font-size:1.2em;" href = "https://discordapp.com/invite/VRpwMD9" target="_blank"><i class="fab fa-discord"></i> Discord</a></p>
+    <p><a style="font-size:1.2em;" href = "https://github.com/samvanemelen/debato" target="_blank"><i class="fab fa-github"></i> Github</a></p>
   </span>`;
 }

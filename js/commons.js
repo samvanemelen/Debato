@@ -730,7 +730,7 @@ function writeDiscussionContent(author, perm) {
   be regarded as a completely new discussion, otherwise just update
   the current discussed topic, add back button and leave the thumbnail
   */
-  let body = '';
+  let body = '<p style="margin: 2em 0 0; opacity: 0.5;">You are currently debating the following argument:</p>';
   steem.api.getContent(author, perm, (err, post) => {
     if (err) { showError(`Something went wrong. ${err.toString()}`); return; }
     activePost = post;
