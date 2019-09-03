@@ -5,10 +5,10 @@
     font-size: 18px;
     border: none;
     outline: none;
-    background-color: #d3d3d3;
+    background-color: var(--grey);
   }
   #publishBtn:hover {
-    background-color: #eeeeee;
+    background-color: var(--light-grey);
     cursor: pointer;
   }
   #coverPlaceholder {
@@ -33,7 +33,7 @@
     background-color: white;
     padding: 15px;
     margin: 20px;
-    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 10px 0 var(--light-shadow);
   }
   #tagWarning {
     display: none;

@@ -14,7 +14,7 @@
   justify-content: flex-start;
   box-sizing: border-box;
   background-color: white;
-  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 10px 0 var(--light-shadow);
   border-style: solid;
   border-width: thin;
   float: left;
@@ -80,7 +80,7 @@
 .collapsibleButton {
   padding: 8px;
   margin: 5px;
-  background-color: #ddd;
+  background-color: var(--light-grey);
   cursor: pointer;
   width: 60%;
   border: none;
@@ -88,11 +88,11 @@
 }
 
 .collapsible:hover {
-  background-color: #ccc;
+  background-color: var(--grey);
 }
 
 .relevantButton {
-  color: #ccc;
+  color: var(--grey);
 }
 
 .relevantButton:hover {
@@ -129,7 +129,7 @@
   text-align: left;
   padding: 0 10px;
   background-color: rgb(43, 43, 43);
-  color: #fff;
+  color: white;
   font-weight: 200;
   border-radius: 3px;
   top: 100%;
@@ -147,7 +147,7 @@
 }
 
 #upvoteButton {
-  color: #ccc;
+  color: var(--grey);
 }
 
 #upvoteButton:hover {
@@ -162,7 +162,7 @@
 }
 
 #upvoteButton.rotate:hover {
-  color: #ccc;
+  color: var(--grey);
 }
 
 #upvoteButton.activated {
@@ -174,7 +174,7 @@
 }
 
 .backButton {
-  background-color: #ddd;
+  background-color: var(--light-grey);
   border: none;
   outline: none;
   cursor: pointer;
@@ -184,7 +184,7 @@
 }
 
 .backButton:hover {
-  background-color: #ccc;
+  background-color: var(--grey);
 }
 
 #blackBackGround {

@@ -5,7 +5,7 @@ getCommentStatus createDiscussionCard :true */
 let activeTab = '';
 let activeTag = '';
 const taglist = ['sport', 'politics', 'science', 'ethics']; // Suggested tags to show on the home page
-const PostPerLoad = 20;
+const PostPerLoad = 10;
 const currentURL = window.location.href;
 
 if (user !== '' && user !== undefined) {
@@ -102,6 +102,7 @@ function loadDiscussions(tab, shownAmount = PostPerLoad, previous = 0, tag = '')
   switch (tab) {
     case 'New':
       steem.api.getDiscussionsByCreated({ limit: shownAmount + 1, tag: 'debato-discussion' }, (err, posts) => {
+        console.log(posts)
         let postlist = [];
         if (activeTag !== '') { postlist = filterPosts(posts, activeTag); } else { postlist = posts; }
         writeDiscussionList(postlist, shownAmount, previous);

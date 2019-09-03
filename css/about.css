@@ -3,7 +3,7 @@
   background-color: white;
   padding: 15px;
   margin: 20px;
-  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 10px 0 var(--light-shadow);
 }
 .infoItem{
   display: none;
@@ -12,8 +12,8 @@
 }
 .openItem{
   font-size: 1em;
-  background-color: rgb(243, 243, 243);
-  border: 1px solid rgb(173, 172, 172);;
+  background-color: var(--light-grey);
+  border: 1px solid var(--grey);
   outline: none;
   cursor: pointer;
   text-align: left;
@@ -23,10 +23,10 @@
   width: 100%;
 }
 .openItem:hover {
-  background-color: #ddd;
+  background-color: var(--light-grey);
 }
 .openItem.active {
-  background-color: #ccc;
+  background-color: var(--grey);
 }
 @media screen and (max-width: 600px) {
   .MainCard {

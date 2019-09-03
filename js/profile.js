@@ -266,17 +266,8 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
   } catch (err) {
     profileImage = '/imgs/placeholder_complex.svg';
   }
-  const rawReputation = profileUser.reputation;
-  let simpleReputation = 0;
-  /*
-  A raw reputation score of 0 would give negative infinity in the conventional formula
-  to calculate reputation score.
-  */
-  if (rawReputation !== 0) {
-    simpleReputation = (Math.log10(rawReputation) - 9) * 9 + 25;
-  } else {
-    simpleReputation = 25;
-  }
+  const reputation = steem.formatter.reputation(profileUser.reputation);
+
   let votingPower = 100;
   if (profileUser.voting_power !== 0) {
     const lastVoteAge = (new Date() - new Date(`${profileUser.last_vote_time}Z`)) / 1000; // In seconds
@@ -296,7 +287,7 @@ steem.api.getAccounts([profileUsername, user], (error, account) => {
   viewingUser = profileUser.name;
   document.getElementById('profileUsername').innerHTML = profileUser.name;
   document.getElementById('profileImageLarge').style.backgroundImage = `url(${profileImage})`;
-  document.getElementById('profileReputation').innerHTML = simpleReputation.toFixed(2);
+  document.getElementById('profileReputation').innerHTML = reputation.toFixed(2);
   document.getElementById('votePowerBar').style.width = `calc(${votingPower}% - 0.5em)`;
   document.getElementById('votePowerBar').innerHTML = `${votingPower}%`;
   document.getElementById('activeFor').innerHTML = `Active for ${timeSince(profileUser.created)}`;

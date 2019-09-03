@@ -1,3 +1,18 @@
+
+:root {
+  --debato-green: #005551;
+  --debato-bright-green: #00726c;
+  --debato-bright-hover: #00968e;
+
+  --dark-white: rgb(250, 250, 250);
+  --light-grey: #ddd;
+  --grey: #ccc;
+  --dark-grey: ;
+
+  --light-shadow: rgba(0, 0, 0, 0.15);
+  --shadow: rgba(0, 0, 0, 0.25);
+  --dark-shadow: rgba(0, 0, 0, 0.5);
+}
 * {
   font-family: Aleo;
 }
@@ -10,7 +25,7 @@ footer {
   justify-content: space-around;
   flex-wrap: wrap;
   width: 90%;
-  background-color: #015e59;
+  background-color: var(--debato-green);
   color: white;
   text-align: left;
   padding: 5px;
@@ -33,11 +48,11 @@ footer .head{
   font-size: 1.2em;
 }
 a {
-  color: #005551;
+  color: var(--debato-bright-green);
   text-decoration: underline;
 }
 a:hover {
-  color: #3b9954;
+  color: var(--debato-bright-hover);
   cursor: pointer;
 }
 .blackLink{
@@ -59,7 +74,7 @@ textarea {
 .previewElement {
   text-align: left;
   margin: 20px 0;
-  background-color: #f5f5f5;
+  background-color: var(--light-grey);
   padding: 20px 10px;
 }
 header {
@@ -75,7 +90,7 @@ header {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--dark-shadow);
   z-index: 5;
 }
 nav {
@@ -117,9 +132,6 @@ nav ul li a {
   margin: -1em 1.2em 1em 1.2em;
   cursor: pointer;
 }
-.moreIcon {
-  color: rgb(83, 83, 83);
-}
 .moreInfo:hover span {
   display: block
 }
@@ -131,7 +143,7 @@ nav ul li a {
   margin: 5px 0;
   padding: 5px 15px;
   z-index: 1;
-  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.35);
+  box-shadow: 0 2px 10px 0 var(--shadow);
 }
 .moreIcon:hover {
   scale: 1.2;
@@ -144,7 +156,7 @@ nav ul li a {
   padding-inline-start: 0;
   list-style-type: none;
   background-color: white;
-  border: 1px solid rgb(209, 209, 209);
+  border: 1px solid var(--light-grey);
   padding: 5px 1em;
   z-index: 6;
 }
@@ -197,8 +209,13 @@ button:disabled {
  .timeBar {
   width: 100%;
   float: left;
-  background-color: rgba(0, 0, 0, 0.4);
-  height: 5px;  
+  background-color: var(--dark-shadow);
+  height: 5px;
+}
+.children.box {
+  float: right;
+  margin:0;
+  color: #333333;
 }
 .started{
   width: 0;
@@ -231,7 +248,7 @@ button:disabled {
   margin: 0;
 }
 .postbutton {
-  background-color: #06706b;
+  background-color: var(--debato-green);
   color: white;
   border: none;
   outline: none;
@@ -240,7 +257,7 @@ button:disabled {
   transition: 0.1s;
 }
 .postbutton:hover {
-  background-color: #0aa59d;
+  background-color: var(--debato-bright-green);
   cursor: pointer;
 }
 .inputZone {
@@ -274,34 +291,30 @@ button:disabled {
   transition: 0.1s;
 }
 .tab button:hover {
-  background-color: #ddd;
+  background-color: var(--light-grey);
 }
 .tab button.active {
-  background-color: #ccc;
+  background-color: var(--grey);
 }
 .tabcontent {
   display: none;
   padding-bottom: 100px;
 }
 .discussionList{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  align-content: space-between;
+  grid-gap: 25px;
 }
 .discussionObj {
   overflow: hidden;
-  min-width: 250px;
-  flex-basis: 220px;
-  max-width: 300px;
-  flex-grow: 1;
+  width:100%;
   background-color: white;
-  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 10px 0 var(--light-shadow);
   transition: 0.05s;
-  margin: 20px;
 }
 .discussionObj:hover {
-  box-shadow: 0 5px 10px 1px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 5px 10px 1px var(--shadow);
   transform: translate(0, -15px);
 }
 .ObjLink {
@@ -318,8 +331,8 @@ button:disabled {
   margin: 5px;
   font-size: 0.8em;
   padding: 1px 5px; 
-  color: #005551;
-  border: 2px solid #005551;
+  color: var(--debato-green);
+  border: 2px solid var(--debato-green);
   border-radius: 0.8em;
 }
 .tag:hover {
@@ -342,21 +355,35 @@ button:disabled {
 .thumbnail {
   display: block;
   margin: auto;
-  height: 150px;
+  height: 200px;
   width: 100%;
   background-image: none;
   background-position: center;
   background-size: cover;
 }
 .cardTitle{
-  display: inline-block;
-  font-size: 1.2em;
-  margin: 0.7em 5px 0.7em 5px;
+  font-size: 1.1em;
   font-weight: bold;
+  margin: 10px 0;
+  float: left;
+  text-align: left;
+}
+.cardDescription{
+  max-height: 70px;
+  color: #333333;
+  width: 100%;
+  display: -webkit-box;
+   -webkit-line-clamp: 4;
+   -webkit-box-orient: vertical;
+   overflow: hidden;
+   text-overflow: ellipsis;
+  margin: 0 0 10px;
+  text-align: left;
+  vertical-align: bottom;
 }
 .argumentCard{
   max-width: 100%;
-  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 10px 0 var(--shadow);
   padding: 5px;
   margin: 5px 0 5px 0;
   text-align: left;
@@ -385,7 +412,7 @@ button:disabled {
 .ratiobar {
   width: 100%;
   height: 4px;
-  background-color: #ccc;
+  background-color: var(--grey);
   padding: 0;
   margin: 0;
 }
@@ -400,26 +427,6 @@ button:disabled {
   height: 100%;
   background-color: rgba(158, 0, 0, 0.5);
   margin: 0;
-}
-.children.box {
-  font-weight: bold;
-  display: inline-block;
-  position: relative;
-  font-size: 16px;
-  bottom: calc(40px - 100%);
-  width: 100%;
-  min-height: 1.1em;
-  padding: 1px 0;
-  background-color: white;
-  opacity: 0.7;
-}
-.ageBox {
-  color: white;
-  float: right;
-  padding: 2px 10px;
-  width: auto;
-  background-color: #06706b;
-  opacity: 0.7;
 }
 #accountLogin {
   margin: 7px;
@@ -456,15 +463,15 @@ button:disabled {
   margin: 10px;
   max-width: 150px;
   overflow: hidden;
-  background-color: #ddd;
+  background-color: var(--light-grey);
 }
 #accountMenu {
-  box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0px 0px 5px var(--light-shadow);
   position: relative;
   font-size: 0.9em;
   max-height: 0;
   transition: max-height 0.2s ease-out;
-  background-color: #f1f1f1;
+  background-color: var(--dark-white);
   width: 100%;
   z-index: 1;
 }
@@ -484,13 +491,13 @@ button:disabled {
 }
 #accountMenu a:hover {
   cursor: pointer;
-  background-color: #ddd;
+  background-color: var(--light-grey);
 }
 .voteSlider{
   -webkit-appearance: none;
   width: 100%;
   height: 1px;
-  background-color: #d3d3d3;
+  background-color: var(--light-grey);
   outline: none;
   opacity: 0.7;
   -webkit-transition: .2s;
@@ -505,13 +512,13 @@ button:disabled {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #005551;
+  background: var(--debato-green);
   cursor: pointer;
 }
 .voteSlider::-moz-range-thumb {
   width: 10px;
   height: 10px;
-  background: #005551;
+  background: var(--debato-green);
   cursor: pointer;
 }
 .voteIndicator {
@@ -530,11 +537,8 @@ button:disabled {
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #ccc;
+  background: var(--grey);
   border-radius: 2px;
-}
-.inlBck {
-  display: inline-block;
 }
 .subtext {
   font-size: 0.8em;

@@ -3,7 +3,7 @@
     margin-top: 10px;
     width: 90%;
     background-color: white;
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 10px 0 var(--light-shadow);
 }
 
 #profileInfo {
@@ -47,14 +47,14 @@
     margin: 0;
     height: 1em;
     border-radius: 5px;
-    background-color: #005551;
+    background-color: var(--debato-green);
 }
 
 #powerBarContainer {
     width: calc(100% - 20px);
     height: 1.5em;
     top: 10px;
-    background-color: #ddd;
+    background-color: var(--light-grey);
     border-radius: 2px;
     text-align: left;
 }
@@ -62,7 +62,7 @@
 #votePowerBar {
     width: 100%;
     height: calc(100% - 0.5em);
-    background-color: #005551;
+    background-color: var(--debato-green);
     border-radius: 2px;
     padding: 0.25em;
     font-size: 1em;
@@ -74,12 +74,12 @@
 }
 
 #TransferButton {
-    background-color: #06706b !important;
+    background-color: var(--debato-bright-green) !important;
     color: white;
 }
 
 #TransferButton:hover {
-    background-color: #0aa59d !important;
+    background-color: var(--debato-bright-hover) !important;
 }
 
 #WalletContent {
@@ -113,7 +113,7 @@
     font-size: 1em;
     display: inline-block;
     width: 100%;
-    background-color: #ddd;
+    background-color: var(--light-grey);;
     border: none;
     border-radius: 3px;
     outline: none;
@@ -122,7 +122,7 @@
 }
 
 #walletOperations button:hover {
-    background-color: #ccc;
+    background-color: var(--grey);
     cursor: pointer;
 }
 
@@ -161,8 +161,8 @@
 }
 
 .CurrButton {
-    background-color: #0aa59d;
-    border: 1px solid #06706b;
+    background-color: var(--debato-bright-green);
+    border: 1px solid var(--debato-green);
     color: white;
     font-size: 0.8em;
     outline: none;
@@ -172,21 +172,21 @@
 }
 
 .CurrButton:hover {
-    background-color: #08857e;
+    background-color: var(--debato-bright-hover);
     cursor: pointer;
 }
 
 .CurrButton.active {
-    background-color: #06706b;
+    background-color: var(--debato-green);
 }
 
 .CurrButton.active:hover {
-    background-color: #08857e;
+    background-color: var(--debato-green);
     cursor: pointer;
 }
 
 .confirm {
-    background-color: #06706b;
+    background-color: var(--debato-bright-green);
     color: white;
     font-size: 1.1em;
     border: none;
@@ -197,7 +197,7 @@
 }
 
 .confirm:hover {
-    background-color: #0aa59d;
+    background-color: var(--debato-bright-hover);
     cursor: pointer;
 }
 
@@ -214,7 +214,7 @@
     font-size: 1.1em;
     width: calc(100% - 20px);
     height: 2em;
-    background-color: #0aa59d;
+    background-color: var(--debato-green);
     border-radius: 2px;
     border: none;
     outline: none;
@@ -223,7 +223,7 @@
 }
 
 #followButton:hover {
-    background-color: #00645f;
+    background-color: var(--debato-bright-hover);
     cursor: pointer;
 }
 

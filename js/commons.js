@@ -491,7 +491,6 @@ function getPostData(postobj) {
   */
   const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
   const regex = new RegExp(expression);
-
   let thumbnail;
   let description = '';
   let tags = [];
@@ -504,8 +503,10 @@ function getPostData(postobj) {
       // eslint-disable-next-line prefer-destructuring
       if (postJSON.image[0].match(regex)) { thumbnail = postJSON.image[0]; }
     }
-    description = JSON.parse(postobj.json_metadata).context;
-    if (description === undefined) { description = ''; }
+    if ('image' in postJSON) {
+      description = JSON.parse(postobj.json_metadata).context;
+      if (description === undefined) { description = ''; }
+    }
   }
   // eslint-disable-next-line prefer-destructuring
   const author = postobj.author;

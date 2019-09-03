@@ -8,7 +8,7 @@
   .moreButton {
     margin: 10px;
     flex: 0 0 100%;
-    background-color: #ccc;
+    background-color: var(--grey);
     border: none;
     outline: none;
     cursor: pointer;
@@ -16,7 +16,7 @@
     transition: 0.3s;
   }
   .moreButton:hover {
-    background-color: #ddd;
+    background-color: var(--light-grey);
   }
   #tagSuggestions {
     margin-top: 10px;

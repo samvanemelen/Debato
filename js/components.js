@@ -63,6 +63,7 @@ function createDiscussionCard(post) {
     json_metadata (with image)
     author
     title
+    description
     pending_payout_value
     permlink
     created
@@ -73,17 +74,17 @@ function createDiscussionCard(post) {
   body += `<div class = "discussionObj" id = "${details.perm}">
     <button class="ObjLink" onclick="window.location.href='/html/discussion?a=${details.author}&p=${details.perm}'">`;
   if (details.thumbnail === false || details.thumbnail === '') {
-    body += '<div class = "thumbnail" style = "background-image:url(\'/imgs/placeholder.svg\')">';
+    body += '<div class = "thumbnail" style = "background-image:url(\'/imgs/placeholder.svg\')"></div>';
   } else {
-    body += `<div class = "thumbnail" style = "background-image:url('${details.thumbnail}')">`;
+    body += `<div class = "thumbnail" style = "background-image:url('${details.thumbnail}')"></div>`;
   }
-  body += `<div title="${details.created}" class="ageBox">${timeSince(details.created)} ago</div>
-    <div class="children box">${post.children} <i class="far fa-comment"></i></div></div>
-    <div class="ratiobar" id="ratio-${details.perm}"><div class="probar"></div><div class="conbar"></div></div>
+  body += `<div class="ratiobar" id="ratio-${details.perm}"><div class="probar"></div><div class="conbar"></div></div>
+    <div style="padding:16px"><p title="${details.created}" style="float:left; display: inline-block; margin:0; color: #333333">${timeSince(details.created)} ago</p>
+    <p class="children box">${post.children} <i class="far fa-comment"></i></p>
     <p class = "cardTitle">`;
   if (isHot(post)) { body += '<i class="fas fa-fire-alt" title="Hot!" style="color:rgb(121, 6, 2);"></i> '; }
   body += `${details.title}</h2>
-    <div id = "discussionBody"></div>
+    <div class = "cardDescription">${details.description}</div></div>
     </div>`;
   return body;
 }
