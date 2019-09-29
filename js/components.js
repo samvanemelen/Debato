@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-/* global getPostData isHot timeSince parseHtml :true */
+/* global getPostData isHot timeSince parseHtml taglist :true */
 function createArgumentCard(values) {
   /*
     the 'values' parameter is a dictionary with the following attributes:
@@ -216,6 +216,19 @@ function createProfileArgumentCard(values) {
     <p style="font-size:1.2em;"><a class="blackLink" href = "/html/discussion?a=${values.author}&p=${values.perm}">${values.title}</a></p>
     <p title="${values.created}">${values.reward} - ${timeSince(values.created)} ago</p>
   </div>`;
+}
+function createTag(tag, closable = false, active = '', tab = '') {
+  let action = `onclick="loadDiscussions('${tab}',99 ,0 ,'${tag}')"`;
+  if (active === 'active') { action = `onclick="loadDiscussions('${tab}',99 ,0 ,'${tag}')"`; }
+  if (!closable) { action = `href="/index?tag=${tag}"`; }
+
+  let tagitem = `<span style="position:relative"><a class = "tag ${active}" ${action}>${tag}</a>`;
+  if (closable) {
+    tagitem += `<span class = "closetag" onclick="this.parentNode.parentNode.removeChild(this.parentNode);
+    for( var i = 0; i < taglist.length; i++){if(taglist[i] === '${tag}'){taglist.splice(i, 1);i--;}}"><i class="far fa-times-circle"></i></span>`;
+  }
+  tagitem += '</span>';
+  return tagitem;
 }
 function header() {
   return `<i class="fas fa-bars mobile_menu" onclick="document.getElementById('mainMenu').style.display = 'block'"></i>

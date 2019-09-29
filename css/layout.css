@@ -325,6 +325,21 @@ button:disabled {
   padding: 0;
   width: 100%;
 }
+.closetag {
+  position: absolute;
+  right: 0;
+  font-size: 0.9em;
+  color: var(--debato-green);
+  border-radius: 50%;
+  background-color: white;
+}
+
+.closetag:hover {
+  color: #cf3328;
+  border-color: #cf3328;
+  cursor: pointer;
+}
+
 .tag {
   text-decoration: none;
   display: inline-block;
@@ -345,6 +360,7 @@ button:disabled {
 .tag.active:hover {
   opacity: 0.7;
 }
+
 #tagSearchBar{
   min-width: 55px;
   max-width: 130px;

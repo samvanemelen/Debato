@@ -1,5 +1,5 @@
 /* global getPostData
-getCommentStatus createDiscussionCard :true */
+getCommentStatus createDiscussionCard createTag:true */
 /* eslint-disable no-unused-vars */
 
 let activeTab = '';
@@ -59,10 +59,10 @@ function loadDiscussions(tab, shownAmount = PostPerLoad, previous = 0, tag = '')
   if (tag === activeTag) { activeTag = ''; } else if (tag !== '') { activeTag = tag; }
   if (taglist.indexOf(activeTag) < 0 && activeTag !== '') { taglist.push(activeTag); }
   let tagSugBody = '';
-  let tagClass = 'tag';
   for (let i = 0; i < taglist.length; i += 1) {
-    if (activeTag === taglist[i]) { tagClass = 'tag active'; } else { tagClass = 'tag'; }
-    tagSugBody += `<p class = "${tagClass}" onclick="loadDiscussions('${tab}',99 ,0 ,'${taglist[i]}')">${taglist[i]}</p>`;
+    let tagClass = '';
+    if (activeTag === taglist[i]) { tagClass = 'active'; }
+    tagSugBody += createTag(taglist[i], true, tagClass, tab);
   }
   tagSugBody += '<input class= "tag" id = "tagSearchBar" placeholder="search">';
   document.getElementById('tagSuggestions').innerHTML = tagSugBody;
@@ -102,7 +102,6 @@ function loadDiscussions(tab, shownAmount = PostPerLoad, previous = 0, tag = '')
   switch (tab) {
     case 'New':
       steem.api.getDiscussionsByCreated({ limit: shownAmount + 1, tag: 'debato-discussion' }, (err, posts) => {
-        console.log(posts)
         let postlist = [];
         if (activeTag !== '') { postlist = filterPosts(posts, activeTag); } else { postlist = posts; }
         writeDiscussionList(postlist, shownAmount, previous);

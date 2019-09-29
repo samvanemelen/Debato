@@ -1,6 +1,6 @@
 /* eslint-disable func-names */
 /* eslint-disable no-unused-vars */
-/* global createCommentBox createArgumentCard createCommentCard header footer:true */
+/* global createCommentBox createArgumentCard createCommentCard createTag header footer:true */
 
 document.getElementsByTagName('header')[0].innerHTML = header();
 document.getElementsByTagName('footer')[0].innerHTML = footer();
@@ -759,7 +759,7 @@ function writeDiscussionContent(author, perm) {
       if (isHot(post)) { body += ' <i class="fas fa-fire-alt" title="Hot!" style="color:rgb(121, 6, 2);"></i>'; }
       body += '</h1><br>';
       for (let i = 0; i < info.tags.length; i += 1) {
-        if (info.tags[i] !== 'debato-discussion' && info.tags[i].length > 1) { body += `<a class = "tag" href="/index?tag=${info.tags[i]}">${info.tags[i]}</a>`; }
+        if (info.tags[i] !== 'debato-discussion' && info.tags[i].length > 1) { body += createTag(info.tags[i]); }
       }
       body += '<div id = "backPlaceholder"></div>'; // placeholder for back button
       body += `<p><strong>By: <a href="/html/profile?u=${info.author}">${info.author}</a></strong> - ${info.reward}</p>`;
